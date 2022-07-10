@@ -1,13 +1,9 @@
-buildscript {
-    ext {
-        kotlin_version = '1.7.0'
-        compose_version = '1.3.0-alpha01'
-    }
-}
 plugins {
-    id 'com.android.application' version '7.2.1' apply false
-    id 'com.android.library' version '7.2.1' apply false
-    id 'org.jetbrains.kotlin.android' version "$kotlin_version" apply false
+    alias(libs.plugins.android.app) apply(false)
+    alias(libs.plugins.android.lib) apply(false)
+    alias(libs.plugins.kotlin.android) apply(false)
+    alias(libs.plugins.kotlin.kapt) apply(false)
+    alias(libs.plugins.hilt) apply(false)
 }
 
 task clean(type: Delete) {
