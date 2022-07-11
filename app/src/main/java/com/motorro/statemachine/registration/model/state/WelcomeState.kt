@@ -1,9 +1,7 @@
 package com.motorro.statemachine.registration.model.state
 
-import com.motorro.statemachine.R
 import com.motorro.statemachine.registration.data.RegistrationGesture
 import com.motorro.statemachine.registration.data.RegistrationUiState
-import com.motorro.statemachine.resources.ResourceWrapper
 import timber.log.Timber
 
 /**
@@ -13,8 +11,8 @@ import timber.log.Timber
  */
 class WelcomeState(
     context: RegistrationContext,
-    resourceWrapper: ResourceWrapper
-) : RegistrationState(context), ResourceWrapper by resourceWrapper {
+    private val welcomeGreeting: String
+) : RegistrationState(context) {
 
     /**
      * Simple internal state
@@ -58,7 +56,7 @@ class WelcomeState(
     private fun render() {
         setUiState(
             RegistrationUiState.Welcome(
-                getString(R.string.welcome_terms),
+                welcomeGreeting,
                 termsAccepted,
                 termsAccepted
             )

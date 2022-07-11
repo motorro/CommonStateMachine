@@ -6,6 +6,19 @@ plugins {
     alias(libs.plugins.hilt) apply(false)
 }
 
+allprojects {
+
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions {
+            freeCompilerArgs += [
+                    "-opt-in=kotlin.RequiresOptIn",
+                    "-Xinline-classes"
+            ]
+        }
+    }
+
+}
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }

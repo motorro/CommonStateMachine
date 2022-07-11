@@ -93,7 +93,7 @@ interface CommonStateMachine<G: Any, U: Any> {
      * Updates state with UI gesture
      * @param gesture UI gesture to proceed
      */
-    fun update(gesture: G)
+    fun process(gesture: G)
 
     /**
      * Updates UI state
@@ -131,7 +131,7 @@ open class LiveDataStateMachine<G: Any, U: Any>(init: () -> CommonMachineState<G
      * Updates state with UI gesture
      * @param gesture UI gesture to proceed
      */
-    final override fun update(gesture: G) {
+    final override fun process(gesture: G) {
         machineState.process(gesture)
     }
 

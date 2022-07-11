@@ -6,7 +6,8 @@ import io.mockk.*
 import org.junit.Test
 
 class WelcomeStateTest : BaseStateTest() {
-    private val state = WelcomeState(context, resourceWrapper)
+    private val greeting = "Welcome"
+    private val state = WelcomeState(context, greeting)
 
     @Test
     fun displaysWelcomeScreenOnStart() {
@@ -15,7 +16,7 @@ class WelcomeStateTest : BaseStateTest() {
         verify {
             stateMachine.setUiState(
                 RegistrationUiState.Welcome(
-                    message = R_STRING,
+                    message = greeting,
                     termsAccepted = false,
                     actionEnabled = false
                 )
@@ -31,14 +32,14 @@ class WelcomeStateTest : BaseStateTest() {
         verifyOrder {
             stateMachine.setUiState(
                 RegistrationUiState.Welcome(
-                    message = R_STRING,
+                    message = greeting,
                     termsAccepted = false,
                     actionEnabled = false
                 )
             )
             stateMachine.setUiState(
                 RegistrationUiState.Welcome(
-                    message = R_STRING,
+                    message = greeting,
                     termsAccepted = true,
                     actionEnabled = true
                 )

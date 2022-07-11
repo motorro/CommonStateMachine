@@ -1,5 +1,6 @@
 [versions]
 kotlin = "1.6.10"
+coroutines = "1.6.1"
 compose = "1.1.1"
 hilt = "2.42"
 
@@ -12,6 +13,8 @@ hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 
 [libraries]
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
+kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 
 desugaring = { module = "com.android.tools:desugar_jdk_libs", version = "1.1.5" }
 
@@ -47,6 +50,7 @@ test-androidx-espresso = { module = "androidx.test.espresso:espresso-core", vers
 test-compose-ui = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" }
 test-compose-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose" }
 test-mockk = { module = "io.mockk:mockk", version = "1.12.3" }
+test-kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 
 [bundles]
 compose-core = ["compose-ui", "compose-tooling-preview", "compose-material", "compose-livedata"]

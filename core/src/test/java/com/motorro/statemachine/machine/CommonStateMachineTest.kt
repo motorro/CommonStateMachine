@@ -99,7 +99,7 @@ class CommonStateMachineTest {
     fun delegatesGestureToCurrentState() {
         val state = spyk(CommonMachineState<Int, Int>())
         val machine = LiveDataStateMachine { state }
-        machine.update(2)
+        machine.process(2)
         verify { state.process(2) }
     }
 }

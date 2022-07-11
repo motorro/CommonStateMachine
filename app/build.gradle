@@ -61,6 +61,9 @@ dependencies {
     implementation libs.androidx.lifecycle.livedata
     implementation libs.androidx.lifecycle.viewmodel
 
+    implementation libs.kotlin.coroutines.core
+    implementation libs.kotlin.coroutines.android
+
     implementation libs.bundles.compose.core
     implementation libs.compose.activity
     implementation libs.compose.navigation
@@ -76,4 +79,5 @@ dependencies {
 
     testImplementation libs.bundles.test.core
     testImplementation libs.test.androidx.arch
+    testImplementation libs.test.kotlin.coroutines
 }
