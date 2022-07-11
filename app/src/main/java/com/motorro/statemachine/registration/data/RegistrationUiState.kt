@@ -53,4 +53,9 @@ sealed class RegistrationUiState {
         val repeatPassword: String,
         val actionEnabled: Boolean
     ) : RegistrationUiState()
+
+    /**
+     * Registration wizard has terminated
+     */
+    object Terminated : RegistrationUiState()
 }

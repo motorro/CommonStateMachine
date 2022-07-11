@@ -72,7 +72,8 @@ interface RegistrationStateFactory {
          * Terminates registration flow
          */
         override fun terminate(): RegistrationState {
-            TODO("Not yet implemented")
+            Timber.d("Creating 'Terminated'...")
+            return TerminatedState(context)
         }
 
     }

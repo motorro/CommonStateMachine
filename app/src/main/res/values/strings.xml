@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">StateMachine</string>
 
-    <string name="welcome_title">StateMachine!</string>
-    <string name="welcome_terms">Welcome to state machine!\nPlease accept terms and conditions to proceed…</string>
+    <!-- region Welcome -->
+    <string name="welcome_title">Welcome to StateMachine!</string>
+    <string name="welcome_terms">Please accept terms and conditions to proceed…</string>
+    <string name="welcome_accept">I accept</string>
+    <string name="welcome_next">Next</string>
+    <!-- endregion -->
 </resources>
