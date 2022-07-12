@@ -44,4 +44,5 @@ dependencies {
 
     testImplementation libs.bundles.test.core
     testImplementation libs.test.androidx.core
+    testImplementation libs.test.kotlin.coroutines
 }
