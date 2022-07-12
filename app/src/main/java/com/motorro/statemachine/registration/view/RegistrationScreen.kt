@@ -22,7 +22,11 @@ fun RegistrationScreen(onTerminate: @Composable () -> Unit) {
             onTermsToggled = { model.process(RegistrationGesture.TermsAndConditionsToggled) },
             onNext = { model.process(RegistrationGesture.Action) }
         )
-        is RegistrationUiState.EmailEntry -> TODO()
+        is RegistrationUiState.EmailEntry -> EmailEntry(
+            state = uiState,
+            onEmailChanged = { model.process(RegistrationGesture.EmailChanged(it)) },
+            onNext = { model.process(RegistrationGesture.Action) }
+        )
         is RegistrationUiState.LoginPasswordEntry -> TODO()
         is RegistrationUiState.RegistrationPasswordEntry -> TODO()
         RegistrationUiState.Terminated -> { onTerminate() }

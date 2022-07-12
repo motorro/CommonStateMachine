@@ -1,6 +1,7 @@
 package com.motorro.statemachine.registration.model.state
 
 import androidx.annotation.CallSuper
+import androidx.lifecycle.SavedStateHandle
 import com.motorro.statemachine.machine.CommonStateMachine
 import com.motorro.statemachine.registration.data.RegistrationGesture
 import com.motorro.statemachine.registration.data.RegistrationUiState
@@ -23,6 +24,7 @@ open class BaseStateTest {
 
     init {
         every { context.factory } returns factory
+        every { context.savedStateHandle } returns SavedStateHandle()
         every { resourceWrapper.getString(any(), *anyVararg()) } returns R_STRING
     }
 

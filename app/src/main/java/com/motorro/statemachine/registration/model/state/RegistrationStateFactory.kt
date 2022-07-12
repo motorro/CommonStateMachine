@@ -28,6 +28,12 @@ interface RegistrationStateFactory {
     fun emailEntry(data: RegistrationDataState? = null): RegistrationState
 
     /**
+     * Checks if email is registered
+     * @param data Data state
+     */
+    fun checkEmail(data: RegistrationDataState): RegistrationState
+
+    /**
      * Terminates registration flow
      */
     fun terminate() : RegistrationState
@@ -65,6 +71,15 @@ interface RegistrationStateFactory {
          * @param data Data state
          */
         override fun emailEntry(data: RegistrationDataState?): RegistrationState {
+            Timber.d("Creating 'Email entry'...")
+            return EmailEntryState(context, data)
+        }
+
+        /**
+         * Checks if email is registered
+         * @param data Data state
+         */
+        override fun checkEmail(data: RegistrationDataState): RegistrationState {
             TODO("Not yet implemented")
         }
 

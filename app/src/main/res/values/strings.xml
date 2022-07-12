@@ -3,8 +3,15 @@
 
     <!-- region Welcome -->
     <string name="welcome_title">Welcome to StateMachine!</string>
-    <string name="welcome_terms">Please accept terms and conditions to proceed…</string>
+    <string name="welcome_terms">This is a StateMachine + Compose demo app that emulates multi-screen registration flow.\nPlease accept bogus terms and conditions to proceed to the next screen…</string>
     <string name="welcome_accept">I accept</string>
     <string name="welcome_next">Next</string>
+    <!-- endregion -->
+
+    <!-- region Email -->
+    <string name="email_title">Provide email</string>
+    <string name="email_desc">- Enter any fake email to try registration flow. No data is being stored or sent anywhere.\n- Enter \'bad@example.com\' to try login error flow.</string>
+    <string name="email_email_label">E-mail</string>
+    <string name="email_next">Next</string>
     <!-- endregion -->
 </resources>
