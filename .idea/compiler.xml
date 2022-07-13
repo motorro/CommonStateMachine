@@ -2,9 +2,9 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.8">
-      <module name="StateMachine.app" target="11" />
-      <module name="StateMachine.core" target="11" />
-      <module name="StateMachine.login" target="11" />
+      <module name="CommonStateMachine.app" target="11" />
+      <module name="CommonStateMachine.core" target="11" />
+      <module name="CommonStateMachine.login" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

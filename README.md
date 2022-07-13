@@ -1,2 +1,2 @@
-# StateMachine
+# CommonStateMachine
 Demo app for compose and state-machine android architecture

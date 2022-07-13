@@ -20,7 +20,7 @@ dependencyResolutionManagement {
         }
     }
 }
-rootProject.name = "StateMachine"
+rootProject.name = "CommonStateMachine"
 include ':app'
 include ':core'
 include ':login'
