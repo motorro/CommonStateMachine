@@ -38,7 +38,7 @@ internal class ErrorStateTest : BaseStateTest() {
         state.start(stateMachine)
         state.process(LoginGesture.Back)
 
-        verify { stateMachine.machineState = passwordEntry }
+        verify { stateMachine.setMachineState(passwordEntry) }
         verify { factory.passwordEntry(data) }
     }
 
@@ -47,7 +47,7 @@ internal class ErrorStateTest : BaseStateTest() {
         state.start(stateMachine)
         state.process(LoginGesture.Action)
 
-        verify { stateMachine.machineState = passwordEntry }
+        verify { stateMachine.setMachineState(passwordEntry) }
         verify { factory.passwordEntry(data) }
     }
 }

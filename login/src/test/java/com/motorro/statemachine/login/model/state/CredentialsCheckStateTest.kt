@@ -68,7 +68,7 @@ internal class CredentialsCheckStateTest : BaseStateTest() {
         state.start(stateMachine)
         advanceUntilIdle()
 
-        verify { stateMachine.machineState = error }
+        verify { stateMachine.setMachineState(error) }
         verify { factory.error(data, withArg { assertTrue { it is IllegalArgumentException } }) }
     }
 
@@ -80,7 +80,7 @@ internal class CredentialsCheckStateTest : BaseStateTest() {
         state.start(stateMachine)
         state.process(LoginGesture.Back)
 
-        verify { stateMachine.machineState = passwordEntry }
+        verify { stateMachine.setMachineState(passwordEntry) }
         verify { factory.passwordEntry(data) }
     }
 }

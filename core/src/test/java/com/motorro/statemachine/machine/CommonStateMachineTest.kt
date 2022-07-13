@@ -26,7 +26,7 @@ class CommonStateMachineTest {
         val state1 = spyk(CommonMachineState<Int, Int>())
         val state2 = spyk(CommonMachineState<Int, Int>())
         val machine = TestMachine(state1)
-        machine.machineState = state2
+        machine.setMachineState(state2)
         verify { state1.clear() }
     }
 
@@ -35,7 +35,7 @@ class CommonStateMachineTest {
         val state1 = spyk(CommonMachineState<Int, Int>())
         val state2 = spyk(CommonMachineState<Int, Int>())
         val machine = TestMachine(state1)
-        machine.machineState = state2
+        machine.setMachineState(state2)
         verify { state2.start(machine) }
     }
 

@@ -73,7 +73,7 @@ internal class PasswordEntryStateTest : BaseStateTest() {
         state.start(stateMachine)
         state.process(LoginGesture.Action)
 
-        verify { stateMachine.machineState = checking }
+        verify { stateMachine.setMachineState(checking) }
         verify { factory.checking(data) }
     }
 
@@ -86,7 +86,7 @@ internal class PasswordEntryStateTest : BaseStateTest() {
         state.start(stateMachine)
         state.process(LoginGesture.Action)
 
-        verify(exactly = 0) { stateMachine.machineState = any() }
+        verify(exactly = 0) { stateMachine.setMachineState(any()) }
         verify(exactly = 0) { factory.checking(data) }
     }
 

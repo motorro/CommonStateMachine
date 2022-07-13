@@ -14,16 +14,14 @@ abstract class ProxyMachineState<PG: Any, PU: Any, CG: Any, CU: Any> : CommonMac
     /**
      * Proxy state machine
      */
-    private val machine by lazy(LazyThreadSafetyMode.NONE) {
-        object : CommonStateMachine.Base<CG, CU>(::init) {
+    private val machine = object : CommonStateMachine.Base<CG, CU>(::init) {
 
-            fun doStart() {
-                start()
-            }
+        fun doStart() {
+            start()
+        }
 
-            override fun setUiState(uiState: CU) {
-                this@ProxyMachineState.setUiState(mapUiState(uiState))
-            }
+        override fun setUiState(uiState: CU) {
+            this@ProxyMachineState.setUiState(mapUiState(uiState))
         }
     }
 

@@ -59,7 +59,7 @@ class WelcomeStateTest : BaseStateTest() {
         state.process(RegistrationGesture.TermsAndConditionsToggled)
         state.process(RegistrationGesture.Action)
 
-        verify { stateMachine.machineState = email }
+        verify { stateMachine.setMachineState(email) }
         verify { factory.emailEntry() }
     }
 
@@ -68,7 +68,7 @@ class WelcomeStateTest : BaseStateTest() {
         state.start(stateMachine)
         state.process(RegistrationGesture.Action)
 
-        verify(exactly = 0) { stateMachine.machineState = any() }
+        verify(exactly = 0) { stateMachine.setMachineState(any()) }
         verify(exactly = 0) { factory.emailEntry() }
     }
 
@@ -80,7 +80,7 @@ class WelcomeStateTest : BaseStateTest() {
         state.start(stateMachine)
         state.process(RegistrationGesture.Back)
 
-        verify { stateMachine.machineState = terminated }
+        verify { stateMachine.setMachineState(terminated) }
         verify { factory.terminate() }
     }
 }

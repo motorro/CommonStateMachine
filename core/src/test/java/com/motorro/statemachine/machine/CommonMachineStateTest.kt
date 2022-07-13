@@ -57,7 +57,7 @@ class CommonMachineStateTest {
         val state2 = TestState()
         state1.start(machine)
         state1.checkMachineStateUpdate(state2)
-        verify { machine.machineState = state2 }
+        verify { machine.setMachineState(state2) }
     }
 
     @Test

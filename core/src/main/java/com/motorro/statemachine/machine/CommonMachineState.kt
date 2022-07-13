@@ -50,7 +50,7 @@ open class CommonMachineState<G: Any, U : Any> {
      * @param machineState Machine state
      */
     protected fun setMachineState(machineState: CommonMachineState<G, U>) = withMachine {
-        it.machineState = machineState
+        it.setMachineState(machineState)
     }
 
     /**

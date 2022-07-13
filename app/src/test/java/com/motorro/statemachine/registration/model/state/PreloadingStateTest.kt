@@ -42,7 +42,7 @@ class PreloadingStateTest : BaseStateTest() {
         state.start(stateMachine)
         advanceUntilIdle()
 
-        verify { stateMachine.machineState = welcome }
+        verify { stateMachine.setMachineState(welcome) }
         verify { factory.welcome(R_STRING) }
     }
 
@@ -54,7 +54,7 @@ class PreloadingStateTest : BaseStateTest() {
         state.start(stateMachine)
         state.process(RegistrationGesture.Back)
 
-        verify { stateMachine.machineState = terminated }
+        verify { stateMachine.setMachineState(terminated) }
         verify { factory.terminate() }
     }
 }

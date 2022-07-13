@@ -57,7 +57,7 @@ class EmailCheckStateTest : BaseStateTest() {
         state.start(stateMachine)
         advanceUntilIdle()
 
-        verify { stateMachine.machineState = login }
+        verify { stateMachine.setMachineState(login) }
         verify { factory.loginFlow(data) }
     }
 
@@ -69,7 +69,7 @@ class EmailCheckStateTest : BaseStateTest() {
         state.start(stateMachine)
         advanceUntilIdle()
 
-        verify { stateMachine.machineState = register }
+        verify { stateMachine.setMachineState(register) }
         verify { factory.registrationFlow(data) }
     }
 
@@ -83,7 +83,7 @@ class EmailCheckStateTest : BaseStateTest() {
         state.start(stateMachine)
         state.process(RegistrationGesture.Back)
 
-        verify { stateMachine.machineState = emailEntry }
+        verify { stateMachine.setMachineState(emailEntry) }
         verify { factory.emailEntry(data) }
     }
 }
