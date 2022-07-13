@@ -5,11 +5,14 @@ plugins {
     alias(libs.plugins.kotlin.jvm) apply(false)
     alias(libs.plugins.kotlin.android) apply(false)
     alias(libs.plugins.kotlin.kapt) apply(false)
+    alias(libs.plugins.kotlin.dokka) apply(false)
     alias(libs.plugins.hilt) apply(false)
+    alias(libs.plugins.nexus.publish)
     alias(libs.plugins.git)
 }
 
 apply from: 'gradle/versioning.gradle'
+apply from: 'gradle/maven-publish-config.gradle'
 
 allprojects {
     ext {
@@ -20,7 +23,15 @@ allprojects {
         androidMinSdkVersion = 24
         androidTargetSdkVersion = 32
         androidCompileSdkVersion = 32
+
+        developerId = 'motorro'
+        developerName = 'Nikolai Kotchetkov'
+        developerEmail = 'motorro@gmail.com'
+
+        projectScm = 'https://github.com/motorro/CommonStateMachine.git'
+        projectUrl = 'https://github.com/motorro/CommonStateMachine'
     }
+
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
         kotlinOptions {
             freeCompilerArgs += [
@@ -101,3 +112,15 @@ task runUnitTests(
 ) {
     description 'Run unit tests for all modules.'
 }
+
+nexusPublishing {
+    repositories {
+        sonatype {
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+            username = ossrhUsername
+            password = ossrhPassword
+        }
+    }
+}
+
