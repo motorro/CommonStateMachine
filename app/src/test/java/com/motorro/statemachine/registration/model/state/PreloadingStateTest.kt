@@ -2,7 +2,7 @@
 
 package com.motorro.statemachine.registration.model.state
 
-import com.motorro.statemachine.TestDispatchers
+import com.motorro.statemachine.coroutines.TestDispatchers
 import com.motorro.statemachine.registration.data.RegistrationGesture
 import com.motorro.statemachine.registration.data.RegistrationUiState
 import io.mockk.every

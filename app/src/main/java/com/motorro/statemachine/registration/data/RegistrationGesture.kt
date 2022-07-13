@@ -1,5 +1,7 @@
 package com.motorro.statemachine.registration.data
 
+import com.motorro.statemachine.login.data.LoginGesture
+
 /**
  * Registration flow UI gestures
  */
@@ -26,14 +28,14 @@ sealed class RegistrationGesture {
     data class EmailChanged(val value: String) : RegistrationGesture()
 
     /**
-     * Password field changed
-     * @property value Password value
-     */
-    data class PasswordChanged(val value: String) : RegistrationGesture()
-
-    /**
      * Password repeat field changed
      * @property value Password value
      */
     data class RepeatPasswordChanged(val value: String) : RegistrationGesture()
+
+    /**
+     * Login flow gesture
+     * @property value Login flow gesture
+     */
+    data class Login(val value: LoginGesture) : RegistrationGesture()
 }

@@ -2,10 +2,10 @@ package com.motorro.statemachine.registration.model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import com.motorro.statemachine.machine.CommonMachineState
 import com.motorro.statemachine.machine.LiveDataStateMachine
 import com.motorro.statemachine.registration.data.RegistrationGesture
 import com.motorro.statemachine.registration.data.RegistrationUiState
-import com.motorro.statemachine.registration.model.state.RegistrationState
 import com.motorro.statemachine.registration.model.state.RegistrationStateFactory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import timber.log.Timber
@@ -21,7 +21,7 @@ class RegistrationViewModel @Inject constructor(private val factory: Registratio
     /**
      * Creates initializing state
      */
-    private fun initializeStateMachine(): RegistrationState {
+    private fun initializeStateMachine(): CommonMachineState<RegistrationGesture, RegistrationUiState> {
         Timber.d("Initializing state machine...")
         return factory.preload()
     }

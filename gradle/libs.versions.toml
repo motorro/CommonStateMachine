@@ -7,6 +7,7 @@ hilt = "2.42"
 [plugins]
 android_app = { id = "com.android.application", version = "7.2.1" }
 android_lib = { id = "com.android.library", version = "7.2.1" }
+kotlin_jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin_android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin_kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }

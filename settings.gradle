@@ -23,3 +23,5 @@ dependencyResolutionManagement {
 rootProject.name = "StateMachine"
 include ':app'
 include ':core'
+include ':login'
+include ':registration_api'

@@ -1,10 +1,13 @@
 package com.motorro.statemachine.registration.model.state
 
 import androidx.lifecycle.SavedStateHandle
-import com.motorro.statemachine.registration.data.RegistrationDataState
 import com.motorro.statemachine.registration.data.RegistrationGesture
 import com.motorro.statemachine.registration.data.RegistrationUiState
-import io.mockk.*
+import com.motorro.statemachine.registrationapi.data.RegistrationDataState
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
+import io.mockk.verifyOrder
 import org.junit.Test
 
 internal class EmailEntryStateTest : BaseStateTest() {
@@ -99,8 +102,8 @@ internal class EmailEntryStateTest : BaseStateTest() {
         state.start(stateMachine)
         state.process(RegistrationGesture.Action)
 
-        verify { stateMachine.machineState wasNot Called }
-        verify { factory.checkEmail(data) wasNot Called }
+        verify(exactly = 0) { stateMachine.machineState = any() }
+        verify(exactly = 0) { factory.checkEmail(data) }
     }
 
     @Test

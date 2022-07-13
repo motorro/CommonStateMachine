@@ -28,6 +28,7 @@ android {
         }
     }
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -52,7 +53,9 @@ hilt {
 }
 
 dependencies {
+    implementation project(path: ':registration_api')
     implementation project(path: ':core')
+    implementation project(path: ':login')
 
     coreLibraryDesugaring libs.desugaring
 

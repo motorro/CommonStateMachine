@@ -2,7 +2,10 @@ package com.motorro.statemachine.registration.model.state
 
 import com.motorro.statemachine.registration.data.RegistrationGesture
 import com.motorro.statemachine.registration.data.RegistrationUiState
-import io.mockk.*
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
+import io.mockk.verifyOrder
 import org.junit.Test
 
 class WelcomeStateTest : BaseStateTest() {
@@ -65,8 +68,8 @@ class WelcomeStateTest : BaseStateTest() {
         state.start(stateMachine)
         state.process(RegistrationGesture.Action)
 
-        verify { stateMachine.machineState wasNot Called }
-        verify { factory.emailEntry() wasNot Called }
+        verify(exactly = 0) { stateMachine.machineState = any() }
+        verify(exactly = 0) { factory.emailEntry() }
     }
 
     @Test

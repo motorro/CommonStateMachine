@@ -1,5 +1,7 @@
 package com.motorro.statemachine.registration.data
 
+import com.motorro.statemachine.login.data.LoginUiState
+
 /**
  * Registration flow UI state
  */
@@ -33,14 +35,10 @@ sealed class RegistrationUiState {
     ) : RegistrationUiState()
 
     /**
-     * Password entry for login flow
-     * @property password Password field value
-     * @property actionEnabled Action (next) button state
+     * Login state wrapper
+     * @property value Login UI state
      */
-    data class LoginPasswordEntry(
-        val password: String,
-        val actionEnabled: Boolean
-    ) : RegistrationUiState()
+    data class Login(val value: LoginUiState) : RegistrationUiState()
 
     /**
      * Password entry for login flow

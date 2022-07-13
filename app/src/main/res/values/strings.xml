@@ -10,7 +10,7 @@
 
     <!-- region Email -->
     <string name="email_title">Provide email</string>
-    <string name="email_desc">- Enter any fake email to try registration flow. No data is being stored or sent anywhere.\n- Enter \'bad@example.com\' to try login error flow.</string>
+    <string name="email_desc">- Enter any fake email to try registration flow. No data is being stored or sent anywhere.\n- Enter \'good@example.com\' to try successful login flow.\n- Enter \'bad@example.com\' to try login error flow.</string>
     <string name="email_email_label">E-mail</string>
     <string name="email_next">Next</string>
     <!-- endregion -->

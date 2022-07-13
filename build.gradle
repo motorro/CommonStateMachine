@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.app) apply(false)
     alias(libs.plugins.android.lib) apply(false)
+    alias(libs.plugins.kotlin.jvm) apply(false)
     alias(libs.plugins.kotlin.android) apply(false)
     alias(libs.plugins.kotlin.kapt) apply(false)
     alias(libs.plugins.hilt) apply(false)
@@ -54,6 +55,10 @@ task clean(type: Delete) {
 
 task runCoreUnitTests(type: Task, dependsOn: [':core:testDebugUnitTest'], group: 'verification') {
     description 'Run unit tests for the core layer.'
+}
+
+task runLoginUnitTests(type: Task, dependsOn: [':login:testDebugUnitTest'], group: 'verification') {
+    description 'Run unit tests for the login module.'
 }
 
 task runAppUnitTests(type: Task, dependsOn: [':app:testDebugUnitTest'], group: 'verification') {

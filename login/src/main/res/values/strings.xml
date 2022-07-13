@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login_password_entry_title">Enter password for:</string>
+    <string name="login_password_entry_note">Any password at least 6 chars long will do</string>
+
+    <!-- region Error -->
+    <string name="login_error_title">Login error</string>
+    <string name="login_error_text">Login failed for</string>
+    <string name="login_error_credentials">Invalid email or password</string>
+    <string name="login_error_unknown">Unknown error</string>
+    <!-- endregion -->
+</resources>
