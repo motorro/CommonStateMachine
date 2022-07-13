@@ -1,7 +1,7 @@
 package com.motorro.statemachine.registration.model.state
 
 import androidx.lifecycle.SavedStateHandle
-import com.motorro.statemachine.machine.CoroutineState
+import com.motorro.commonstatemachine.CoroutineState
 import com.motorro.statemachine.registration.data.RegistrationGesture
 import com.motorro.statemachine.registration.data.RegistrationUiState
 import timber.log.Timber

@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk androidCompileSdkVersion
 
     defaultConfig {
-        minSdk 28
-        targetSdk 32
+        minSdk androidMinSdkVersion
+        targetSdk androidTargetSdkVersion
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -39,6 +39,7 @@ android {
 }
 
 dependencies {
+    implementation project(path: ':commonstatemachine')
     implementation project(path: ':core')
     implementation project(path: ':registration_api')
 

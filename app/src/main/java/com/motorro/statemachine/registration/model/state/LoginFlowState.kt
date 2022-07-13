@@ -4,8 +4,8 @@ import com.motorro.statemachine.login.data.LoginGesture
 import com.motorro.statemachine.login.data.LoginUiState
 import com.motorro.statemachine.login.di.LoginComponentBuilder
 import com.motorro.statemachine.login.di.LoginEntryPoint
-import com.motorro.statemachine.machine.CommonMachineState
-import com.motorro.statemachine.machine.ProxyMachineState
+import com.motorro.commonstatemachine.CommonMachineState
+import com.motorro.commonstatemachine.ProxyMachineState
 import com.motorro.statemachine.registration.data.RegistrationGesture
 import com.motorro.statemachine.registration.data.RegistrationUiState
 import com.motorro.statemachine.registrationapi.data.RegistrationDataState

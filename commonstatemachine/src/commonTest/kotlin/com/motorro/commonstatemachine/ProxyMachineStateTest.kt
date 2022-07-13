@@ -1,16 +1,16 @@
-package com.motorro.statemachine.machine
+package com.motorro.commonstatemachine
 
 import io.mockk.mockk
 import io.mockk.spyk
 import io.mockk.verify
-import org.junit.Test
+import kotlin.test.Test
 import kotlin.test.assertTrue
 
 internal class ProxyMachineStateTest {
 
     private val stateMachine: CommonStateMachine<String, String> = mockk(relaxed = true)
 
-    private class TestProxyState(private val state: CommonMachineState<Int, Int>) : ProxyMachineState<String, String, Int, Int>() {
+    private class TestProxyState(private val state: CommonMachineState<Int, Int>) : com.motorro.commonstatemachine.ProxyMachineState<String, String, Int, Int>() {
         override fun init(): CommonMachineState<Int, Int> = state
         override fun mapGesture(parent: String): Int? = parent.toInt().takeIf { it >= 0 }
         override fun mapUiState(child: Int): String = child.toString()

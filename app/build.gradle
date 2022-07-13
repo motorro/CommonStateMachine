@@ -6,14 +6,14 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk androidCompileSdkVersion
 
     defaultConfig {
         applicationId "com.motorro.statemachine"
-        minSdk 28
-        targetSdk 32
-        versionCode 1
-        versionName "1.0"
+        minSdk androidMinSdkVersion
+        targetSdk androidTargetSdkVersion
+        versionCode versionCode
+        versionName versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -53,6 +53,7 @@ hilt {
 }
 
 dependencies {
+    implementation project(path: ':commonstatemachine')
     implementation project(path: ':registration_api')
     implementation project(path: ':core')
     implementation project(path: ':login')

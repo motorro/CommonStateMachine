@@ -1,4 +1,4 @@
-package com.motorro.statemachine.machine
+package com.motorro.commonstatemachine
 
 /**
  * Proxy state that runs child state machine and maps gestures and results to parent

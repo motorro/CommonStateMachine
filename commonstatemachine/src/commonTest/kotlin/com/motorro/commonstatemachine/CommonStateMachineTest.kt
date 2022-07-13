@@ -1,8 +1,8 @@
-package com.motorro.statemachine.machine
+package com.motorro.commonstatemachine
 
 import io.mockk.spyk
 import io.mockk.verify
-import org.junit.Test
+import kotlin.test.Test
 
 class CommonStateMachineTest {
     private class TestMachine(state: CommonMachineState<Int, Int>) : CommonStateMachine.Base<Int, Int>( { state }) {

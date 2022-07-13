@@ -1,15 +1,16 @@
-package com.motorro.statemachine.machine
+@file:OptIn(ExperimentalCoroutinesApi::class)
 
-import androidx.annotation.CallSuper
+package com.motorro.commonstatemachine
+
 import io.mockk.mockk
 import kotlinx.coroutines.*
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
+import kotlin.test.Test
 import kotlin.test.assertTrue
 
 class CoroutineStateTest {
@@ -28,21 +29,17 @@ class CoroutineStateTest {
         }
     }
 
-    @Before
-    @OptIn(ExperimentalCoroutinesApi::class)
+    @BeforeTest
     fun before() {
         Dispatchers.setMain(StandardTestDispatcher())
     }
 
-    @After
-    @CallSuper
-    @OptIn(ExperimentalCoroutinesApi::class)
+    @AfterTest
     fun after() {
         Dispatchers.resetMain()
     }
 
     @Test
-    @OptIn(ExperimentalCoroutinesApi::class)
     fun cancelsScopeOnClear() = runTest {
         val state = ScopeTestState()
 

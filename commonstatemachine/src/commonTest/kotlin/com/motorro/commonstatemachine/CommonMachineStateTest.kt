@@ -1,8 +1,8 @@
-package com.motorro.statemachine.machine
+package com.motorro.commonstatemachine
 
 import io.mockk.mockk
 import io.mockk.verify
-import org.junit.Test
+import kotlin.test.Test
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 

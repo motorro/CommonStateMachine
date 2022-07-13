@@ -1,0 +1,108 @@
+ext {
+    platformVersionCodeAdditives = [
+            "armeabi": 1,
+            "armeabi-v7a": 2,
+            "arm64-v8a": 3,
+            "x86": 4,
+            "x86_64": 5,
+            "mips": 6,
+            "mips64": 7
+    ]
+
+    /**
+     * Builds app version using latest repository tag
+     * Tag should be a semantic version of major/minor at least
+     * Function takes number of commits since last tag and uses it to calculate patch number
+     * - If patch is omitted in tag - uses number of commits
+     * - If patch version set in tag - pluses number of commits to patch number
+     * @returns Semantic version string
+     */
+    buildVersionName = {
+        def versionRegexp = /^v?(\d+)\.(\d+)\.?(\d*)-?(\d*)/
+
+        String fromEnv = project.findProperty('versionName') ?: System.getenv("VERSION_NAME")
+        if (null != fromEnv && fromEnv =~ versionRegexp) {
+            logger.info('Version from ENV', fromEnv)
+            return fromEnv
+        }
+
+        def descriptions = grgit.describe(match: ["v[0-9]*"]) =~ versionRegexp
+        if (descriptions.getCount() < 1) {
+            throw new GradleException('Git description does not have any version info. Make sure you have a semver tag (v1.2) or (v1.2.3) in a repository.')
+        }
+        def description = descriptions[0]
+        int major = description[1].toInteger()
+        int minor = description[2].toInteger()
+        int patch = "" != description[3] ? description[3].toInteger() : 0
+        int changes = "" != description[4] ? description[4].toInteger() : 0
+
+        def fromGit = "$major.$minor.${patch + changes}"
+
+        logger.info('Version evaluated using Git', fromGit)
+
+        fromGit
+    }
+
+    /**
+     * Builds version code using [buildVersionName]
+     * @returns Integer version code
+     */
+    buildVersionCode = {
+        /*
+            Max version code (INT32) is 214 74 836 47
+            Spaces denote positions of:
+            - major
+            - minor
+            - build
+            - build variant
+         */
+        def (major, minor, patch) = buildVersionName().tokenize('.').collect { it.toInteger() }
+
+        if (major > 214) {
+            throw new GradleException('Major version exhausted: version greater than 214 not supported')
+        }
+        if (minor > 99) {
+            throw new GradleException('Minor version exhausted: version greater than 99 not supported')
+        }
+        if (patch > 999) {
+            throw new GradleException('Patch version exhausted: version greater than 999 not supported')
+        }
+
+        int version = major * 10000000 + minor * 100000 + patch * 100
+
+        logger.info('Version code evaluated using Git', version)
+
+        version
+    }
+
+    /**
+     * Returns git branch name.
+     */
+    getBranchName = {
+        def branch = grgit.branch.current()
+        if (null == branch) {
+            'DETACHED'
+        } else {
+            branch.getName()
+        }
+    }
+
+    /**
+     * Returns JIRA ticket if branch is in a form of PROJECT-123-some-description
+     * If ticket may not be parsed - returns full branch name
+     * Made for BITRISE CI
+     */
+    getJiraTicketOrBranchName = {
+        def branch = System.getenv('BITRISE_GIT_BRANCH')
+        if (null == branch) {
+            branch = getBranchName()
+        }
+        println("--== Using branch name: ${branch} ==--")
+        def parsed = branch =~ /^(\w+-\d+)/
+        if (parsed.getCount() < 1) {
+            branch
+        } else {
+            parsed[0][1]
+        }
+    }
+}

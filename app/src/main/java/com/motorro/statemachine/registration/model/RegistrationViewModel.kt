@@ -2,8 +2,8 @@ package com.motorro.statemachine.registration.model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.motorro.statemachine.machine.CommonMachineState
-import com.motorro.statemachine.machine.LiveDataStateMachine
+import com.motorro.commonstatemachine.CommonMachineState
+import com.motorro.commonstatemachine.LiveDataStateMachine
 import com.motorro.statemachine.registration.data.RegistrationGesture
 import com.motorro.statemachine.registration.data.RegistrationUiState
 import com.motorro.statemachine.registration.model.state.RegistrationStateFactory

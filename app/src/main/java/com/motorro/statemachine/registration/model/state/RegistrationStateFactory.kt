@@ -1,7 +1,7 @@
 package com.motorro.statemachine.registration.model.state
 
 import androidx.lifecycle.SavedStateHandle
-import com.motorro.statemachine.machine.CommonMachineState
+import com.motorro.commonstatemachine.CommonMachineState
 import com.motorro.statemachine.registration.data.RegistrationGesture
 import com.motorro.statemachine.registration.data.RegistrationUiState
 import com.motorro.statemachine.registrationapi.data.RegistrationDataState

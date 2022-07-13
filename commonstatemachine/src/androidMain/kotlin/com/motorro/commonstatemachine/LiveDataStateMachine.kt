@@ -1,4 +1,4 @@
-package com.motorro.statemachine.machine
+package com.motorro.commonstatemachine
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

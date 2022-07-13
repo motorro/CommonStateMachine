@@ -10,7 +10,9 @@ android_lib = { id = "com.android.library", version = "7.2.1" }
 kotlin_jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin_android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin_kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+kotlin_multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+git = { id = "org.ajoberstar.grgit", version = "3.0.0" }
 
 [libraries]
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
@@ -51,6 +53,7 @@ test-androidx-espresso = { module = "androidx.test.espresso:espresso-core", vers
 test-compose-ui = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" }
 test-compose-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose" }
 test-mockk = { module = "io.mockk:mockk", version = "1.12.3" }
+test-mockk-common = { module = "io.mockk:mockk-common", version = "1.12.3" }
 test-kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 
 [bundles]

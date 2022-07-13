@@ -1,14 +1,26 @@
 plugins {
     alias(libs.plugins.android.app) apply(false)
     alias(libs.plugins.android.lib) apply(false)
+    alias(libs.plugins.kotlin.multiplatform) apply(false)
     alias(libs.plugins.kotlin.jvm) apply(false)
     alias(libs.plugins.kotlin.android) apply(false)
     alias(libs.plugins.kotlin.kapt) apply(false)
     alias(libs.plugins.hilt) apply(false)
+    alias(libs.plugins.git)
 }
 
-allprojects {
+apply from: 'gradle/versioning.gradle'
 
+allprojects {
+    ext {
+        appId = 'com.vistajet.vjapp'
+        versionCode = buildVersionCode()
+        versionName = buildVersionName()
+        androidBuildToolsVersion = '32.0.0'
+        androidMinSdkVersion = 24
+        androidTargetSdkVersion = 32
+        androidCompileSdkVersion = 32
+    }
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
         kotlinOptions {
             freeCompilerArgs += [
@@ -53,6 +65,10 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
+task runStateMachineTests(type: Task, dependsOn: [':commonstatemachine:test'], group: 'verification') {
+    description 'Run unit tests for the common state machine layer.'
+}
+
 task runCoreUnitTests(type: Task, dependsOn: [':core:testDebugUnitTest'], group: 'verification') {
     description 'Run unit tests for the core layer.'
 }
@@ -65,10 +81,20 @@ task runAppUnitTests(type: Task, dependsOn: [':app:testDebugUnitTest'], group: '
     description 'Run unit tests for the app layer.'
 }
 
+
+task displayVersion(type: Task, group: 'documentation') {
+    description 'Display application version name'
+    doLast {
+        println("Application version: ${versionName}")
+    }
+}
+
 task runUnitTests(
         type: Task,
         dependsOn: [
+                'runStateMachineTests',
                 'runCoreUnitTests',
+                'runLoginUnitTests',
                 'runAppUnitTests'
         ],
         group: 'verification'

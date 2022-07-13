@@ -1,4 +1,4 @@
-package com.motorro.statemachine.machine
+package com.motorro.commonstatemachine
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

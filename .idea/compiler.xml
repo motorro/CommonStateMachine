@@ -3,6 +3,7 @@
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.8">
       <module name="CommonStateMachine.app" target="11" />
+      <module name="CommonStateMachine.commonstatemachine" target="11" />
       <module name="CommonStateMachine.core" target="11" />
       <module name="CommonStateMachine.login" target="11" />
     </bytecodeTargetLevel>
