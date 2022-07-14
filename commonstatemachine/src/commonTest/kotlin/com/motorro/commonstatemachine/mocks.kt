@@ -16,6 +16,10 @@ class StateMock<G: Any, U: Any> : CommonMachineState<G, U>() {
     override fun doClear() {
         cleared = true
     }
+
+    fun doSetUiState(state: U) {
+        this.setUiState(state)
+    }
 }
 
 class MachineMock<G: Any, U: Any> : CommonStateMachine<G, U> {

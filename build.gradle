@@ -72,10 +72,6 @@ allprojects {
 
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
-
 task runStateMachineTests(type: Task, dependsOn: [':commonstatemachine:test'], group: 'verification') {
     description 'Run unit tests for the common state machine layer.'
 }

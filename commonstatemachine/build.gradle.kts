@@ -3,6 +3,7 @@ import java.net.URI
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
+    id("com.android.library")
     id("org.jetbrains.kotlin.multiplatform")
     id("org.jetbrains.dokka")
     id("maven-publish")
@@ -20,14 +21,18 @@ version = versionName
 println("== Project version: $versionName ==")
 
 kotlin {
+
     jvm {
         compilations.all {
             kotlinOptions.jvmTarget = "1.8"
         }
-        withJava()
         testRuns["test"].executionTask.configure {
             useJUnitPlatform()
         }
+    }
+
+    android {
+        publishLibraryVariants("release", "debug")
     }
 
     listOf(
@@ -54,6 +59,10 @@ kotlin {
         }
         val jvmMain by getting
         val jvmTest by getting
+        val androidMain by getting {
+            dependsOn(jvmMain)
+        }
+        val androidTest by getting
         val iosX64Main by getting
         val iosArm64Main by getting
         val iosSimulatorArm64Main by getting
@@ -84,6 +93,14 @@ kotlin {
     }
 }
 
+android {
+    compileSdk = androidCompileSdkVersion
+    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+    defaultConfig {
+        minSdk = androidMinSdkVersion
+        targetSdk = androidTargetSdkVersion
+    }
+}
 val dokkaHtml by tasks.getting(DokkaTask::class)
 
 val javadocJar by tasks.creating(Jar::class) {

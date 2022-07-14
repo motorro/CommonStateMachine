@@ -39,10 +39,10 @@ open class CommonMachineState<G: Any, U : Any> {
 
     /**
      * Updates UI state
-     * @param Any UI state
+     * @param uiState UI state
      */
-    protected fun setUiState(Any: U) = withMachine {
-        it.setUiState(Any)
+    protected fun setUiState(uiState: U) = withMachine {
+        it.setUiState(uiState)
     }
 
     /**

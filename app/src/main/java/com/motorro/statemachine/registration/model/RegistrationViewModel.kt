@@ -3,11 +3,12 @@ package com.motorro.statemachine.registration.model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.motorro.commonstatemachine.CommonMachineState
-import com.motorro.commonstatemachine.LiveDataStateMachine
+import com.motorro.commonstatemachine.FlowStateMachine
 import com.motorro.statemachine.registration.data.RegistrationGesture
 import com.motorro.statemachine.registration.data.RegistrationUiState
 import com.motorro.statemachine.registration.model.state.RegistrationStateFactory
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharedFlow
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -16,7 +17,7 @@ class RegistrationViewModel @Inject constructor(private val factory: Registratio
     /**
      * State machine
      */
-    private val stateMachine = LiveDataStateMachine(::initializeStateMachine)
+    private val stateMachine = FlowStateMachine(::initializeStateMachine)
 
     /**
      * Creates initializing state
@@ -29,7 +30,7 @@ class RegistrationViewModel @Inject constructor(private val factory: Registratio
     /**
      * UI State
      */
-    val state: LiveData<RegistrationUiState> = stateMachine.uiState
+    val state: SharedFlow<RegistrationUiState> = stateMachine.uiState
 
     /**
      * Updates state with UI gesture
