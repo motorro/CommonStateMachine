@@ -4,7 +4,6 @@ import java.net.URI
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
-    id("com.android.library")
     id("org.jetbrains.dokka")
     id("maven-publish")
     id("signing")
@@ -21,8 +20,14 @@ version = versionName
 println("== Project version: $versionName ==")
 
 kotlin {
-    android {
-        publishLibraryVariants("release")
+    jvm {
+        compilations.all {
+            kotlinOptions.jvmTarget = "1.8"
+        }
+        withJava()
+        testRuns["test"].executionTask.configure {
+            useJUnitPlatform()
+        }
     }
 
     listOf(
@@ -45,21 +50,10 @@ kotlin {
             dependencies {
                 implementation(libs.test.kotlin)
                 implementation(libs.test.kotlin.coroutines)
-                implementation(libs.test.mockk.common)
             }
         }
-        val androidMain by getting {
-            dependencies {
-                implementation(libs.androidx.lifecycle.livedata)
-            }
-        }
-        val androidTest by getting {
-            dependencies {
-                implementation(libs.test.mockk)
-                implementation(libs.test.junit)
-                implementation(libs.test.androidx.arch)
-            }
-        }
+        val jvmMain by getting
+        val jvmTest by getting
         val iosX64Main by getting
         val iosArm64Main by getting
         val iosSimulatorArm64Main by getting
@@ -87,15 +81,6 @@ kotlin {
                 )
             }
         }
-    }
-}
-
-android {
-    compileSdk = androidCompileSdkVersion
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    defaultConfig {
-        minSdk = androidMinSdkVersion
-        targetSdk = androidTargetSdkVersion
     }
 }
 
@@ -134,10 +119,6 @@ publishing {
     }
     publications.withType<MavenPublication> {
         artifact(javadocJar)
-        version = version
-        groupId = group.toString()
-        artifactId = libId
-
         pom {
             name.set(libName)
             description.set(libDesc)

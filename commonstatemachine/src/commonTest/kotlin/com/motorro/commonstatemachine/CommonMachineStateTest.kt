@@ -1,7 +1,5 @@
 package com.motorro.commonstatemachine
 
-import io.mockk.mockk
-import io.mockk.verify
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
@@ -18,11 +16,11 @@ class CommonMachineStateTest {
 
     @Test
     fun stateWillUpdateUiStateIfStarted() {
-        val machine: CommonStateMachine<Int, Int> = mockk(relaxed = true)
+        val machine = MachineMock<Int, Int>()
         val state = TestState()
         state.start(machine)
         state.checkUiStateUpdate(1)
-        verify { machine.setUiState(1) }
+        assertTrue { machine.uiStates.contains(1) }
     }
 
     @Test
@@ -35,7 +33,7 @@ class CommonMachineStateTest {
 
     @Test
     fun stateWillProcessGestureIfStarted() {
-        val machine: CommonStateMachine<Int, Int> = mockk(relaxed = true)
+        val machine = MachineMock<Int, Int>()
         val state = TestState()
         state.start(machine)
         state.process(2)
@@ -52,12 +50,12 @@ class CommonMachineStateTest {
 
     @Test
     fun stateWillUpdateMachineStateIfStarted() {
-        val machine: CommonStateMachine<Int, Int> = mockk(relaxed = true)
+        val machine = MachineMock<Int, Int>()
         val state1 = TestState()
         val state2 = TestState()
         state1.start(machine)
         state1.checkMachineStateUpdate(state2)
-        verify { machine.setMachineState(state2) }
+        assertTrue { machine.machineStates.contains(state2) }
     }
 
     @Test

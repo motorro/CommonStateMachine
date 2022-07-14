@@ -4,6 +4,12 @@
     <bytecodeTargetLevel target="1.8">
       <module name="CommonStateMachine.app" target="11" />
       <module name="CommonStateMachine.commonstatemachine" target="11" />
+      <module name="CommonStateMachine.commonstatemachine.commonMain" target="1.8" />
+      <module name="CommonStateMachine.commonstatemachine.commonTest" target="1.8" />
+      <module name="CommonStateMachine.commonstatemachine.jvmMain" target="1.8" />
+      <module name="CommonStateMachine.commonstatemachine.jvmTest" target="1.8" />
+      <module name="CommonStateMachine.commonstatemachine.main" target="11" />
+      <module name="CommonStateMachine.commonstatemachine.test" target="11" />
       <module name="CommonStateMachine.core" target="11" />
       <module name="CommonStateMachine.login" target="11" />
     </bytecodeTargetLevel>

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="commonstatemachine-jvm-0.0.3">
+    <output-path>$PROJECT_DIR$/commonstatemachine/build/libs</output-path>
+    <root id="archive" name="commonstatemachine-jvm-0.0.3.jar">
+      <element id="module-output" name="CommonStateMachine.commonstatemachine.jvmMain" />
+    </root>
+  </artifact>
+</component>

@@ -1,8 +1,7 @@
 package com.motorro.commonstatemachine
 
-import io.mockk.spyk
-import io.mockk.verify
 import kotlin.test.Test
+import kotlin.test.assertTrue
 
 class CommonStateMachineTest {
     private class TestMachine(state: CommonMachineState<Int, Int>) : CommonStateMachine.Base<Int, Int>( { state }) {
@@ -16,34 +15,34 @@ class CommonStateMachineTest {
 
     @Test
     fun stateMachineStartsInitialState() {
-        val state = spyk(CommonMachineState<Int, Int>())
-        val machine = TestMachine(state)
-        verify { state.start(machine) }
+        val state = StateMock<Int, Int>()
+        TestMachine(state)
+        assertTrue { state.started }
     }
 
     @Test
     fun cleansUpStateOnStateChange() {
-        val state1 = spyk(CommonMachineState<Int, Int>())
-        val state2 = spyk(CommonMachineState<Int, Int>())
+        val state1 = StateMock<Int, Int>()
+        val state2 = StateMock<Int, Int>()
         val machine = TestMachine(state1)
         machine.setMachineState(state2)
-        verify { state1.clear() }
+        assertTrue { state1.cleared }
     }
 
     @Test
     fun startsNewState() {
-        val state1 = spyk(CommonMachineState<Int, Int>())
-        val state2 = spyk(CommonMachineState<Int, Int>())
+        val state1 = StateMock<Int, Int>()
+        val state2 = StateMock<Int, Int>()
         val machine = TestMachine(state1)
         machine.setMachineState(state2)
-        verify { state2.start(machine) }
+        assertTrue { state2.started }
     }
 
     @Test
     fun delegatesGestureToCurrentState() {
-        val state = spyk(CommonMachineState<Int, Int>())
+        val state = StateMock<Int, Int>()
         val machine = TestMachine(state)
         machine.process(2)
-        verify { state.process(2) }
+        assertTrue { state.processed.contains(2) }
     }
 }

@@ -2,7 +2,6 @@
 
 package com.motorro.commonstatemachine
 
-import io.mockk.mockk
 import kotlinx.coroutines.*
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
@@ -43,7 +42,7 @@ class CoroutineStateTest {
     fun cancelsScopeOnClear() = runTest {
         val state = ScopeTestState()
 
-        state.start(mockk())
+        state.start(MachineMock())
         yield()
         state.clear()
         yield()

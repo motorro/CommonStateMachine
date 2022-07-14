@@ -1,14 +1,12 @@
 package com.motorro.commonstatemachine
 
-import io.mockk.mockk
-import io.mockk.spyk
-import io.mockk.verify
 import kotlin.test.Test
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 internal class ProxyMachineStateTest {
 
-    private val stateMachine: CommonStateMachine<String, String> = mockk(relaxed = true)
+    private val stateMachine = MachineMock<String, String>()
 
     private class TestProxyState(private val state: CommonMachineState<Int, Int>) : com.motorro.commonstatemachine.ProxyMachineState<String, String, Int, Int>() {
         override fun init(): CommonMachineState<Int, Int> = state
@@ -34,24 +32,24 @@ internal class ProxyMachineStateTest {
 
     @Test
     fun delegatesGestureToCurrentState() {
-        val child = spyk(CommonMachineState<Int, Int>())
+        val child = StateMock<Int, Int>()
         val state = TestProxyState(child)
 
         state.start(stateMachine)
         state.process("1")
 
-        verify { child.process(1) }
+        assertTrue { child.processed.contains(1) }
     }
 
     @Test
     fun ifGestureMapperReturnsNullDoesNotCallChild() {
-        val child = spyk(CommonMachineState<Int, Int>())
+        val child = StateMock<Int, Int>()
         val state = TestProxyState(child)
 
         state.start(stateMachine)
         state.process("-1")
 
-        verify(exactly = 0) { child.process(any()) }
+        assertTrue { child.processed.isEmpty() }
     }
 
     @Test
@@ -66,17 +64,17 @@ internal class ProxyMachineStateTest {
         state.start(stateMachine)
         child.update()
 
-        verify { stateMachine.setUiState("1") }
+        assertTrue { stateMachine.uiStates.contains("1") }
     }
 
     @Test
     fun cleansUpChildState() {
-        val child = spyk(CommonMachineState<Int, Int>())
+        val child = StateMock<Int, Int>()
         val state = TestProxyState(child)
 
         state.start(stateMachine)
         state.clear()
 
-        verify { child.clear() }
+        assertTrue { child.cleared }
     }
 }
