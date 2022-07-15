@@ -80,6 +80,10 @@ task runCoreUnitTests(type: Task, dependsOn: [':core:testDebugUnitTest'], group:
     description 'Run unit tests for the core layer.'
 }
 
+task runRegisterUnitTests(type: Task, dependsOn: [':commonregister:allTests'], group: 'verification') {
+    description 'Run unit tests for the common register layer.'
+}
+
 task runLoginUnitTests(type: Task, dependsOn: [':login:testDebugUnitTest'], group: 'verification') {
     description 'Run unit tests for the login module.'
 }
@@ -102,6 +106,7 @@ task runUnitTests(
                 'runStateMachineTests',
                 'runCoreUnitTests',
                 'runLoginUnitTests',
+                'runRegisterUnitTests',
                 'runAppUnitTests'
         ],
         group: 'verification'
