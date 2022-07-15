@@ -1,7 +1,8 @@
 [versions]
-kotlin = "1.6.10"
-coroutines = "1.6.1"
+kotlin = "1.7.0"
+coroutines = "1.6.4"
 compose = "1.1.1"
+compose_compiler = "1.2.0"
 hilt = "2.42"
 
 [plugins]
@@ -47,6 +48,10 @@ hilt_compose = { module = "androidx.hilt:hilt-navigation-compose", version = "1.
 timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
 
 test-kotlin = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+test-kotlin-common = { module = "org.jetbrains.kotlin:kotlin-test-common", version.ref = "kotlin" }
+test-kotlin-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+test-kotlin-js = { module = "org.jetbrains.kotlin:kotlin-test-js", version.ref = "kotlin" }
+test-kotlin-annotations-common = { module = "org.jetbrains.kotlin:kotlin-test-annotations-common", version.ref = "kotlin" }
 test-junit = { module = "junit:junit", version = "4.13.2" }
 test-androidx-core = { module = "androidx.test:core", version = "1.4.0" }
 test-androidx-arch = { module = "androidx.arch.core:core-testing", version = "2.1.0" }

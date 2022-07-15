@@ -1,10 +1,11 @@
+@file:Suppress("UNUSED_VARIABLE", "DSL_SCOPE_VIOLATION")
+
 import org.jetbrains.dokka.gradle.DokkaTask
 import java.net.URI
 
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    id("com.android.library")
     id("org.jetbrains.kotlin.multiplatform")
+    id("com.android.library")
     id("org.jetbrains.dokka")
     id("maven-publish")
     id("signing")
@@ -35,6 +36,23 @@ kotlin {
         publishLibraryVariants("release", "debug")
     }
 
+    js(IR) {
+        compilations.all {
+            kotlinOptions.freeCompilerArgs += listOf(
+                "-Xopt-in=kotlin.js.ExperimentalJsExport"
+            )
+        }
+        binaries.library()
+        useCommonJs()
+        browser {
+            testTask {
+                useMocha {
+                    timeout = "10s"
+                }
+            }
+        }
+    }
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -62,7 +80,11 @@ kotlin {
         val androidMain by getting {
             dependsOn(jvmMain)
         }
-        val androidTest by getting
+        val androidTest by getting {
+            dependsOn(commonTest)
+        }
+        val jsMain by getting
+        val jsTest by getting
         val iosX64Main by getting
         val iosArm64Main by getting
         val iosSimulatorArm64Main by getting

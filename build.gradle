@@ -72,7 +72,7 @@ allprojects {
 
 }
 
-task runStateMachineTests(type: Task, dependsOn: [':commonstatemachine:test'], group: 'verification') {
+task runStateMachineTests(type: Task, dependsOn: [':commonstatemachine:allTests'], group: 'verification') {
     description 'Run unit tests for the common state machine layer.'
 }
 

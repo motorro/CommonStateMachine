@@ -14,16 +14,14 @@ import kotlin.test.assertTrue
 
 class CoroutineStateTest {
     private class ScopeTestState : CoroutineState<Int, Int>() {
-        var cancelled = false
+        lateinit var job: Job
+
+        val cancelled: Boolean
+            get() = job.isCancelled
 
         override fun doStart() {
-            stateScope.launch {
-                try {
-                    while(true) yield()
-                } catch (e: CancellationException) {
-                    cancelled = true
-                    throw e
-                }
+            job = stateScope.launch {
+                while(true) yield()
             }
         }
     }
