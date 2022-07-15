@@ -50,7 +50,12 @@ class ErrorState(
      * A part of [start] template to initialize state
      */
     override fun doStart() {
-        setUiState(LoginUiState.LoginError(email, password, getErrorMessage()))
+        setUiState(
+            LoginUiState.LoginError(
+                renderPassword(email, password, false),
+                getErrorMessage()
+            )
+        )
     }
 
     private fun getErrorMessage(): String = when(error) {

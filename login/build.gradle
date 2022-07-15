@@ -45,11 +45,6 @@ dependencies {
 
     coreLibraryDesugaring libs.desugaring
 
-    implementation libs.androidx.core
-    implementation libs.androidx.lifecycle.runtime
-    implementation libs.androidx.lifecycle.livedata
-    implementation libs.androidx.lifecycle.viewmodel
-
     implementation libs.kotlin.coroutines.core
     implementation libs.kotlin.coroutines.android
 

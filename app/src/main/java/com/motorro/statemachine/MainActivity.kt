@@ -8,6 +8,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.core.view.WindowCompat
 import com.motorro.statemachine.registration.view.RegistrationScreen
 import com.motorro.statemachine.ui.theme.StateMachineTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,6 +18,7 @@ import timber.log.Timber
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             StateMachineTheme {
                 Surface(

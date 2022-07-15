@@ -1,8 +1,5 @@
-package com.motorro.statemachine.registration.view
+package com.motorro.statemachine.login.view
 
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.rememberScrollableState
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -14,13 +11,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.motorro.statemachine.R
-import com.motorro.statemachine.registration.data.RegistrationUiState
+import com.motorro.statemachine.login.data.LoginUiState
+import com.motorro.statemachine.login.R
 
 @Composable
-fun EmailEntry(state: RegistrationUiState.EmailEntry, onEmailChanged: (String) -> Unit, onNext: () -> Unit) {
+fun PasswordEntry(state: LoginUiState.PasswordEntry, onPasswordChanged: (String) -> Unit, onNext: () -> Unit) {
     val scrollState = rememberScrollState()
 
     Column(modifier = Modifier
@@ -35,29 +34,36 @@ fun EmailEntry(state: RegistrationUiState.EmailEntry, onEmailChanged: (String) -
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             Text(
-                text = stringResource(id = R.string.email_title),
+                text = stringResource(id = R.string.login_password_entry_title),
                 style = MaterialTheme.typography.h4
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(
+                text = state.email,
+                style = MaterialTheme.typography.h3
             )
 
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
-                text = stringResource(id = R.string.email_desc),
+                text = stringResource(id = R.string.login_password_entry_desc),
                 style = MaterialTheme.typography.body1
             )
 
             Spacer(modifier = Modifier.height(12.dp))
 
             OutlinedTextField(
-                value = state.email,
-                onValueChange = onEmailChanged,
+                value = state.password,
+                onValueChange = onPasswordChanged,
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text(stringResource(id = R.string.email_email_label)) }
+                label = { Text(stringResource(id = R.string.login_password_entry_label)) },
+                visualTransformation = PasswordVisualTransformation()
             )
         }
 
         Button(onClick = onNext, enabled = state.actionEnabled) {
-            Text(text = stringResource(id = R.string.welcome_next))
+            Text(text = stringResource(id = R.string.login_password_entry_next))
         }
     }
 }
@@ -65,13 +71,13 @@ fun EmailEntry(state: RegistrationUiState.EmailEntry, onEmailChanged: (String) -
 @Preview
 @Composable
 fun EmailEntryPreview() {
-
-    EmailEntry(
-        state = RegistrationUiState.EmailEntry(
+    PasswordEntry(
+        state = LoginUiState.PasswordEntry(
             email = "test@example.com",
+            password = "123456",
             actionEnabled = true
         ),
-        onEmailChanged = {},
+        onPasswordChanged = {},
         onNext = {}
     )
 }

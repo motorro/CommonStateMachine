@@ -24,13 +24,11 @@ sealed class LoginUiState {
 
     /**
      * Login error
-     * @property email Login email
-     * @property password Password field value
+     * @property passwordEntry Password screen data
      * @property message Error message
      */
     data class LoginError(
-        val email: String,
-        val password: String,
+        val passwordEntry: PasswordEntry,
         val message: String
     ) : LoginUiState()
 }

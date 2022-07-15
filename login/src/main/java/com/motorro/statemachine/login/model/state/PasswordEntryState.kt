@@ -54,7 +54,7 @@ class PasswordEntryState(
     }
 
     private fun render() {
-        setUiState(LoginUiState.PasswordEntry(email, data.password.orEmpty(), isPasswordValid()))
+        setUiState(renderPassword(email, data.password.orEmpty(), isPasswordValid()))
     }
 
     private fun isPasswordValid(): Boolean = null != data.password?.takeIf { it.length >= 6 }

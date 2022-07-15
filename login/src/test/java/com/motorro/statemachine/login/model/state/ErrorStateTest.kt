@@ -30,7 +30,14 @@ internal class ErrorStateTest : BaseStateTest() {
     fun displaysErrorOnStart() {
         state.start(stateMachine)
 
-        verify { stateMachine.setUiState(LoginUiState.LoginError(BAD, password, R_STRING)) }
+        verify {
+            stateMachine.setUiState(
+                LoginUiState.LoginError(
+                    LoginUiState.PasswordEntry(BAD, password, false),
+                    R_STRING
+                )
+            )
+        }
     }
 
     @Test

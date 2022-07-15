@@ -29,6 +29,12 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion libs.versions.compose.get()
+    }
 }
 
 dependencies {
@@ -38,9 +44,13 @@ dependencies {
 
     implementation libs.kotlin.coroutines.core
 
-    implementation libs.androidx.lifecycle.runtime
-    implementation libs.androidx.lifecycle.livedata
-    implementation libs.androidx.lifecycle.viewmodel
+    implementation libs.bundles.compose.core
+    implementation libs.compose.activity
+    implementation libs.compose.navigation
+    implementation libs.compose.foundation
+    implementation libs.compose.foundation.layouts
+
+    debugImplementation libs.compose.tooling
 
     testImplementation libs.bundles.test.core
     testImplementation libs.test.androidx.core

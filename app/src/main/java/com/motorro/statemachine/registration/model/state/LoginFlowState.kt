@@ -41,6 +41,7 @@ class LoginFlowState(
      */
     override fun mapGesture(parent: RegistrationGesture): LoginGesture? = when (parent) {
         is RegistrationGesture.Login -> parent.value
+        RegistrationGesture.Back -> LoginGesture.Back
         else -> null
     }
 

@@ -1,4 +1,4 @@
-package com.motorro.statemachine.registration.view
+package com.motorro.statemachine.compose
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
