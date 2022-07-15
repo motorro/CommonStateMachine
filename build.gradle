@@ -76,10 +76,6 @@ task runStateMachineTests(type: Task, dependsOn: [':commonstatemachine:allTests'
     description 'Run unit tests for the common state machine layer.'
 }
 
-task runCoreUnitTests(type: Task, dependsOn: [':core:testDebugUnitTest'], group: 'verification') {
-    description 'Run unit tests for the core layer.'
-}
-
 task runRegisterUnitTests(type: Task, dependsOn: [':commonregister:allTests'], group: 'verification') {
     description 'Run unit tests for the common register layer.'
 }
@@ -104,7 +100,6 @@ task runUnitTests(
         type: Task,
         dependsOn: [
                 'runStateMachineTests',
-                'runCoreUnitTests',
                 'runLoginUnitTests',
                 'runRegisterUnitTests',
                 'runAppUnitTests'

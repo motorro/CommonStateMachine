@@ -1,6 +1,6 @@
 package com.motorro.statemachine.login.di
 
-import com.motorro.statemachine.commonapi.model.state.RegistrationFeatureHost
+import com.motorro.statemachine.welcome.model.state.WelcomeFeatureHost
 import dagger.BindsInstance
 import dagger.hilt.DefineComponent
 import dagger.hilt.components.SingletonComponent
@@ -14,7 +14,7 @@ interface LoginComponentBuilder {
     /**
      * Defines feature host graph
      */
-    fun host(@BindsInstance value: RegistrationFeatureHost): LoginComponentBuilder
+    fun host(@BindsInstance value: WelcomeFeatureHost): LoginComponentBuilder
 
     /**
      * Builds component

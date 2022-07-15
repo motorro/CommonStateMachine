@@ -1,4 +1,4 @@
-package com.motorro.statemachine.commonapi.data
+package com.motorro.statemachine.welcome.data
 
 /**
  * Mock users

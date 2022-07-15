@@ -1,12 +1,12 @@
 package com.motorro.statemachine.login.data
 
-import com.motorro.statemachine.commonapi.data.RegistrationDataState
+import com.motorro.statemachine.welcome.data.WelcomeDataState
 
 
 /**
  * Login flow inter-state data
  */
 data class LoginDataState(
-    val commonData: RegistrationDataState,
+    val commonData: WelcomeDataState,
     val password: String? = null
 )

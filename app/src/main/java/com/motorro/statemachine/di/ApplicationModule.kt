@@ -2,8 +2,8 @@ package com.motorro.statemachine.di
 
 import android.app.Application
 import android.content.Context
-import com.motorro.statemachine.coroutines.DispatcherProvider
-import com.motorro.statemachine.resources.ResourceWrapper
+import com.motorro.statemachine.commonapi.coroutines.DispatcherProvider
+import com.motorro.statemachine.commonapi.resources.ResourceWrapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

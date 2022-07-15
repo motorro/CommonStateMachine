@@ -11,11 +11,12 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/androidcore" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/commonapi" />
+            <option value="$PROJECT_DIR$/commoncore" />
             <option value="$PROJECT_DIR$/commonregister" />
             <option value="$PROJECT_DIR$/commonstatemachine" />
-            <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/login" />
           </set>
         </option>

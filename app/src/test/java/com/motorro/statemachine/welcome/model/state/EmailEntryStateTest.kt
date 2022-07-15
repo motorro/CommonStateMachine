@@ -1,7 +1,7 @@
 package com.motorro.statemachine.welcome.model.state
 
 import androidx.lifecycle.SavedStateHandle
-import com.motorro.statemachine.commonapi.data.RegistrationDataState
+import com.motorro.statemachine.welcome.data.WelcomeDataState
 import com.motorro.statemachine.welcome.data.WelcomeGesture
 import com.motorro.statemachine.welcome.data.WelcomeUiState
 import io.mockk.every
@@ -12,7 +12,7 @@ import org.junit.Test
 
 internal class EmailEntryStateTest : BaseStateTest() {
 
-    private fun createState(data: RegistrationDataState? = RegistrationDataState()) = EmailEntryState(
+    private fun createState(data: WelcomeDataState? = WelcomeDataState()) = EmailEntryState(
         context,
         data
     )
@@ -33,7 +33,7 @@ internal class EmailEntryStateTest : BaseStateTest() {
     @Test
     fun displaysValidStateOnValidEmail() {
         val email = "test@example.com"
-        val state = createState(RegistrationDataState(email))
+        val state = createState(WelcomeDataState(email))
 
         state.start(stateMachine)
 
@@ -81,7 +81,7 @@ internal class EmailEntryStateTest : BaseStateTest() {
     @Test
     fun transfersToCheckIfValid() {
         val email = "test@example.com"
-        val data = RegistrationDataState(email = email)
+        val data = WelcomeDataState(email = email)
         val state = createState(data)
         val checking: WelcomeState = mockk()
         every { factory.checkEmail(any()) } returns checking
@@ -96,7 +96,7 @@ internal class EmailEntryStateTest : BaseStateTest() {
     @Test
     fun doesNotTransferToCheckIfNotValid() {
         val email = ""
-        val data = RegistrationDataState(email = email)
+        val data = WelcomeDataState(email = email)
         val state = createState(data)
 
         state.start(stateMachine)

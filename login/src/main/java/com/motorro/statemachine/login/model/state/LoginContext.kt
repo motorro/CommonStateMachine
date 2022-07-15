@@ -1,6 +1,6 @@
 package com.motorro.statemachine.login.model.state
 
-import com.motorro.statemachine.commonapi.model.state.RegistrationFeatureHost
+import com.motorro.statemachine.welcome.model.state.WelcomeFeatureHost
 
 
 /**
@@ -15,5 +15,5 @@ interface LoginContext {
     /**
      * Flow host
      */
-    val host: RegistrationFeatureHost
+    val host: WelcomeFeatureHost
 }

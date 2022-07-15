@@ -2,12 +2,11 @@ package com.motorro.statemachine.welcome.model.state
 
 import com.motorro.commonstatemachine.CommonMachineState
 import com.motorro.commonstatemachine.ProxyMachineState
-import com.motorro.statemachine.commonapi.data.RegistrationDataState
-import com.motorro.statemachine.commonapi.model.state.RegistrationFeatureHost
 import com.motorro.statemachine.login.data.LoginGesture
 import com.motorro.statemachine.login.data.LoginUiState
 import com.motorro.statemachine.login.di.LoginComponentBuilder
 import com.motorro.statemachine.login.di.LoginEntryPoint
+import com.motorro.statemachine.welcome.data.WelcomeDataState
 import com.motorro.statemachine.welcome.data.WelcomeGesture
 import com.motorro.statemachine.welcome.data.WelcomeUiState
 import dagger.hilt.EntryPoints
@@ -21,9 +20,9 @@ import javax.inject.Inject
  */
 class LoginFlowState(
     private val context: WelcomeContext,
-    private val data: RegistrationDataState,
+    private val data: WelcomeDataState,
     private val loginComponentBuilder: LoginComponentBuilder
-) : LoginProxy(), RegistrationFeatureHost {
+) : LoginProxy(), WelcomeFeatureHost {
     /**
      * Creates initial child state
      */
@@ -55,7 +54,7 @@ class LoginFlowState(
      * Returns user to email entry screen
      * @param data Common registration state data
      */
-    override fun backToEmailEntry(data: RegistrationDataState) {
+    override fun backToEmailEntry(data: WelcomeDataState) {
         Timber.d("Transferring to e-mail entry...")
         setMachineState(context.factory.emailEntry(data))
     }
@@ -73,7 +72,7 @@ class LoginFlowState(
     class Factory @Inject constructor(private val loginComponentBuilder: LoginComponentBuilder) {
         operator fun invoke(
             context: WelcomeContext,
-            data: RegistrationDataState
+            data: WelcomeDataState
         ): CommonMachineState<WelcomeGesture, WelcomeUiState> = LoginFlowState(
             context,
             data,

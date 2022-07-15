@@ -1,9 +1,9 @@
 package com.motorro.statemachine.login.model.state
 
-import com.motorro.statemachine.commonapi.data.RegistrationDataState
-import com.motorro.statemachine.commonapi.model.state.RegistrationFeatureHost
 import com.motorro.statemachine.login.data.LoginDataState
 import com.motorro.statemachine.login.di.LoginScope
+import com.motorro.statemachine.welcome.data.WelcomeDataState
+import com.motorro.statemachine.welcome.model.state.WelcomeFeatureHost
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -15,7 +15,7 @@ interface LoginStateFactory {
      * Creates a starting state
      * @param data Common data state
      */
-    fun start(data: RegistrationDataState): LoginState = passwordEntry(LoginDataState(data))
+    fun start(data: WelcomeDataState): LoginState = passwordEntry(LoginDataState(data))
 
     /**
      * Enter existing user password
@@ -39,14 +39,14 @@ interface LoginStateFactory {
      */
     @LoginScope
     class Impl @Inject constructor(
-        host: RegistrationFeatureHost,
+        host: WelcomeFeatureHost,
         private val createCredentialsCheck: CredentialsCheckState.Factory,
         private val createError: ErrorState.Factory
     ) : LoginStateFactory {
 
         val context: LoginContext = object : LoginContext {
             override val factory: LoginStateFactory = this@Impl
-            override val host: RegistrationFeatureHost = host
+            override val host: WelcomeFeatureHost = host
         }
 
         /**

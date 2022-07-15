@@ -3,8 +3,8 @@ package com.motorro.statemachine.login.model.state
 import com.motorro.statemachine.login.data.LoginDataState
 import com.motorro.statemachine.login.data.LoginGesture
 import com.motorro.statemachine.login.data.LoginUiState
-import com.motorro.statemachine.commonapi.data.BAD
-import com.motorro.statemachine.commonapi.data.RegistrationDataState
+import com.motorro.statemachine.welcome.data.BAD
+import com.motorro.statemachine.welcome.data.WelcomeDataState
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -12,7 +12,7 @@ import org.junit.Test
 
 internal class ErrorStateTest : BaseStateTest() {
     private val password = "password"
-    private val data = LoginDataState(RegistrationDataState(BAD), password)
+    private val data = LoginDataState(WelcomeDataState(BAD), password)
     private val passwordEntry: LoginState = mockk()
 
     init {

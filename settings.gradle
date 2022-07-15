@@ -22,8 +22,9 @@ dependencyResolutionManagement {
 }
 rootProject.name = "CommonStateMachine"
 include ':commonstatemachine'
-include ':commonapi'
+include ':commoncore'
 include ':app'
-include ':core'
+include ':androidcore'
 include ':login'
 include ':commonregister'
+include ':commonapi'

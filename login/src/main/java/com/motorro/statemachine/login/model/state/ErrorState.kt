@@ -1,11 +1,11 @@
 package com.motorro.statemachine.login.model.state
 
+import com.motorro.statemachine.commonapi.resources.ResourceWrapper
 import com.motorro.statemachine.login.R
 import com.motorro.statemachine.login.data.LoginDataState
 import com.motorro.statemachine.login.data.LoginGesture
 import com.motorro.statemachine.login.data.LoginUiState
 import com.motorro.statemachine.login.di.LoginScope
-import com.motorro.statemachine.resources.ResourceWrapper
 import timber.log.Timber
 import javax.inject.Inject
 

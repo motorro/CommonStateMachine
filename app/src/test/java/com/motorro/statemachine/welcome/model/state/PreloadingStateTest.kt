@@ -2,7 +2,7 @@
 
 package com.motorro.statemachine.welcome.model.state
 
-import com.motorro.statemachine.coroutines.TestDispatchers
+import com.motorro.statemachine.commonapi.coroutines.TestDispatchers
 import com.motorro.statemachine.welcome.data.WelcomeGesture
 import com.motorro.statemachine.welcome.data.WelcomeUiState
 import io.mockk.every

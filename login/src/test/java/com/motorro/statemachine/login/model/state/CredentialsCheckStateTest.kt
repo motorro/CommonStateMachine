@@ -2,13 +2,13 @@
 
 package com.motorro.statemachine.login.model.state
 
-import com.motorro.statemachine.coroutines.TestDispatchers
+import com.motorro.statemachine.commonapi.coroutines.TestDispatchers
 import com.motorro.statemachine.login.data.LoginDataState
 import com.motorro.statemachine.login.data.LoginGesture
 import com.motorro.statemachine.login.data.LoginUiState
-import com.motorro.statemachine.commonapi.data.BAD
-import com.motorro.statemachine.commonapi.data.GOOD
-import com.motorro.statemachine.commonapi.data.RegistrationDataState
+import com.motorro.statemachine.welcome.data.BAD
+import com.motorro.statemachine.welcome.data.GOOD
+import com.motorro.statemachine.welcome.data.WelcomeDataState
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -43,7 +43,7 @@ internal class CredentialsCheckStateTest : BaseStateTest() {
 
     @Test
     fun displaysLoadingOnStart() = runTest {
-        state = createState(LoginDataState(RegistrationDataState(GOOD), "password"))
+        state = createState(LoginDataState(WelcomeDataState(GOOD), "password"))
         state.start(stateMachine)
 
         verify {
@@ -53,7 +53,7 @@ internal class CredentialsCheckStateTest : BaseStateTest() {
 
     @Test
     fun transfersToCompleteForGoodUser() = runTest {
-        val data = LoginDataState(RegistrationDataState(GOOD), "password")
+        val data = LoginDataState(WelcomeDataState(GOOD), "password")
         state = createState(data)
         state.start(stateMachine)
         advanceUntilIdle()
@@ -63,7 +63,7 @@ internal class CredentialsCheckStateTest : BaseStateTest() {
 
     @Test
     fun transfersToErrorForBadUser() = runTest {
-        val data = LoginDataState(RegistrationDataState(BAD), "password")
+        val data = LoginDataState(WelcomeDataState(BAD), "password")
         state = createState(data)
         state.start(stateMachine)
         advanceUntilIdle()
@@ -74,7 +74,7 @@ internal class CredentialsCheckStateTest : BaseStateTest() {
 
     @Test
     fun returnsToPasswordEntryOnBack() = runTest {
-        val data = LoginDataState(RegistrationDataState(GOOD), "password")
+        val data = LoginDataState(WelcomeDataState(GOOD), "password")
         state = createState(data)
 
         state.start(stateMachine)

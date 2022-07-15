@@ -1,11 +1,7 @@
 package com.motorro.statemachine.welcome.model.state
 
-import com.motorro.statemachine.commonapi.data.BAD
-import com.motorro.statemachine.commonapi.data.GOOD
-import com.motorro.statemachine.commonapi.data.RegistrationDataState
-import com.motorro.statemachine.coroutines.DispatcherProvider
-import com.motorro.statemachine.welcome.data.WelcomeGesture
-import com.motorro.statemachine.welcome.data.WelcomeUiState
+import com.motorro.statemachine.commonapi.coroutines.DispatcherProvider
+import com.motorro.statemachine.welcome.data.*
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -18,7 +14,7 @@ import javax.inject.Inject
  */
 class EmailCheckState(
     context: WelcomeContext,
-    private val data: RegistrationDataState,
+    private val data: WelcomeDataState,
     private val dispatchers: DispatcherProvider
 ) : WelcomeState(context) {
 
@@ -77,7 +73,7 @@ class EmailCheckState(
     class Factory @Inject constructor(private val dispatchers: DispatcherProvider) {
         operator fun invoke(
             context: WelcomeContext,
-            data: RegistrationDataState
+            data: WelcomeDataState
         ): WelcomeState = EmailCheckState(
             context,
             data,

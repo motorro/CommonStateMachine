@@ -1,7 +1,7 @@
 package com.motorro.statemachine.welcome.model.state
 
 import androidx.annotation.VisibleForTesting
-import com.motorro.statemachine.commonapi.data.RegistrationDataState
+import com.motorro.statemachine.welcome.data.WelcomeDataState
 import com.motorro.statemachine.welcome.data.WelcomeGesture
 import com.motorro.statemachine.welcome.data.WelcomeUiState
 import timber.log.Timber
@@ -13,7 +13,7 @@ import timber.log.Timber
  */
 class EmailEntryState(
     context: WelcomeContext,
-    inputData: RegistrationDataState?
+    inputData: WelcomeDataState?
 ) : WelcomeState(context) {
 
     /**
@@ -25,8 +25,8 @@ class EmailEntryState(
      * Takes passed data
      * If no data passed - creates new instance and fills email from saved state if available
      */
-    private fun processData(inputData: RegistrationDataState?) = when (inputData) {
-        null -> RegistrationDataState(email = savedStateHandle.get(EMAIL_KEY))
+    private fun processData(inputData: WelcomeDataState?) = when (inputData) {
+        null -> WelcomeDataState(email = savedStateHandle.get(EMAIL_KEY))
         else -> inputData
     }
 
@@ -76,7 +76,7 @@ class EmailEntryState(
     /**
      * State validation
      */
-    private fun RegistrationDataState.isValid(): Boolean = EMAIL_REGEXP.matches(email.orEmpty())
+    private fun WelcomeDataState.isValid(): Boolean = EMAIL_REGEXP.matches(email.orEmpty())
 
     companion object {
         @VisibleForTesting()

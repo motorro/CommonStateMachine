@@ -1,12 +1,12 @@
 package com.motorro.statemachine.login.model.state
 
-import com.motorro.statemachine.coroutines.DispatcherProvider
+import com.motorro.statemachine.commonapi.coroutines.DispatcherProvider
 import com.motorro.statemachine.login.data.LoginDataState
 import com.motorro.statemachine.login.data.LoginGesture
 import com.motorro.statemachine.login.data.LoginUiState
 import com.motorro.statemachine.login.di.LoginScope
-import com.motorro.statemachine.commonapi.data.BAD
-import com.motorro.statemachine.commonapi.data.GOOD
+import com.motorro.statemachine.welcome.data.BAD
+import com.motorro.statemachine.welcome.data.GOOD
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

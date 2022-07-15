@@ -2,9 +2,9 @@
 
 package com.motorro.statemachine.welcome.model.state
 
-import com.motorro.statemachine.commonapi.data.GOOD
-import com.motorro.statemachine.commonapi.data.RegistrationDataState
-import com.motorro.statemachine.coroutines.TestDispatchers
+import com.motorro.statemachine.commonapi.coroutines.TestDispatchers
+import com.motorro.statemachine.welcome.data.GOOD
+import com.motorro.statemachine.welcome.data.WelcomeDataState
 import com.motorro.statemachine.welcome.data.WelcomeGesture
 import com.motorro.statemachine.welcome.data.WelcomeUiState
 import io.mockk.every
@@ -25,7 +25,7 @@ class EmailCheckStateTest : BaseStateTest() {
         every { factory.registrationFlow(any()) } returns register
     }
 
-    private fun createState(data: RegistrationDataState) = EmailCheckState(
+    private fun createState(data: WelcomeDataState) = EmailCheckState(
         context,
         data,
         TestDispatchers
@@ -41,7 +41,7 @@ class EmailCheckStateTest : BaseStateTest() {
 
     @Test
     fun displaysLoadingOnStart() = runTest {
-        state = createState(RegistrationDataState(GOOD))
+        state = createState(WelcomeDataState(GOOD))
         state.start(stateMachine)
 
         verify {
@@ -51,7 +51,7 @@ class EmailCheckStateTest : BaseStateTest() {
 
     @Test
     fun transfersToLoginWhenRegistered() = runTest {
-        val data = RegistrationDataState(GOOD)
+        val data = WelcomeDataState(GOOD)
         state = createState(data)
 
         state.start(stateMachine)
@@ -63,7 +63,7 @@ class EmailCheckStateTest : BaseStateTest() {
 
     @Test
     fun transfersToRegistrationWhenNotRegistered() = runTest {
-        val data = RegistrationDataState("someone@example.com")
+        val data = WelcomeDataState("someone@example.com")
         state = createState(data)
 
         state.start(stateMachine)
@@ -75,7 +75,7 @@ class EmailCheckStateTest : BaseStateTest() {
 
     @Test
     fun movesBackToEmailEntryOnBack() = runTest {
-        val data = RegistrationDataState(GOOD)
+        val data = WelcomeDataState(GOOD)
         state = createState(data)
         val emailEntry: WelcomeState = mockk()
         every { factory.emailEntry(any()) } returns emailEntry

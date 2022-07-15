@@ -1,8 +1,8 @@
 package com.motorro.statemachine.welcome.model.state
 
 import com.motorro.statemachine.R
-import com.motorro.statemachine.coroutines.DispatcherProvider
-import com.motorro.statemachine.resources.ResourceWrapper
+import com.motorro.statemachine.commonapi.coroutines.DispatcherProvider
+import com.motorro.statemachine.commonapi.resources.ResourceWrapper
 import com.motorro.statemachine.welcome.data.WelcomeGesture
 import com.motorro.statemachine.welcome.data.WelcomeUiState
 import dagger.hilt.android.scopes.ViewModelScoped

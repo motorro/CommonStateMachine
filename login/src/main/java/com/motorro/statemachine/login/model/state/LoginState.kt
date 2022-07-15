@@ -1,9 +1,9 @@
 package com.motorro.statemachine.login.model.state
 
+import com.motorro.commonstatemachine.CoroutineState
 import com.motorro.statemachine.login.data.LoginGesture
 import com.motorro.statemachine.login.data.LoginUiState
-import com.motorro.commonstatemachine.CoroutineState
-import com.motorro.statemachine.commonapi.model.state.RegistrationFeatureHost
+import com.motorro.statemachine.welcome.model.state.WelcomeFeatureHost
 import timber.log.Timber
 
 /**
@@ -19,7 +19,7 @@ abstract class LoginState(private val context: LoginContext): CoroutineState<Log
     /**
      * Flow host
      */
-    protected val host: RegistrationFeatureHost
+    protected val host: WelcomeFeatureHost
         get() = context.host
 
     /**

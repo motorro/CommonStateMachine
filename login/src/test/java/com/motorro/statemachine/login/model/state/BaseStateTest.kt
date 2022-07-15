@@ -1,11 +1,11 @@
 package com.motorro.statemachine.login.model.state
 
 import androidx.annotation.CallSuper
+import com.motorro.commonstatemachine.CommonStateMachine
+import com.motorro.statemachine.commonapi.resources.ResourceWrapper
 import com.motorro.statemachine.login.data.LoginGesture
 import com.motorro.statemachine.login.data.LoginUiState
-import com.motorro.commonstatemachine.CommonStateMachine
-import com.motorro.statemachine.commonapi.model.state.RegistrationFeatureHost
-import com.motorro.statemachine.resources.ResourceWrapper
+import com.motorro.statemachine.welcome.model.state.WelcomeFeatureHost
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +19,7 @@ import org.junit.Before
 open class BaseStateTest {
     protected val stateMachine: CommonStateMachine<LoginGesture, LoginUiState> = mockk(relaxed = true)
     protected val factory: LoginStateFactory = mockk()
-    protected val host: RegistrationFeatureHost = mockk()
+    protected val host: WelcomeFeatureHost = mockk()
     protected val context: LoginContext = mockk()
     protected val resourceWrapper: ResourceWrapper = mockk()
 

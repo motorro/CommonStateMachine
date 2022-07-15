@@ -2,7 +2,7 @@ package com.motorro.statemachine.welcome.model.state
 
 import androidx.lifecycle.SavedStateHandle
 import com.motorro.commonstatemachine.CommonMachineState
-import com.motorro.statemachine.commonapi.data.RegistrationDataState
+import com.motorro.statemachine.welcome.data.WelcomeDataState
 import com.motorro.statemachine.welcome.data.WelcomeGesture
 import com.motorro.statemachine.welcome.data.WelcomeUiState
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -28,25 +28,25 @@ interface WelcomeStateFactory {
      * Creates email-entry state
      * @param data Data state
      */
-    fun emailEntry(data: RegistrationDataState? = null): CommonMachineState<WelcomeGesture, WelcomeUiState>
+    fun emailEntry(data: WelcomeDataState? = null): CommonMachineState<WelcomeGesture, WelcomeUiState>
 
     /**
      * Checks if email is registered
      * @param data Data state
      */
-    fun checkEmail(data: RegistrationDataState): CommonMachineState<WelcomeGesture, WelcomeUiState>
+    fun checkEmail(data: WelcomeDataState): CommonMachineState<WelcomeGesture, WelcomeUiState>
 
     /**
      * Enter existing user password
      * @param data Data state
      */
-    fun loginFlow(data: RegistrationDataState): CommonMachineState<WelcomeGesture, WelcomeUiState>
+    fun loginFlow(data: WelcomeDataState): CommonMachineState<WelcomeGesture, WelcomeUiState>
 
     /**
      * Enter registration user password
      * @param data Data state
      */
-    fun registrationFlow(data: RegistrationDataState): CommonMachineState<WelcomeGesture, WelcomeUiState>
+    fun registrationFlow(data: WelcomeDataState): CommonMachineState<WelcomeGesture, WelcomeUiState>
 
     /**
      * Registration complete state
@@ -96,7 +96,7 @@ interface WelcomeStateFactory {
          * Creates email-entry state
          * @param data Data state
          */
-        override fun emailEntry(data: RegistrationDataState?): CommonMachineState<WelcomeGesture, WelcomeUiState> {
+        override fun emailEntry(data: WelcomeDataState?): CommonMachineState<WelcomeGesture, WelcomeUiState> {
             Timber.d("Creating 'Email entry'...")
             return EmailEntryState(context, data)
         }
@@ -105,7 +105,7 @@ interface WelcomeStateFactory {
          * Checks if email is registered
          * @param data Data state
          */
-        override fun checkEmail(data: RegistrationDataState): CommonMachineState<WelcomeGesture, WelcomeUiState> {
+        override fun checkEmail(data: WelcomeDataState): CommonMachineState<WelcomeGesture, WelcomeUiState> {
             Timber.d("Creating 'Check e-mail'...")
             return createEmailCheck(context, data)
         }
@@ -114,7 +114,7 @@ interface WelcomeStateFactory {
          * Enter existing user password
          * @param data Data state
          */
-        override fun loginFlow(data: RegistrationDataState): CommonMachineState<WelcomeGesture, WelcomeUiState> {
+        override fun loginFlow(data: WelcomeDataState): CommonMachineState<WelcomeGesture, WelcomeUiState> {
             Timber.d("Creating 'Login flow'...")
             return createLogin(context, data)
         }
@@ -123,7 +123,7 @@ interface WelcomeStateFactory {
          * Enter registration user password
          * @param data Data state
          */
-        override fun registrationFlow(data: RegistrationDataState): CommonMachineState<WelcomeGesture, WelcomeUiState> {
+        override fun registrationFlow(data: WelcomeDataState): CommonMachineState<WelcomeGesture, WelcomeUiState> {
             TODO("Not yet implemented")
         }
 
