@@ -1,4 +1,4 @@
-package com.motorro.statemachine.registrationapi.data
+package com.motorro.statemachine.commonapi.data
 
 /**
  * Registration data state

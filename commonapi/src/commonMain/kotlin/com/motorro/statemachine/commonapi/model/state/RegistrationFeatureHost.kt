@@ -1,6 +1,7 @@
-package com.motorro.statemachine.registrationapi.model.state
+package com.motorro.statemachine.commonapi.model.state
 
-import com.motorro.statemachine.registrationapi.data.RegistrationDataState
+import com.motorro.statemachine.commonapi.data.RegistrationDataState
+
 
 /**
  * A host for registration flow feature that authenticates users

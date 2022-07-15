@@ -6,10 +6,10 @@ import com.motorro.statemachine.login.di.LoginComponentBuilder
 import com.motorro.statemachine.login.di.LoginEntryPoint
 import com.motorro.commonstatemachine.CommonMachineState
 import com.motorro.commonstatemachine.ProxyMachineState
+import com.motorro.statemachine.commonapi.data.RegistrationDataState
+import com.motorro.statemachine.commonapi.model.state.RegistrationFeatureHost
 import com.motorro.statemachine.registration.data.RegistrationGesture
 import com.motorro.statemachine.registration.data.RegistrationUiState
-import com.motorro.statemachine.registrationapi.data.RegistrationDataState
-import com.motorro.statemachine.registrationapi.model.state.RegistrationFeatureHost
 import dagger.hilt.EntryPoints
 import dagger.hilt.android.scopes.ViewModelScoped
 import timber.log.Timber

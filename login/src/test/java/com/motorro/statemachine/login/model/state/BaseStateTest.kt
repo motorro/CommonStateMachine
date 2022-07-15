@@ -4,7 +4,7 @@ import androidx.annotation.CallSuper
 import com.motorro.statemachine.login.data.LoginGesture
 import com.motorro.statemachine.login.data.LoginUiState
 import com.motorro.commonstatemachine.CommonStateMachine
-import com.motorro.statemachine.registrationapi.model.state.RegistrationFeatureHost
+import com.motorro.statemachine.commonapi.model.state.RegistrationFeatureHost
 import com.motorro.statemachine.resources.ResourceWrapper
 import io.mockk.every
 import io.mockk.mockk

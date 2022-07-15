@@ -21,8 +21,8 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "CommonStateMachine"
+include ':commonstatemachine'
+include ':commonapi'
 include ':app'
 include ':core'
 include ':login'
-include ':registration_api'
-include ':commonstatemachine'

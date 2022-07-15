@@ -6,9 +6,9 @@ import com.motorro.statemachine.coroutines.TestDispatchers
 import com.motorro.statemachine.login.data.LoginDataState
 import com.motorro.statemachine.login.data.LoginGesture
 import com.motorro.statemachine.login.data.LoginUiState
-import com.motorro.statemachine.registrationapi.data.BAD
-import com.motorro.statemachine.registrationapi.data.GOOD
-import com.motorro.statemachine.registrationapi.data.RegistrationDataState
+import com.motorro.statemachine.commonapi.data.BAD
+import com.motorro.statemachine.commonapi.data.GOOD
+import com.motorro.statemachine.commonapi.data.RegistrationDataState
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle

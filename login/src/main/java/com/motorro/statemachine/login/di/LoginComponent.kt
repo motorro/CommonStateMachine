@@ -1,6 +1,6 @@
 package com.motorro.statemachine.login.di
 
-import com.motorro.statemachine.registrationapi.model.state.RegistrationFeatureHost
+import com.motorro.statemachine.commonapi.model.state.RegistrationFeatureHost
 import dagger.BindsInstance
 import dagger.hilt.DefineComponent
 import dagger.hilt.components.SingletonComponent

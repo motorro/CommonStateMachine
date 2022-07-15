@@ -3,9 +3,9 @@ package com.motorro.statemachine.registration.model.state
 import com.motorro.statemachine.coroutines.DispatcherProvider
 import com.motorro.statemachine.registration.data.RegistrationGesture
 import com.motorro.statemachine.registration.data.RegistrationUiState
-import com.motorro.statemachine.registrationapi.data.BAD
-import com.motorro.statemachine.registrationapi.data.GOOD
-import com.motorro.statemachine.registrationapi.data.RegistrationDataState
+import com.motorro.statemachine.commonapi.data.BAD
+import com.motorro.statemachine.commonapi.data.GOOD
+import com.motorro.statemachine.commonapi.data.RegistrationDataState
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -89,6 +89,9 @@ class EmailCheckState(
         /**
          * Registered users which switch to login flow
          */
-        private val REGISTERED_USERS = setOf(GOOD, BAD)
+        private val REGISTERED_USERS = setOf(
+            GOOD,
+            BAD
+        )
     }
 }

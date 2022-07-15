@@ -3,7 +3,7 @@ package com.motorro.statemachine.login.model.state
 import com.motorro.statemachine.login.data.LoginGesture
 import com.motorro.statemachine.login.data.LoginUiState
 import com.motorro.commonstatemachine.CoroutineState
-import com.motorro.statemachine.registrationapi.model.state.RegistrationFeatureHost
+import com.motorro.statemachine.commonapi.model.state.RegistrationFeatureHost
 import timber.log.Timber
 
 /**

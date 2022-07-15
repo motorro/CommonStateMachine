@@ -2,9 +2,9 @@ package com.motorro.statemachine.registration.model.state
 
 import androidx.lifecycle.SavedStateHandle
 import com.motorro.commonstatemachine.CommonMachineState
+import com.motorro.statemachine.commonapi.data.RegistrationDataState
 import com.motorro.statemachine.registration.data.RegistrationGesture
 import com.motorro.statemachine.registration.data.RegistrationUiState
-import com.motorro.statemachine.registrationapi.data.RegistrationDataState
 import dagger.hilt.android.scopes.ViewModelScoped
 import timber.log.Timber
 import javax.inject.Inject

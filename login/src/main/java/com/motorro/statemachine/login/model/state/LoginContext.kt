@@ -1,6 +1,7 @@
 package com.motorro.statemachine.login.model.state
 
-import com.motorro.statemachine.registrationapi.model.state.RegistrationFeatureHost
+import com.motorro.statemachine.commonapi.model.state.RegistrationFeatureHost
+
 
 /**
  * Context for login flow

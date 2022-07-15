@@ -3,8 +3,8 @@ package com.motorro.statemachine.login.model.state
 import com.motorro.statemachine.login.data.LoginDataState
 import com.motorro.statemachine.login.data.LoginGesture
 import com.motorro.statemachine.login.data.LoginUiState
-import com.motorro.statemachine.registrationapi.data.BAD
-import com.motorro.statemachine.registrationapi.data.RegistrationDataState
+import com.motorro.statemachine.commonapi.data.BAD
+import com.motorro.statemachine.commonapi.data.RegistrationDataState
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify

@@ -5,8 +5,8 @@ package com.motorro.statemachine.registration.model.state
 import com.motorro.statemachine.coroutines.TestDispatchers
 import com.motorro.statemachine.registration.data.RegistrationGesture
 import com.motorro.statemachine.registration.data.RegistrationUiState
-import com.motorro.statemachine.registrationapi.data.GOOD
-import com.motorro.statemachine.registrationapi.data.RegistrationDataState
+import com.motorro.statemachine.commonapi.data.GOOD
+import com.motorro.statemachine.commonapi.data.RegistrationDataState
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
