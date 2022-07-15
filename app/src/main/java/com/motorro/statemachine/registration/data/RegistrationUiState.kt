@@ -53,6 +53,12 @@ sealed class RegistrationUiState {
     ) : RegistrationUiState()
 
     /**
+     * Registration complete screen
+     * @property email Registered user's email
+     */
+    data class Complete(val email: String) : RegistrationUiState()
+
+    /**
      * Registration wizard has terminated
      */
     object Terminated : RegistrationUiState()

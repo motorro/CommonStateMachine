@@ -35,6 +35,10 @@ fun RegistrationScreen(onTerminate: @Composable () -> Unit) {
             onGesture = { model.process(Login(it)) }
         )
         is RegistrationUiState.RegistrationPasswordEntry -> TODO()
+        is RegistrationUiState.Complete -> Complete(
+            state = uiState,
+            onAction = { model.process(Action) }
+        )
         RegistrationUiState.Terminated -> { onTerminate() }
     }
 }

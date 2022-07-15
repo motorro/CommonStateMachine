@@ -14,4 +14,9 @@
     <string name="email_email_label">E-mail</string>
     <string name="email_next">Next</string>
     <!-- endregion -->
+
+    <!-- region Complete -->
+    <string name="complete_title">Welcome to StateMachine!</string>
+    <string name="complete_action">Exit</string>
+    <!-- endregion -->
 </resources>

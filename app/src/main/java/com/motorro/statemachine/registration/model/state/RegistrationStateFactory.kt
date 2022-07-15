@@ -132,7 +132,8 @@ interface RegistrationStateFactory {
          * @param email Registered user's email
          */
         override fun complete(email: String): CommonMachineState<RegistrationGesture, RegistrationUiState> {
-            TODO("Not yet implemented")
+            Timber.d("Creating 'Complete'...")
+            return CompleteState(context, email)
         }
 
         /**
