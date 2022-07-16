@@ -2,12 +2,10 @@
 
 package com.motorro.statemachine.welcome.model.state
 
-import com.motorro.statemachine.commonapi.coroutines.TestDispatchers
 import com.motorro.statemachine.welcome.data.WelcomeGesture
 import com.motorro.statemachine.welcome.data.WelcomeUiState
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import com.motorro.statemachine.welcome.usecase.Preload
+import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -15,11 +13,20 @@ import org.junit.After
 import org.junit.Test
 
 class PreloadingStateTest : BaseStateTest() {
-    private val state = PreloadingState(context, resourceWrapper, TestDispatchers)
+    private val string = "Welcome"
+    private val preload: Preload = mockk {
+        coEvery { this@mockk.invoke() } returns string
+    }
+    private lateinit var state: PreloadingState
     private val welcome: WelcomeState = mockk()
 
     init {
         every { factory.welcome(any()) } returns welcome
+    }
+
+    override fun before() {
+        super.before()
+        state = PreloadingState(context, preload)
     }
 
     @After
@@ -43,7 +50,8 @@ class PreloadingStateTest : BaseStateTest() {
         advanceUntilIdle()
 
         verify { stateMachine.setMachineState(welcome) }
-        verify { factory.welcome(R_STRING) }
+        verify { factory.welcome(string) }
+        coVerify { preload() }
     }
 
     @Test

@@ -1,4 +1,4 @@
-package com.motorro.statemachine.commonregistration.model.data
+package com.motorro.statemachine.register.data
 
 /**
  * Login flow UI gestures

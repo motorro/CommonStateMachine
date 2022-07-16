@@ -18,7 +18,7 @@ internal class PasswordEntryStateTest : BaseStateTest() {
     )
 
     @Test
-    fun displaysNonValidStateOnEmptyEmail() {
+    fun displaysNonValidStateOnEmptyPassword() {
         val state = createState()
 
         state.start(stateMachine)

@@ -2,11 +2,10 @@
 
 package com.motorro.statemachine.login.model.state
 
-import com.motorro.statemachine.commonapi.coroutines.TestDispatchers
 import com.motorro.statemachine.login.data.LoginDataState
 import com.motorro.statemachine.login.data.LoginGesture
 import com.motorro.statemachine.login.data.LoginUiState
-import com.motorro.statemachine.welcome.data.BAD
+import com.motorro.statemachine.login.usecase.CheckCredentials
 import com.motorro.statemachine.welcome.data.GOOD
 import com.motorro.statemachine.welcome.data.WelcomeDataState
 import io.mockk.*
@@ -18,6 +17,11 @@ import org.junit.Test
 import kotlin.test.assertTrue
 
 internal class CredentialsCheckStateTest : BaseStateTest() {
+    private val password = "password"
+    private val data = LoginDataState(WelcomeDataState(GOOD), password)
+
+    private val checkCredentials: CheckCredentials = mockk()
+    private lateinit var state: CredentialsCheckState
     private val passwordEntry: LoginState = mockk()
     private val error: LoginState = mockk()
 
@@ -27,13 +31,10 @@ internal class CredentialsCheckStateTest : BaseStateTest() {
         every { host.complete(any()) } just Runs
     }
 
-    private fun createState(data: LoginDataState) = CredentialsCheckState(
-        context,
-        data,
-        TestDispatchers
-    )
-
-    private lateinit var state: CredentialsCheckState
+    override fun before() {
+        super.before()
+        state = CredentialsCheckState(context, data, checkCredentials)
+    }
 
     @After
     override fun after() {
@@ -43,7 +44,8 @@ internal class CredentialsCheckStateTest : BaseStateTest() {
 
     @Test
     fun displaysLoadingOnStart() = runTest {
-        state = createState(LoginDataState(WelcomeDataState(GOOD), "password"))
+        coEvery { checkCredentials(any(), any()) } returns true
+
         state.start(stateMachine)
 
         verify {
@@ -53,29 +55,30 @@ internal class CredentialsCheckStateTest : BaseStateTest() {
 
     @Test
     fun transfersToCompleteForGoodUser() = runTest {
-        val data = LoginDataState(WelcomeDataState(GOOD), "password")
-        state = createState(data)
+        coEvery { checkCredentials(any(), any()) } returns true
+
         state.start(stateMachine)
         advanceUntilIdle()
 
         verify { host.complete(GOOD) }
+        coVerify { checkCredentials(GOOD, password) }
     }
 
     @Test
     fun transfersToErrorForBadUser() = runTest {
-        val data = LoginDataState(WelcomeDataState(BAD), "password")
-        state = createState(data)
+        coEvery { checkCredentials(any(), any()) } returns false
+
         state.start(stateMachine)
         advanceUntilIdle()
 
         verify { stateMachine.setMachineState(error) }
         verify { factory.error(data, withArg { assertTrue { it is IllegalArgumentException } }) }
+        coVerify { checkCredentials(GOOD, password) }
     }
 
     @Test
     fun returnsToPasswordEntryOnBack() = runTest {
-        val data = LoginDataState(WelcomeDataState(GOOD), "password")
-        state = createState(data)
+        coEvery { checkCredentials(any(), any()) } returns true
 
         state.start(stateMachine)
         state.process(LoginGesture.Back)

@@ -2,14 +2,12 @@
 
 package com.motorro.statemachine.welcome.model.state
 
-import com.motorro.statemachine.commonapi.coroutines.TestDispatchers
 import com.motorro.statemachine.welcome.data.GOOD
 import com.motorro.statemachine.welcome.data.WelcomeDataState
 import com.motorro.statemachine.welcome.data.WelcomeGesture
 import com.motorro.statemachine.welcome.data.WelcomeUiState
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import com.motorro.statemachine.welcome.usecase.CheckEmail
+import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -17,6 +15,10 @@ import org.junit.After
 import org.junit.Test
 
 class EmailCheckStateTest : BaseStateTest() {
+    private val data = WelcomeDataState(GOOD)
+
+    private val checkEmail: CheckEmail = mockk()
+    private lateinit var state: EmailCheckState
     private val login: WelcomeState = mockk()
     private val register: WelcomeState = mockk()
 
@@ -25,13 +27,10 @@ class EmailCheckStateTest : BaseStateTest() {
         every { factory.registrationFlow(any()) } returns register
     }
 
-    private fun createState(data: WelcomeDataState) = EmailCheckState(
-        context,
-        data,
-        TestDispatchers
-    )
-
-    private lateinit var state: EmailCheckState
+    override fun before() {
+        super.before()
+        state = EmailCheckState(context, data, checkEmail)
+    }
 
     @After
     override fun after() {
@@ -41,7 +40,7 @@ class EmailCheckStateTest : BaseStateTest() {
 
     @Test
     fun displaysLoadingOnStart() = runTest {
-        state = createState(WelcomeDataState(GOOD))
+        coEvery { checkEmail(any()) } returns true
         state.start(stateMachine)
 
         verify {
@@ -51,32 +50,32 @@ class EmailCheckStateTest : BaseStateTest() {
 
     @Test
     fun transfersToLoginWhenRegistered() = runTest {
-        val data = WelcomeDataState(GOOD)
-        state = createState(data)
+        coEvery { checkEmail(any()) } returns true
 
         state.start(stateMachine)
         advanceUntilIdle()
 
         verify { stateMachine.setMachineState(login) }
         verify { factory.loginFlow(data) }
+        coVerify { checkEmail(GOOD) }
     }
 
     @Test
     fun transfersToRegistrationWhenNotRegistered() = runTest {
-        val data = WelcomeDataState("someone@example.com")
-        state = createState(data)
+        coEvery { checkEmail(any()) } returns false
 
         state.start(stateMachine)
         advanceUntilIdle()
 
         verify { stateMachine.setMachineState(register) }
         verify { factory.registrationFlow(data) }
+        coVerify { checkEmail(GOOD) }
     }
 
     @Test
     fun movesBackToEmailEntryOnBack() = runTest {
-        val data = WelcomeDataState(GOOD)
-        state = createState(data)
+        coEvery { checkEmail(any()) } returns true
+
         val emailEntry: WelcomeState = mockk()
         every { factory.emailEntry(any()) } returns emailEntry
 

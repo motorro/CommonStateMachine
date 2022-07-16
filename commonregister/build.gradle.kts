@@ -38,9 +38,10 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(libs.kotlin.coroutines.core)
+                implementation(project(":commonstatemachine"))
                 implementation(project(":commoncore"))
                 implementation(project(":commonapi"))
+                implementation(libs.kotlin.coroutines.core)
             }
         }
         val commonTest by getting {

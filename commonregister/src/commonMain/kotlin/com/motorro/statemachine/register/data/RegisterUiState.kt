@@ -1,4 +1,4 @@
-package com.motorro.statemachine.commonregistration.model.data
+package com.motorro.statemachine.register.data
 
 /**
  * Login flow UI state
@@ -15,12 +15,12 @@ sealed class RegisterUiState {
      * @property email Login email
      * @property password Password field value
      * @property repeatPassword Repeat password field value
-     * @property actionEnabled Action (next) button state
+     * @property validationError Validation error if any
      */
     data class PasswordEntry(
         val email: String,
         val password: String,
         val repeatPassword: String,
-        val actionEnabled: Boolean
+        val validationError: String?
     ) : RegisterUiState()
 }

@@ -6,6 +6,10 @@
       <module name="CommonStateMachine.commonapi.commonTest" target="1.8" />
       <module name="CommonStateMachine.commonapi.jvmMain" target="1.8" />
       <module name="CommonStateMachine.commonapi.jvmTest" target="1.8" />
+      <module name="CommonStateMachine.commoncore.commonMain" target="1.8" />
+      <module name="CommonStateMachine.commoncore.commonTest" target="1.8" />
+      <module name="CommonStateMachine.commoncore.jvmMain" target="1.8" />
+      <module name="CommonStateMachine.commoncore.jvmTest" target="1.8" />
       <module name="CommonStateMachine.commonregister.commonMain" target="1.8" />
       <module name="CommonStateMachine.commonregister.commonTest" target="1.8" />
       <module name="CommonStateMachine.commonregister.jvmMain" target="1.8" />

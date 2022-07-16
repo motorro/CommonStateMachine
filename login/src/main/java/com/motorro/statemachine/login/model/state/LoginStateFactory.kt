@@ -44,7 +44,7 @@ interface LoginStateFactory {
         private val createError: ErrorState.Factory
     ) : LoginStateFactory {
 
-        val context: LoginContext = object : LoginContext {
+        private val context: LoginContext = object : LoginContext {
             override val factory: LoginStateFactory = this@Impl
             override val host: WelcomeFeatureHost = host
         }

@@ -1,11 +1,11 @@
 package com.motorro.statemachine.welcome.model.state
 
-import com.motorro.statemachine.commonapi.coroutines.DispatcherProvider
-import com.motorro.statemachine.welcome.data.*
+import com.motorro.statemachine.welcome.data.WelcomeDataState
+import com.motorro.statemachine.welcome.data.WelcomeGesture
+import com.motorro.statemachine.welcome.data.WelcomeUiState
+import com.motorro.statemachine.welcome.usecase.CheckEmail
 import dagger.hilt.android.scopes.ViewModelScoped
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -15,7 +15,7 @@ import javax.inject.Inject
 class EmailCheckState(
     context: WelcomeContext,
     private val data: WelcomeDataState,
-    private val dispatchers: DispatcherProvider
+    private val checkEmail: CheckEmail
 ) : WelcomeState(context) {
 
     /**
@@ -31,26 +31,16 @@ class EmailCheckState(
     override fun doStart() {
         setUiState(WelcomeUiState.Loading)
         Timber.d("Checking if user exists...")
-        stateScope.launch(dispatchers.default) {
-            val exists = checkUserExists()
-            withContext(dispatchers.main) {
-                if (exists) {
-                    Timber.d("Existing user. Transferring to login flow...")
-                    setMachineState(factory.loginFlow(data))
-                } else {
-                    Timber.d("New user. Transferring to registration flow...")
-                    setMachineState(factory.registrationFlow(data))
-                }
+        stateScope.launch {
+            val exists = checkEmail(email)
+            if (exists) {
+                Timber.d("Existing user. Transferring to login flow...")
+                setMachineState(factory.loginFlow(data))
+            } else {
+                Timber.d("New user. Transferring to registration flow...")
+                setMachineState(factory.registrationFlow(data))
             }
         }
-    }
-
-    /**
-     * 'Checks' if user exists
-     */
-    private suspend fun checkUserExists(): Boolean {
-        delay(2000L)
-        return REGISTERED_USERS.contains(email.trim().lowercase())
     }
 
     /**
@@ -70,24 +60,14 @@ class EmailCheckState(
     }
 
     @ViewModelScoped
-    class Factory @Inject constructor(private val dispatchers: DispatcherProvider) {
+    class Factory @Inject constructor(private val checkEmail: CheckEmail) {
         operator fun invoke(
             context: WelcomeContext,
             data: WelcomeDataState
         ): WelcomeState = EmailCheckState(
             context,
             data,
-            dispatchers
-        )
-    }
-
-    companion object {
-        /**
-         * Registered users which switch to login flow
-         */
-        private val REGISTERED_USERS = setOf(
-            GOOD,
-            BAD
+            checkEmail
         )
     }
 }
