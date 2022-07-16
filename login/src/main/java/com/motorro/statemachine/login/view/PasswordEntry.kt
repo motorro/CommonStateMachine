@@ -12,14 +12,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.motorro.statemachine.login.data.LoginUiState
 import com.motorro.statemachine.login.R
+import com.motorro.statemachine.login.data.LoginUiState
 
 @Composable
-fun PasswordEntry(state: LoginUiState.PasswordEntry, onPasswordChanged: (String) -> Unit, onNext: () -> Unit) {
+fun PasswordEntry(
+    state: LoginUiState.PasswordEntry,
+    onPasswordChanged: (String) -> Unit,
+    onPrevious: () -> Unit,
+    onNext: () -> Unit
+) {
     val scrollState = rememberScrollState()
 
     Column(modifier = Modifier
@@ -62,8 +66,19 @@ fun PasswordEntry(state: LoginUiState.PasswordEntry, onPasswordChanged: (String)
             )
         }
 
-        Button(onClick = onNext, enabled = state.actionEnabled) {
-            Text(text = stringResource(id = R.string.login_password_entry_next))
+        Row(
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Button(onClick = onPrevious) {
+                Text(text = stringResource(id = R.string.login_password_entry_prev))
+            }
+
+            Spacer(modifier = Modifier.width(12.dp))
+
+            Button(onClick = onNext, enabled = state.actionEnabled) {
+                Text(text = stringResource(id = R.string.login_password_entry_next))
+            }
         }
     }
 }
@@ -78,6 +93,7 @@ fun EmailEntryPreview() {
             actionEnabled = true
         ),
         onPasswordChanged = {},
+        onPrevious = {},
         onNext = {}
     )
 }

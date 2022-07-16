@@ -2,7 +2,6 @@ package com.motorro.statemachine.login.model.state
 
 import com.motorro.statemachine.login.data.LoginDataState
 import com.motorro.statemachine.login.data.LoginGesture
-import com.motorro.statemachine.login.data.LoginUiState
 import timber.log.Timber
 
 /**
@@ -54,7 +53,7 @@ class PasswordEntryState(
     }
 
     private fun render() {
-        setUiState(renderPassword(email, data.password.orEmpty(), isPasswordValid()))
+        setUiState(renderer.renderPassword(data, isPasswordValid()))
     }
 
     private fun isPasswordValid(): Boolean = null != data.password?.takeIf { it.length >= 6 }

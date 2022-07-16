@@ -3,6 +3,7 @@
     <string name="login_password_entry_title">Enter password for:</string>
     <string name="login_password_entry_desc">Any password at least 6 chars long will do</string>
     <string name="login_password_entry_label">Password</string>
+    <string name="login_password_entry_prev">Previous</string>
     <string name="login_password_entry_next">Next</string>
 
     <!-- region Error -->

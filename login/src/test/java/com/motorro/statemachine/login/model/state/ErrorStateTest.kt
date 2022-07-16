@@ -2,7 +2,6 @@ package com.motorro.statemachine.login.model.state
 
 import com.motorro.statemachine.login.data.LoginDataState
 import com.motorro.statemachine.login.data.LoginGesture
-import com.motorro.statemachine.login.data.LoginUiState
 import com.motorro.statemachine.welcome.data.BAD
 import com.motorro.statemachine.welcome.data.WelcomeDataState
 import io.mockk.every
@@ -13,6 +12,7 @@ import org.junit.Test
 internal class ErrorStateTest : BaseStateTest() {
     private val password = "password"
     private val data = LoginDataState(WelcomeDataState(BAD), password)
+    private val error = IllegalArgumentException("Incorrect email or password")
     private val passwordEntry: LoginState = mockk()
 
     init {
@@ -22,8 +22,7 @@ internal class ErrorStateTest : BaseStateTest() {
     private val state = ErrorState(
         context,
         data,
-        IllegalArgumentException("Incorrect email or password"),
-        resourceWrapper
+        error
     )
 
     @Test
@@ -31,12 +30,10 @@ internal class ErrorStateTest : BaseStateTest() {
         state.start(stateMachine)
 
         verify {
-            stateMachine.setUiState(
-                LoginUiState.LoginError(
-                    LoginUiState.PasswordEntry(BAD, password, false),
-                    R_STRING
-                )
-            )
+            stateMachine.setUiState(R_ERROR)
+        }
+        verify {
+            renderer.renderError(data, error)
         }
     }
 

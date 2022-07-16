@@ -2,7 +2,6 @@ package com.motorro.statemachine.login.model.state
 
 import com.motorro.statemachine.login.data.LoginDataState
 import com.motorro.statemachine.login.data.LoginGesture
-import com.motorro.statemachine.login.data.LoginUiState
 import com.motorro.statemachine.welcome.data.GOOD
 import com.motorro.statemachine.welcome.data.WelcomeDataState
 import io.mockk.*
@@ -19,46 +18,51 @@ internal class PasswordEntryStateTest : BaseStateTest() {
 
     @Test
     fun displaysNonValidStateOnEmptyPassword() {
+        val data = LoginDataState(WelcomeDataState(GOOD))
         val state = createState()
 
         state.start(stateMachine)
 
         verify {
-            stateMachine.setUiState(
-                LoginUiState.PasswordEntry(GOOD, "", false)
-            )
+            stateMachine.setUiState(R_PASSWORD)
+        }
+        verify {
+            renderer.renderPassword(data, false)
         }
     }
 
     @Test
     fun displaysValidStateOnValidPassword() {
         val password = "password"
-        val state = createState(LoginDataState(WelcomeDataState(GOOD), password))
+        val data = LoginDataState(WelcomeDataState(GOOD), password)
+        val state = createState(data)
 
         state.start(stateMachine)
 
         verify {
-            stateMachine.setUiState(
-                LoginUiState.PasswordEntry(GOOD, password, true)
-            )
+            stateMachine.setUiState(R_PASSWORD)
+        }
+        verify {
+            renderer.renderPassword(data, true)
         }
     }
 
     @Test
     fun updatesPassword() {
         val password = "password"
-        val state = createState(LoginDataState(WelcomeDataState(GOOD), ""))
+        val data = LoginDataState(WelcomeDataState(GOOD), "")
+        val state = createState(data)
 
         state.start(stateMachine)
         state.process(LoginGesture.PasswordChanged(password))
 
+        verify(exactly = 2) {
+            stateMachine.setUiState(R_PASSWORD)
+        }
+
         verifyOrder {
-            stateMachine.setUiState(
-                LoginUiState.PasswordEntry(GOOD, "", false)
-            )
-            stateMachine.setUiState(
-                LoginUiState.PasswordEntry(GOOD, password, true)
-            )
+            renderer.renderPassword(data, false)
+            renderer.renderPassword(data.copy(password = password), true)
         }
     }
 
@@ -66,7 +70,7 @@ internal class PasswordEntryStateTest : BaseStateTest() {
     fun transfersToCheckIfValid() {
         val password = "password"
         val data = LoginDataState(WelcomeDataState(GOOD), password)
-        val state = createState(LoginDataState(WelcomeDataState(GOOD), password))
+        val state = createState(data)
         val checking: LoginState = mockk()
         every { factory.checking(any()) } returns checking
 
@@ -81,7 +85,7 @@ internal class PasswordEntryStateTest : BaseStateTest() {
     fun doesNotTransferToCheckIfNotValid() {
         val password = ""
         val data = LoginDataState(WelcomeDataState(GOOD), password)
-        val state = createState(LoginDataState(WelcomeDataState(GOOD), password))
+        val state = createState(data)
 
         state.start(stateMachine)
         state.process(LoginGesture.Action)

@@ -15,6 +15,7 @@ fun LoginScreen(state: LoginUiState, onGesture: (LoginGesture) -> Unit) {
         is LoginUiState.PasswordEntry -> PasswordEntry(
             state = state,
             onPasswordChanged = { onGesture(LoginGesture.PasswordChanged(it)) },
+            onPrevious = { onGesture(LoginGesture.Back) },
             onNext = { onGesture(LoginGesture.Action) }
         )
         is LoginUiState.LoginError -> PasswordError(

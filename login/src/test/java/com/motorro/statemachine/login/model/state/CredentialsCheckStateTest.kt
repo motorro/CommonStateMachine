@@ -4,7 +4,6 @@ package com.motorro.statemachine.login.model.state
 
 import com.motorro.statemachine.login.data.LoginDataState
 import com.motorro.statemachine.login.data.LoginGesture
-import com.motorro.statemachine.login.data.LoginUiState
 import com.motorro.statemachine.login.usecase.CheckCredentials
 import com.motorro.statemachine.welcome.data.GOOD
 import com.motorro.statemachine.welcome.data.WelcomeDataState
@@ -49,7 +48,10 @@ internal class CredentialsCheckStateTest : BaseStateTest() {
         state.start(stateMachine)
 
         verify {
-            stateMachine.setUiState(LoginUiState.Loading)
+            stateMachine.setUiState(R_LOADING)
+        }
+        verify {
+            renderer.renderLoading(data)
         }
     }
 

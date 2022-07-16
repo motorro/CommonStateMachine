@@ -2,7 +2,6 @@ package com.motorro.statemachine.login.model.state
 
 import com.motorro.statemachine.login.data.LoginDataState
 import com.motorro.statemachine.login.data.LoginGesture
-import com.motorro.statemachine.login.data.LoginUiState
 import com.motorro.statemachine.login.di.LoginScope
 import com.motorro.statemachine.login.usecase.CheckCredentials
 import kotlinx.coroutines.launch
@@ -36,7 +35,7 @@ class CredentialsCheckState(
      * A part of [start] template to initialize state
      */
     override fun doStart() {
-        setUiState(LoginUiState.Loading)
+        setUiState(renderer.renderLoading(data))
         Timber.d("Checking for user credentials...")
         stateScope.launch {
             val valid = checkCredentials(email, password)

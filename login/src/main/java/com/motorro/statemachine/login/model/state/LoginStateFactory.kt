@@ -2,6 +2,7 @@ package com.motorro.statemachine.login.model.state
 
 import com.motorro.statemachine.login.data.LoginDataState
 import com.motorro.statemachine.login.di.LoginScope
+import com.motorro.statemachine.login.model.LoginRenderer
 import com.motorro.statemachine.welcome.data.WelcomeDataState
 import com.motorro.statemachine.welcome.model.state.WelcomeFeatureHost
 import timber.log.Timber
@@ -40,13 +41,14 @@ interface LoginStateFactory {
     @LoginScope
     class Impl @Inject constructor(
         host: WelcomeFeatureHost,
-        private val createCredentialsCheck: CredentialsCheckState.Factory,
-        private val createError: ErrorState.Factory
+        renderer: LoginRenderer,
+        private val createCredentialsCheck: CredentialsCheckState.Factory
     ) : LoginStateFactory {
 
         private val context: LoginContext = object : LoginContext {
             override val factory: LoginStateFactory = this@Impl
             override val host: WelcomeFeatureHost = host
+            override val renderer: LoginRenderer = renderer
         }
 
         /**
@@ -72,7 +74,7 @@ interface LoginStateFactory {
          */
         override fun error(data: LoginDataState, error: Throwable): LoginState {
             Timber.d("Creating 'Error'...")
-            return createError(context, data, error)
+            return ErrorState(context, data, error)
         }
     }
 }
