@@ -2,7 +2,6 @@ package com.motorro.statemachine.welcome.model.state
 
 import com.motorro.statemachine.welcome.data.GOOD
 import com.motorro.statemachine.welcome.data.WelcomeGesture
-import com.motorro.statemachine.welcome.data.WelcomeUiState
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -16,7 +15,8 @@ internal class CompleteStateTest : BaseStateTest() {
     fun rendersEmailOnStart() {
         state.start(stateMachine)
 
-        verify { stateMachine.setUiState(WelcomeUiState.Complete(email)) }
+        verify { stateMachine.setUiState(R_CONTENT) }
+        verify { renderer.renderComplete(email) }
     }
 
     @Test

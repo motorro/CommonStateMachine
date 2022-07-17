@@ -2,7 +2,6 @@ package com.motorro.statemachine.welcome.model.state
 
 import com.motorro.statemachine.welcome.data.WelcomeDataState
 import com.motorro.statemachine.welcome.data.WelcomeGesture
-import com.motorro.statemachine.welcome.data.WelcomeUiState
 import com.motorro.statemachine.welcome.usecase.CheckEmail
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.launch
@@ -29,7 +28,7 @@ class EmailCheckState(
      * A part of [start] template to initialize state
      */
     override fun doStart() {
-        setUiState(WelcomeUiState.Loading)
+        setUiState(renderer.renderChecking(data))
         Timber.d("Checking if user exists...")
         stateScope.launch {
             val exists = checkEmail(email)

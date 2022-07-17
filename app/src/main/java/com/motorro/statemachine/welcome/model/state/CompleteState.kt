@@ -1,7 +1,6 @@
 package com.motorro.statemachine.welcome.model.state
 
 import com.motorro.statemachine.welcome.data.WelcomeGesture
-import com.motorro.statemachine.welcome.data.WelcomeUiState
 import timber.log.Timber
 
 class CompleteState(
@@ -12,7 +11,7 @@ class CompleteState(
      * A part of [start] template to initialize state
      */
     override fun doStart() {
-        setUiState(WelcomeUiState.Complete(email))
+        setUiState(renderer.renderComplete(email))
     }
 
     /**

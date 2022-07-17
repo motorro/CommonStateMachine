@@ -5,6 +5,7 @@ import com.motorro.commonstatemachine.CommonMachineState
 import com.motorro.statemachine.welcome.data.WelcomeDataState
 import com.motorro.statemachine.welcome.data.WelcomeGesture
 import com.motorro.statemachine.welcome.data.WelcomeUiState
+import com.motorro.statemachine.welcome.model.WelcomeRenderer
 import dagger.hilt.android.scopes.ViewModelScoped
 import timber.log.Timber
 import javax.inject.Inject
@@ -65,6 +66,7 @@ interface WelcomeStateFactory {
     @ViewModelScoped
     class Impl @Inject constructor(
         savedStateHandle: SavedStateHandle,
+        renderer: WelcomeRenderer,
         private val createPreloading: PreloadingState.Factory,
         private val createLogin: LoginFlowState.Factory,
         private val createEmailCheck: EmailCheckState.Factory
@@ -73,6 +75,7 @@ interface WelcomeStateFactory {
         private val context: WelcomeContext = object : WelcomeContext {
             override val factory = this@Impl
             override val savedStateHandle = savedStateHandle
+            override val renderer: WelcomeRenderer = renderer
         }
 
         /**

@@ -1,7 +1,6 @@
 package com.motorro.statemachine.welcome.model.state
 
 import com.motorro.statemachine.welcome.data.WelcomeGesture
-import com.motorro.statemachine.welcome.data.WelcomeUiState
 import timber.log.Timber
 
 /**
@@ -55,7 +54,7 @@ class TermsAndConditionsState(
 
     private fun render() {
         setUiState(
-            WelcomeUiState.Welcome(
+            renderer.renderTerms(
                 welcomeGreeting,
                 termsAccepted,
                 termsAccepted

@@ -3,7 +3,6 @@ package com.motorro.statemachine.welcome.model.state
 import androidx.annotation.VisibleForTesting
 import com.motorro.statemachine.welcome.data.WelcomeDataState
 import com.motorro.statemachine.welcome.data.WelcomeGesture
-import com.motorro.statemachine.welcome.data.WelcomeUiState
 import timber.log.Timber
 
 /**
@@ -65,12 +64,7 @@ class EmailEntryState(
     }
 
     private fun render() {
-        setUiState(
-            WelcomeUiState.EmailEntry(
-                data.email.orEmpty(),
-                data.isValid()
-            )
-        )
+        setUiState(renderer.renderEmailEntry(data, data.isValid()))
     }
 
     /**

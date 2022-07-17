@@ -8,7 +8,7 @@
 
     <!-- region Error -->
     <string name="login_error_title">Login error</string>
-    <string name="login_error_text">Login failed for: %s\n%s</string>
+    <string name="login_error_text">Login failed for: %1$s\n%2$s</string>
     <string name="login_error_credentials">Invalid email or password</string>
     <string name="login_error_unknown">Unknown error</string>
     <string name="login_error_action">Retry</string>

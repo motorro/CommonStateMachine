@@ -1,7 +1,6 @@
 package com.motorro.statemachine.welcome.model.state
 
 import com.motorro.statemachine.welcome.data.WelcomeGesture
-import com.motorro.statemachine.welcome.data.WelcomeUiState
 import com.motorro.statemachine.welcome.usecase.Preload
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.launch
@@ -18,7 +17,7 @@ class PreloadingState(context: WelcomeContext, private val preload: Preload) : W
      * A part of [start] template to initialize state
      */
     override fun doStart() {
-        setUiState(WelcomeUiState.Loading)
+        setUiState(renderer.renderPreloading())
         stateScope.launch {
             val greeting = preload()
             Timber.d("Transferring to welcome screen...")

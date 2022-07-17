@@ -3,7 +3,6 @@ package com.motorro.statemachine.welcome.model.state
 import androidx.lifecycle.SavedStateHandle
 import com.motorro.statemachine.welcome.data.WelcomeDataState
 import com.motorro.statemachine.welcome.data.WelcomeGesture
-import com.motorro.statemachine.welcome.data.WelcomeUiState
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -24,23 +23,26 @@ internal class EmailEntryStateTest : BaseStateTest() {
         state.start(stateMachine)
 
         verify {
-            stateMachine.setUiState(
-                WelcomeUiState.EmailEntry("", false)
-            )
+            stateMachine.setUiState(R_CONTENT)
+        }
+        verify {
+            renderer.renderEmailEntry(WelcomeDataState(), false)
         }
     }
 
     @Test
     fun displaysValidStateOnValidEmail() {
         val email = "test@example.com"
-        val state = createState(WelcomeDataState(email))
+        val data = WelcomeDataState(email)
+        val state = createState(data)
 
         state.start(stateMachine)
 
         verify {
-            stateMachine.setUiState(
-                WelcomeUiState.EmailEntry(email, true)
-            )
+            stateMachine.setUiState(R_CONTENT)
+        }
+        verify {
+            renderer.renderEmailEntry(data, true)
         }
     }
 
@@ -54,9 +56,10 @@ internal class EmailEntryStateTest : BaseStateTest() {
         state.start(stateMachine)
 
         verify {
-            stateMachine.setUiState(
-                WelcomeUiState.EmailEntry(email, true)
-            )
+            stateMachine.setUiState(R_CONTENT)
+        }
+        verify {
+            renderer.renderEmailEntry(WelcomeDataState(email), true)
         }
     }
 
@@ -68,13 +71,12 @@ internal class EmailEntryStateTest : BaseStateTest() {
         state.start(stateMachine)
         state.process(WelcomeGesture.EmailChanged(email))
 
+        verify(exactly = 2) {
+            stateMachine.setUiState(R_CONTENT)
+        }
         verifyOrder {
-            stateMachine.setUiState(
-                WelcomeUiState.EmailEntry("", false)
-            )
-            stateMachine.setUiState(
-                WelcomeUiState.EmailEntry(email, true)
-            )
+            renderer.renderEmailEntry(WelcomeDataState(), false)
+            renderer.renderEmailEntry(WelcomeDataState(email), true)
         }
     }
 

@@ -1,7 +1,6 @@
 package com.motorro.statemachine.welcome.model.state
 
 import com.motorro.statemachine.welcome.data.WelcomeGesture
-import com.motorro.statemachine.welcome.data.WelcomeUiState
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -18,11 +17,14 @@ class TermsAndConditionsStateTest : BaseStateTest() {
 
         verify {
             stateMachine.setUiState(
-                WelcomeUiState.Welcome(
-                    message = greeting,
-                    termsAccepted = false,
-                    actionEnabled = false
-                )
+                R_CONTENT
+            )
+        }
+        verify {
+            renderer.renderTerms(
+                message = greeting,
+                termsAccepted = false,
+                nextEnabled = false
             )
         }
     }
@@ -32,20 +34,21 @@ class TermsAndConditionsStateTest : BaseStateTest() {
         state.start(stateMachine)
         state.process(WelcomeGesture.TermsAndConditionsToggled)
 
-        verifyOrder {
+        verify(exactly = 2) {
             stateMachine.setUiState(
-                WelcomeUiState.Welcome(
-                    message = greeting,
-                    termsAccepted = false,
-                    actionEnabled = false
-                )
+                R_CONTENT
             )
-            stateMachine.setUiState(
-                WelcomeUiState.Welcome(
-                    message = greeting,
-                    termsAccepted = true,
-                    actionEnabled = true
-                )
+        }
+        verifyOrder {
+            renderer.renderTerms(
+                message = greeting,
+                termsAccepted = false,
+                nextEnabled = false
+            )
+            renderer.renderTerms(
+                message = greeting,
+                termsAccepted = true,
+                nextEnabled = true
             )
         }
     }

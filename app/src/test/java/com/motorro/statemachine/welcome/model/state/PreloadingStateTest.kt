@@ -3,7 +3,6 @@
 package com.motorro.statemachine.welcome.model.state
 
 import com.motorro.statemachine.welcome.data.WelcomeGesture
-import com.motorro.statemachine.welcome.data.WelcomeUiState
 import com.motorro.statemachine.welcome.usecase.Preload
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -40,7 +39,10 @@ class PreloadingStateTest : BaseStateTest() {
         state.start(stateMachine)
 
         verify {
-            stateMachine.setUiState(WelcomeUiState.Loading)
+            stateMachine.setUiState(R_CONTENT)
+        }
+        verify {
+            renderer.renderPreloading()
         }
     }
 
