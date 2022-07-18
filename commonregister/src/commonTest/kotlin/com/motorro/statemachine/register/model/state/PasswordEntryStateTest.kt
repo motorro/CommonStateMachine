@@ -21,7 +21,7 @@ class PasswordEntryStateTest : BaseStateTest() {
     private fun createState(data: RegisterDataState = this.data) = PasswordEntryState(context, data)
 
     @Test
-    fun displaysNonValidStateOnEmptyPassword() {
+    fun displaysValidStateOnEmptyPasswordBeforeAction() {
         state = createState()
         state.start(stateMachine)
 
@@ -31,24 +31,48 @@ class PasswordEntryStateTest : BaseStateTest() {
         )
 
         assertEquals<List<Triple<RegisterDataState, String?, PasswordValidationError?>>>(
-            listOf(Triple(data, null, PasswordValidationError.PASSWORD_LENGTH)),
+            listOf(Triple(data, null, null)),
             context.renderer.passwordEntries
         )
     }
 
     @Test
-    fun displaysNonValidStateOnEmptyRetypePassword() {
-        val data = this.data.copy(password = password)
-        state = createState(data)
+    fun displaysNonValidStateOnEmptyPasswordAfterAction() {
+        state = createState()
         state.start(stateMachine)
+        state.process(RegisterGesture.Action)
 
         assertEquals<List<RegisterUiState>>(
-            listOf(R_CONTENT),
+            listOf(R_CONTENT, R_CONTENT),
             stateMachine.uiStates
         )
 
         assertEquals<List<Triple<RegisterDataState, String?, PasswordValidationError?>>>(
-            listOf(Triple(data, null, PasswordValidationError.PASSWORD_LENGTH)),
+            listOf(
+                Triple(data, null, null),
+                Triple(data, null, PasswordValidationError.PASSWORD_LENGTH)
+            ),
+            context.renderer.passwordEntries
+        )
+    }
+
+    @Test
+    fun displaysNonValidStateOnEmptyRetypePasswordAfterAction() {
+        val data = this.data.copy(password = password)
+        state = createState(data)
+        state.start(stateMachine)
+        state.process(RegisterGesture.Action)
+
+        assertEquals<List<RegisterUiState>>(
+            listOf(R_CONTENT, R_CONTENT),
+            stateMachine.uiStates
+        )
+
+        assertEquals<List<Triple<RegisterDataState, String?, PasswordValidationError?>>>(
+            listOf(
+                Triple(data, null, null),
+                Triple(data, null, PasswordValidationError.PASSWORD_LENGTH)
+            ),
             context.renderer.passwordEntries
         )
     }
@@ -64,8 +88,8 @@ class PasswordEntryStateTest : BaseStateTest() {
 
         assertEquals<List<Triple<RegisterDataState, String?, PasswordValidationError?>>>(
             listOf(
-                Triple(data, null, PasswordValidationError.PASSWORD_LENGTH),
-                Triple(data.copy(password = password), null, PasswordValidationError.PASSWORD_LENGTH),
+                Triple(data, null, null),
+                Triple(data.copy(password = password), null, null),
             ),
             context.renderer.passwordEntries
         )
@@ -82,49 +106,31 @@ class PasswordEntryStateTest : BaseStateTest() {
 
         assertEquals<List<Triple<RegisterDataState, String?, PasswordValidationError?>>>(
             listOf(
-                Triple(data, null, PasswordValidationError.PASSWORD_LENGTH),
-                Triple(data, password, PasswordValidationError.PASSWORD_LENGTH),
+                Triple(data, null, null),
+                Triple(data, password, null),
             ),
             context.renderer.passwordEntries
         )
     }
 
     @Test
-    fun displaysInvalidStateWhenPasswordsMismatch() {
+    fun displaysInvalidStateWhenPasswordsMismatchAfterAction() {
         val password2 = "password2"
         state = createState(data)
         state.start(stateMachine)
 
         state.process(RegisterGesture.PasswordChanged(password))
         state.process(RegisterGesture.RepeatPasswordChanged(password2))
+        state.process(RegisterGesture.Action)
 
-        assertEquals(3, stateMachine.uiStates.size)
+        assertEquals(4, stateMachine.uiStates.size)
 
         assertEquals<List<Triple<RegisterDataState, String?, PasswordValidationError?>>>(
             listOf(
-                Triple(data, null, PasswordValidationError.PASSWORD_LENGTH),
-                Triple(data.copy(password = password), null, PasswordValidationError.PASSWORD_LENGTH),
+                Triple(data, null, null),
+                Triple(data.copy(password = password), null, null),
+                Triple(data.copy(password = password), password2, null),
                 Triple(data.copy(password = password), password2, PasswordValidationError.PASSWORD_MISMATCH),
-            ),
-            context.renderer.passwordEntries
-        )
-    }
-
-    @Test
-    fun displaysValidStateWhenPasswordsMatch() {
-        state = createState(data)
-        state.start(stateMachine)
-
-        state.process(RegisterGesture.PasswordChanged(password))
-        state.process(RegisterGesture.RepeatPasswordChanged(password))
-
-        assertEquals(3, stateMachine.uiStates.size)
-
-        assertEquals<List<Triple<RegisterDataState, String?, PasswordValidationError?>>>(
-            listOf(
-                Triple(data, null, PasswordValidationError.PASSWORD_LENGTH),
-                Triple(data.copy(password = password), null, PasswordValidationError.PASSWORD_LENGTH),
-                Triple(data.copy(password = password), password, null),
             ),
             context.renderer.passwordEntries
         )

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="register_password_entry_title">Enter password for:</string>
+    <string name="register_password_entry_desc">Any password at least 6 chars long will do</string>
+    <string name="register_password_entry_label">Password</string>
+    <string name="register_repeat_password_entry_label">Repeat password</string>
+    <string name="register_password_entry_prev">Previous</string>
+    <string name="register_password_entry_next">Next</string>
+</resources>

@@ -1,6 +1,6 @@
 plugins {
-    id "com.android.application"
-    id "org.jetbrains.kotlin.android"
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
     id "org.jetbrains.kotlin.kapt"
     id "com.google.dagger.hilt.android"
 }
@@ -9,16 +9,11 @@ android {
     compileSdk androidCompileSdkVersion
 
     defaultConfig {
-        applicationId "com.motorro.statemachine"
         minSdk androidMinSdkVersion
         targetSdk androidTargetSdkVersion
-        versionCode versionCode
-        versionName versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary true
-        }
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -41,15 +36,6 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion libs.versions.compose.compiler.get()
     }
-    packagingOptions {
-        resources {
-            excludes += '/META-INF/{AL2.0,LGPL2.1}'
-        }
-    }
-}
-
-hilt {
-    enableAggregatingTask = true
 }
 
 dependencies {
@@ -57,15 +43,9 @@ dependencies {
     implementation project(path: ':commonapi')
     implementation project(path: ':commoncore')
     implementation project(path: ':androidcore')
-    implementation project(path: ':login')
-    implementation project(path: ':register')
+    api project(path: ':commonregister')
 
     coreLibraryDesugaring libs.desugaring
-
-    implementation libs.androidx.core
-    implementation libs.androidx.lifecycle.runtime
-    implementation libs.androidx.lifecycle.livedata
-    implementation libs.androidx.lifecycle.viewmodel
 
     implementation libs.kotlin.coroutines.core
     implementation libs.kotlin.coroutines.android

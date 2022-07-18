@@ -69,6 +69,7 @@ interface WelcomeStateFactory {
         renderer: WelcomeRenderer,
         private val createPreloading: PreloadingState.Factory,
         private val createLogin: LoginFlowState.Factory,
+        private val createRegister: RegistrationFlowState.Factory,
         private val createEmailCheck: EmailCheckState.Factory
     ) : WelcomeStateFactory {
 
@@ -127,7 +128,8 @@ interface WelcomeStateFactory {
          * @param data Data state
          */
         override fun registrationFlow(data: WelcomeDataState): CommonMachineState<WelcomeGesture, WelcomeUiState> {
-            TODO("Not yet implemented")
+            Timber.d("Creating 'Registration flow'...")
+            return createRegister(context, data)
         }
 
         /**

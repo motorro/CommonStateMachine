@@ -1,7 +1,7 @@
 package com.motorro.statemachine.register.model
 
 import com.motorro.statemachine.commoncore.resources.ResourceWrapper
-import com.motorro.statemachine.register.R
+import com.motorro.statemachine.commonregister.R
 import com.motorro.statemachine.register.data.PasswordValidationError
 import com.motorro.statemachine.register.data.PasswordValidationError.*
 

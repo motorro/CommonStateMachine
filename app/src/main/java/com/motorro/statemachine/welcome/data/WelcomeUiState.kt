@@ -1,6 +1,7 @@
 package com.motorro.statemachine.welcome.data
 
 import com.motorro.statemachine.login.data.LoginUiState
+import com.motorro.statemachine.register.data.RegisterUiState
 
 /**
  * Welcome flow UI state
@@ -10,7 +11,7 @@ sealed class WelcomeUiState {
     /**
      * Loading data...
      */
-    object Loading : com.motorro.statemachine.welcome.data.WelcomeUiState()
+    object Loading : WelcomeUiState()
 
     /**
      * Welcome page
@@ -22,7 +23,7 @@ sealed class WelcomeUiState {
         val message: String,
         val termsAccepted: Boolean,
         val actionEnabled: Boolean
-    ) : com.motorro.statemachine.welcome.data.WelcomeUiState()
+    ) : WelcomeUiState()
 
     /**
      * Email entry screen
@@ -32,22 +33,28 @@ sealed class WelcomeUiState {
     data class EmailEntry(
         val email: String,
         val actionEnabled: Boolean
-    ) : com.motorro.statemachine.welcome.data.WelcomeUiState()
+    ) : WelcomeUiState()
 
     /**
      * Login state wrapper
      * @property value Login UI state
      */
-    data class Login(val value: LoginUiState) : com.motorro.statemachine.welcome.data.WelcomeUiState()
+    data class Login(val value: LoginUiState) : WelcomeUiState()
+
+    /**
+     * Register state wrapper
+     * @property value Register UI state
+     */
+    data class Register(val value: RegisterUiState) : WelcomeUiState()
 
     /**
      * Registration complete screen
      * @property email Registered user's email
      */
-    data class Complete(val email: String) : com.motorro.statemachine.welcome.data.WelcomeUiState()
+    data class Complete(val email: String) : WelcomeUiState()
 
     /**
      * Registration wizard has terminated
      */
-    object Terminated : com.motorro.statemachine.welcome.data.WelcomeUiState()
+    object Terminated : WelcomeUiState()
 }

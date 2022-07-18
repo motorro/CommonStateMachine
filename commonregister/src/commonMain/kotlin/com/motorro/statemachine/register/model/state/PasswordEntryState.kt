@@ -28,6 +28,11 @@ class PasswordEntryState(
     private var repeatPassword: String? = null
 
     /**
+     * Validation is turned on only if user has submitted invalid data
+     */
+    private var validate: Boolean = false
+
+    /**
      * A part of [start] template to initialize state
      */
     override fun doStart() {
@@ -48,6 +53,9 @@ class PasswordEntryState(
         if (arePasswordsValid()) {
             Logger.d("Valid passwords. Transferring to credentials check")
             setMachineState(factory.registering(data))
+        } else {
+            validate = true
+            render()
         }
     }
 
@@ -67,7 +75,13 @@ class PasswordEntryState(
     }
 
     private fun render() {
-        setUiState(renderer.renderPasswordEntry(data, repeatPassword, getValidationError()))
+        setUiState(
+            renderer.renderPasswordEntry(
+                data,
+                repeatPassword,
+                getValidationError().takeIf { validate }
+            )
+        )
     }
 
     private fun arePasswordsValid(): Boolean = null == getValidationError()

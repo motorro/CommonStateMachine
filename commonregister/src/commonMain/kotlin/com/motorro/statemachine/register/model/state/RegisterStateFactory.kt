@@ -34,7 +34,7 @@ interface RegisterStateFactory {
     class Impl(
         host: WelcomeFeatureHost,
         renderer: RegistrationRenderer,
-        private val createRegistration: RegistrationState.Factory,
+        private val createRegistration: RegistrationState.Factory
     ) : RegisterStateFactory {
 
         private val context: RegisterContext = object : RegisterContext {
