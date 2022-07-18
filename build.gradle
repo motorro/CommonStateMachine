@@ -27,6 +27,10 @@ plugins {
 apply from: 'gradle/versioning.gradle'
 apply from: 'gradle/maven-publish-config.gradle'
 
+setVersion(buildVersionName())
+group = "com.motorro.commonstatemachine"
+setDescription("Multiplatform state machine for mobile applications")
+
 allprojects {
     ext {
         appId = 'com.vistajet.vjapp'

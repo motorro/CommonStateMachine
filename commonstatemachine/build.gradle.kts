@@ -29,8 +29,8 @@ val androidMinSdkVersion: Int by project.extra
 val androidTargetSdkVersion: Int by project.extra
 val androidCompileSdkVersion: Int by project.extra
 
-group = "com.motorro"
-version = versionName
+group = rootProject.group
+version = rootProject.version
 
 println("== Project version: $versionName ==")
 
@@ -147,7 +147,7 @@ val javadocJar by tasks.creating(Jar::class) {
 
 val libId = "commonstatemachine"
 val libName = "commonstatemachine"
-val libDesc = "Common multiplatform state machine"
+val libDesc = "Multiplatform state machine for mobile applications"
 val projectUrl: String by project.extra
 val projectScm: String by project.extra
 val ossrhUsername: String? by rootProject.extra
