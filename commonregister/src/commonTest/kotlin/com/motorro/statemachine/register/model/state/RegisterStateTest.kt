@@ -2,13 +2,13 @@
 
 package com.motorro.statemachine.register.model.state
 
+import com.motorro.statemachine.commonapi.welcome.data.GOOD
+import com.motorro.statemachine.commonapi.welcome.data.WelcomeDataState
 import com.motorro.statemachine.register.MockRegistration
 import com.motorro.statemachine.register.R_CONTENT
 import com.motorro.statemachine.register.data.RegisterDataState
 import com.motorro.statemachine.register.data.RegisterGesture
 import com.motorro.statemachine.register.data.RegisterUiState
-import com.motorro.statemachine.welcome.data.GOOD
-import com.motorro.statemachine.welcome.data.WelcomeDataState
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlin.test.AfterTest

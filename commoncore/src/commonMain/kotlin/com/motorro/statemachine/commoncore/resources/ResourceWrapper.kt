@@ -1,4 +1,4 @@
-package com.motorro.statemachine.commonapi.resources
+package com.motorro.statemachine.commoncore.resources
 
 /**
  * Wraps resource context

@@ -1,6 +1,6 @@
 package com.motorro.statemachine.login.model
 
-import com.motorro.statemachine.commonapi.resources.ResourceWrapper
+import com.motorro.statemachine.commoncore.resources.ResourceWrapper
 import com.motorro.statemachine.login.R
 import com.motorro.statemachine.login.data.LoginDataState
 import com.motorro.statemachine.login.data.LoginUiState

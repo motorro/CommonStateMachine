@@ -1,6 +1,6 @@
-package com.motorro.statemachine.welcome.model.state
+package com.motorro.statemachine.commonapi.welcome.model.state
 
-import com.motorro.statemachine.welcome.data.WelcomeDataState
+import com.motorro.statemachine.commonapi.welcome.data.WelcomeDataState
 
 
 /**

@@ -1,4 +1,4 @@
-package com.motorro.statemachine.commonapi.log
+package com.motorro.statemachine.commoncore.log
 
 actual object Logger {
     actual fun d(message: String?, vararg args: Any?) {

@@ -1,6 +1,6 @@
 package com.motorro.statemachine.welcome.model.state
 
-import com.motorro.statemachine.welcome.data.GOOD
+import com.motorro.statemachine.commonapi.welcome.data.GOOD
 import com.motorro.statemachine.welcome.data.WelcomeGesture
 import io.mockk.every
 import io.mockk.mockk

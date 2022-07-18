@@ -1,10 +1,10 @@
 package com.motorro.statemachine.login.usecase
 
-import com.motorro.statemachine.NETWORK_DELAY
-import com.motorro.statemachine.commonapi.coroutines.DispatcherProvider
+import com.motorro.statemachine.commonapi.NETWORK_DELAY
+import com.motorro.statemachine.commonapi.welcome.data.BAD
+import com.motorro.statemachine.commonapi.welcome.data.GOOD
+import com.motorro.statemachine.commoncore.coroutines.DispatcherProvider
 import com.motorro.statemachine.login.di.LoginScope
-import com.motorro.statemachine.welcome.data.BAD
-import com.motorro.statemachine.welcome.data.GOOD
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

@@ -4,7 +4,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.motorro.statemachine.compose.Loading
+import com.motorro.statemachine.androidcore.compose.Loading
 import com.motorro.statemachine.login.view.LoginScreen
 import com.motorro.statemachine.welcome.data.WelcomeGesture.*
 import com.motorro.statemachine.welcome.data.WelcomeUiState

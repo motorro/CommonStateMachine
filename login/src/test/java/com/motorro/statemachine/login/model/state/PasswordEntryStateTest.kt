@@ -1,9 +1,9 @@
 package com.motorro.statemachine.login.model.state
 
+import com.motorro.statemachine.commonapi.welcome.data.GOOD
+import com.motorro.statemachine.commonapi.welcome.data.WelcomeDataState
 import com.motorro.statemachine.login.data.LoginDataState
 import com.motorro.statemachine.login.data.LoginGesture
-import com.motorro.statemachine.welcome.data.GOOD
-import com.motorro.statemachine.welcome.data.WelcomeDataState
 import io.mockk.*
 import org.junit.Test
 

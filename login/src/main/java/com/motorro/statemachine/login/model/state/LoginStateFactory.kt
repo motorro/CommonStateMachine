@@ -1,10 +1,10 @@
 package com.motorro.statemachine.login.model.state
 
+import com.motorro.statemachine.commonapi.welcome.data.WelcomeDataState
+import com.motorro.statemachine.commonapi.welcome.model.state.WelcomeFeatureHost
 import com.motorro.statemachine.login.data.LoginDataState
 import com.motorro.statemachine.login.di.LoginScope
 import com.motorro.statemachine.login.model.LoginRenderer
-import com.motorro.statemachine.welcome.data.WelcomeDataState
-import com.motorro.statemachine.welcome.model.state.WelcomeFeatureHost
 import timber.log.Timber
 import javax.inject.Inject
 

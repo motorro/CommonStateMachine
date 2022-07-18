@@ -1,4 +1,4 @@
-package com.motorro.statemachine.commonapi.log
+package com.motorro.statemachine.commoncore.log
 
 import timber.log.Timber
 

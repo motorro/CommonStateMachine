@@ -2,12 +2,12 @@ package com.motorro.statemachine.login.model.state
 
 import androidx.annotation.CallSuper
 import com.motorro.commonstatemachine.CommonStateMachine
-import com.motorro.statemachine.commonapi.resources.ResourceWrapper
+import com.motorro.statemachine.commonapi.welcome.data.GOOD
+import com.motorro.statemachine.commonapi.welcome.model.state.WelcomeFeatureHost
+import com.motorro.statemachine.commoncore.resources.ResourceWrapper
 import com.motorro.statemachine.login.data.LoginGesture
 import com.motorro.statemachine.login.data.LoginUiState
 import com.motorro.statemachine.login.model.LoginRenderer
-import com.motorro.statemachine.welcome.data.GOOD
-import com.motorro.statemachine.welcome.model.state.WelcomeFeatureHost
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers

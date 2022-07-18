@@ -1,10 +1,10 @@
 package com.motorro.statemachine.register.model.state
 
-import com.motorro.statemachine.commonapi.log.Logger
+import com.motorro.statemachine.commonapi.welcome.data.WelcomeDataState
+import com.motorro.statemachine.commonapi.welcome.model.state.WelcomeFeatureHost
+import com.motorro.statemachine.commoncore.log.Logger
 import com.motorro.statemachine.register.data.RegisterDataState
 import com.motorro.statemachine.register.model.RegistrationRenderer
-import com.motorro.statemachine.welcome.data.WelcomeDataState
-import com.motorro.statemachine.welcome.model.state.WelcomeFeatureHost
 
 /**
  * Login flow state factory

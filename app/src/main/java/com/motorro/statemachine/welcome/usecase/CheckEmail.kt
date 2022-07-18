@@ -1,9 +1,9 @@
 package com.motorro.statemachine.welcome.usecase
 
-import com.motorro.statemachine.NETWORK_DELAY
-import com.motorro.statemachine.commonapi.coroutines.DispatcherProvider
-import com.motorro.statemachine.welcome.data.BAD
-import com.motorro.statemachine.welcome.data.GOOD
+import com.motorro.statemachine.commonapi.NETWORK_DELAY
+import com.motorro.statemachine.commonapi.welcome.data.BAD
+import com.motorro.statemachine.commonapi.welcome.data.GOOD
+import com.motorro.statemachine.commoncore.coroutines.DispatcherProvider
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext

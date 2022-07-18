@@ -1,4 +1,4 @@
-package com.motorro.statemachine.commonapi.coroutines
+package com.motorro.statemachine.commoncore.coroutines
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers

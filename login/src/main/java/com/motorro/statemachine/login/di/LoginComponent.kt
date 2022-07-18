@@ -1,6 +1,6 @@
 package com.motorro.statemachine.login.di
 
-import com.motorro.statemachine.welcome.model.state.WelcomeFeatureHost
+import com.motorro.statemachine.commonapi.welcome.model.state.WelcomeFeatureHost
 import dagger.BindsInstance
 import dagger.hilt.DefineComponent
 import dagger.hilt.components.SingletonComponent

@@ -1,6 +1,6 @@
 package com.motorro.statemachine.register.model.state
 
-import com.motorro.statemachine.commonapi.log.Logger
+import com.motorro.statemachine.commoncore.log.Logger
 import com.motorro.statemachine.register.data.PasswordValidationError
 import com.motorro.statemachine.register.data.PasswordValidationError.PASSWORD_LENGTH
 import com.motorro.statemachine.register.data.PasswordValidationError.PASSWORD_MISMATCH

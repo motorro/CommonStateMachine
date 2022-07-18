@@ -2,11 +2,12 @@ package com.motorro.statemachine.welcome.model.state
 
 import com.motorro.commonstatemachine.CommonMachineState
 import com.motorro.commonstatemachine.ProxyMachineState
+import com.motorro.statemachine.commonapi.welcome.data.WelcomeDataState
+import com.motorro.statemachine.commonapi.welcome.model.state.WelcomeFeatureHost
 import com.motorro.statemachine.login.data.LoginGesture
 import com.motorro.statemachine.login.data.LoginUiState
 import com.motorro.statemachine.login.di.LoginComponentBuilder
 import com.motorro.statemachine.login.di.LoginEntryPoint
-import com.motorro.statemachine.welcome.data.WelcomeDataState
 import com.motorro.statemachine.welcome.data.WelcomeGesture
 import com.motorro.statemachine.welcome.data.WelcomeUiState
 import dagger.hilt.EntryPoints

@@ -2,7 +2,9 @@ package com.motorro.statemachine.register
 
 import com.motorro.commonstatemachine.CommonMachineState
 import com.motorro.commonstatemachine.CommonStateMachine
-import com.motorro.statemachine.commonapi.resources.ResourceWrapper
+import com.motorro.statemachine.commonapi.welcome.data.WelcomeDataState
+import com.motorro.statemachine.commonapi.welcome.model.state.WelcomeFeatureHost
+import com.motorro.statemachine.commoncore.resources.ResourceWrapper
 import com.motorro.statemachine.register.data.PasswordValidationError
 import com.motorro.statemachine.register.data.RegisterDataState
 import com.motorro.statemachine.register.data.RegisterGesture
@@ -12,8 +14,6 @@ import com.motorro.statemachine.register.model.state.RegisterContext
 import com.motorro.statemachine.register.model.state.RegisterState
 import com.motorro.statemachine.register.model.state.RegisterStateFactory
 import com.motorro.statemachine.register.usecase.Registration
-import com.motorro.statemachine.welcome.data.WelcomeDataState
-import com.motorro.statemachine.welcome.model.state.WelcomeFeatureHost
 
 const val R_STRING = "string"
 val R_CONTENT = RegisterUiState.Loading

@@ -3,7 +3,7 @@ package com.motorro.statemachine.welcome.model.state
 import androidx.annotation.CallSuper
 import androidx.lifecycle.SavedStateHandle
 import com.motorro.commonstatemachine.CommonStateMachine
-import com.motorro.statemachine.commonapi.resources.ResourceWrapper
+import com.motorro.statemachine.commoncore.resources.ResourceWrapper
 import com.motorro.statemachine.welcome.data.WelcomeGesture
 import com.motorro.statemachine.welcome.data.WelcomeUiState
 import com.motorro.statemachine.welcome.model.WelcomeRenderer

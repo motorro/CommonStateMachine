@@ -2,7 +2,7 @@ package com.motorro.statemachine.welcome.model.state
 
 import androidx.lifecycle.SavedStateHandle
 import com.motorro.commonstatemachine.CommonMachineState
-import com.motorro.statemachine.welcome.data.WelcomeDataState
+import com.motorro.statemachine.commonapi.welcome.data.WelcomeDataState
 import com.motorro.statemachine.welcome.data.WelcomeGesture
 import com.motorro.statemachine.welcome.data.WelcomeUiState
 import com.motorro.statemachine.welcome.model.WelcomeRenderer

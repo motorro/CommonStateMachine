@@ -10,7 +10,7 @@ sealed class WelcomeUiState {
     /**
      * Loading data...
      */
-    object Loading : WelcomeUiState()
+    object Loading : com.motorro.statemachine.welcome.data.WelcomeUiState()
 
     /**
      * Welcome page
@@ -22,7 +22,7 @@ sealed class WelcomeUiState {
         val message: String,
         val termsAccepted: Boolean,
         val actionEnabled: Boolean
-    ) : WelcomeUiState()
+    ) : com.motorro.statemachine.welcome.data.WelcomeUiState()
 
     /**
      * Email entry screen
@@ -32,22 +32,22 @@ sealed class WelcomeUiState {
     data class EmailEntry(
         val email: String,
         val actionEnabled: Boolean
-    ) : WelcomeUiState()
+    ) : com.motorro.statemachine.welcome.data.WelcomeUiState()
 
     /**
      * Login state wrapper
      * @property value Login UI state
      */
-    data class Login(val value: LoginUiState) : WelcomeUiState()
+    data class Login(val value: LoginUiState) : com.motorro.statemachine.welcome.data.WelcomeUiState()
 
     /**
      * Registration complete screen
      * @property email Registered user's email
      */
-    data class Complete(val email: String) : WelcomeUiState()
+    data class Complete(val email: String) : com.motorro.statemachine.welcome.data.WelcomeUiState()
 
     /**
      * Registration wizard has terminated
      */
-    object Terminated : WelcomeUiState()
+    object Terminated : com.motorro.statemachine.welcome.data.WelcomeUiState()
 }

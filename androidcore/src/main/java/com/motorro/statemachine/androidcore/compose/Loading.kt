@@ -1,4 +1,4 @@
-package com.motorro.statemachine.compose
+package com.motorro.statemachine.androidcore.compose
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

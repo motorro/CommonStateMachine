@@ -1,6 +1,6 @@
 package com.motorro.statemachine.register.model.state
 
-import com.motorro.statemachine.commonapi.log.Logger
+import com.motorro.statemachine.commoncore.log.Logger
 import com.motorro.statemachine.register.data.RegisterDataState
 import com.motorro.statemachine.register.data.RegisterGesture
 import com.motorro.statemachine.register.usecase.Registration

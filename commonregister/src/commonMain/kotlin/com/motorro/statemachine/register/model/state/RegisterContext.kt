@@ -1,7 +1,7 @@
 package com.motorro.statemachine.register.model.state
 
+import com.motorro.statemachine.commonapi.welcome.model.state.WelcomeFeatureHost
 import com.motorro.statemachine.register.model.RegistrationRenderer
-import com.motorro.statemachine.welcome.model.state.WelcomeFeatureHost
 
 
 /**

@@ -1,4 +1,4 @@
-package com.motorro.statemachine
+package com.motorro.statemachine.commonapi
 
 /**
  * Network emulation delay

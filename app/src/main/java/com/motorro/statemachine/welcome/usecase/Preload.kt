@@ -1,9 +1,9 @@
 package com.motorro.statemachine.welcome.usecase
 
-import com.motorro.statemachine.NETWORK_DELAY
 import com.motorro.statemachine.R
-import com.motorro.statemachine.commonapi.coroutines.DispatcherProvider
-import com.motorro.statemachine.commonapi.resources.ResourceWrapper
+import com.motorro.statemachine.commonapi.NETWORK_DELAY
+import com.motorro.statemachine.commoncore.coroutines.DispatcherProvider
+import com.motorro.statemachine.commoncore.resources.ResourceWrapper
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext

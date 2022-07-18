@@ -1,7 +1,7 @@
 package com.motorro.statemachine.login.view
 
 import androidx.compose.runtime.Composable
-import com.motorro.statemachine.compose.Loading
+import com.motorro.statemachine.androidcore.compose.Loading
 import com.motorro.statemachine.login.data.LoginGesture
 import com.motorro.statemachine.login.data.LoginUiState
 
