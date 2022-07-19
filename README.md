@@ -18,6 +18,9 @@ Key features:
 - [Welcome](welcome) - multi-module example of user on-boarding flow
 
 ## Introduction
+Let's start with a basic example. Imagine we need to implement the classic master-detail view of
+items with the following screen flow:
+[![LCE flow]](doc/screenshots/flow.png)
 
 
 
