@@ -14,15 +14,13 @@
 plugins {
     id "com.android.application"
     id "org.jetbrains.kotlin.android"
-    id "org.jetbrains.kotlin.kapt"
-    id "com.google.dagger.hilt.android"
 }
 
 android {
     compileSdk androidCompileSdkVersion
 
     defaultConfig {
-        applicationId "com.motorro.statemachine.welcome"
+        applicationId "com.motorro.statemachine.lce"
         minSdk androidMinSdkVersion
         targetSdk androidTargetSdkVersion
         versionCode versionCode
@@ -61,17 +59,10 @@ android {
     }
 }
 
-hilt {
-    enableAggregatingTask = true
-}
-
 dependencies {
     implementation project(path: ':commonstatemachine')
-    implementation project(path: ':commonapi')
     implementation project(path: ':commoncore')
     implementation project(path: ':androidcore')
-    implementation project(path: ':login')
-    implementation project(path: ':register')
 
     coreLibraryDesugaring libs.desugaring
 
@@ -88,11 +79,6 @@ dependencies {
     implementation libs.compose.navigation
     implementation libs.compose.foundation
     implementation libs.compose.foundation.layouts
-
-    implementation libs.hilt.android
-    implementation libs.hilt.compose
-    kapt libs.hilt.compiler
-    kapt libs.hilt.compiler.androidx
 
     debugImplementation libs.compose.tooling
 

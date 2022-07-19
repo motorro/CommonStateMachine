@@ -12,7 +12,7 @@
   -->
 
 <resources>
-    <string name="app_name">StateMachine</string>
+    <string name="app_name">Welcome</string>
 
     <!-- region Welcome -->
     <string name="welcome_title">Welcome to StateMachine!</string>

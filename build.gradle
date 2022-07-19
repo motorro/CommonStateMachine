@@ -33,7 +33,6 @@ setDescription("Multiplatform state machine for mobile applications")
 
 allprojects {
     ext {
-        appId = 'com.vistajet.vjapp'
         versionCode = buildVersionCode()
         versionName = buildVersionName()
         androidBuildToolsVersion = '32.0.0'
@@ -101,7 +100,11 @@ task runLoginUnitTests(type: Task, dependsOn: [':login:testDebugUnitTest'], grou
     description 'Run unit tests for the login module.'
 }
 
-task runAppUnitTests(type: Task, dependsOn: [':app:testDebugUnitTest'], group: 'verification') {
+task runLceUnitTests(type: Task, dependsOn: [':lce:testDebugUnitTest'], group: 'verification') {
+    description 'Run unit tests for the app layer.'
+}
+
+task runWelcomeUnitTests(type: Task, dependsOn: [':welcome:testDebugUnitTest'], group: 'verification') {
     description 'Run unit tests for the app layer.'
 }
 
@@ -119,7 +122,8 @@ task runUnitTests(
                 'runStateMachineTests',
                 'runLoginUnitTests',
                 'runRegisterUnitTests',
-                'runAppUnitTests'
+                'runLceUnitTests',
+                'runWelcomeUnitTests'
         ],
         group: 'verification'
 ) {
