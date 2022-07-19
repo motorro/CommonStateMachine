@@ -20,7 +20,7 @@ Key features:
 ## Introduction
 Let's start with a basic example. Imagine we need to implement the classic master-detail view of
 items with the following screen flow:
-[![LCE flow](doc/screenshots/flow.png)]
+![LCE flow](doc/screenshots/flow.png)
 
 
 
