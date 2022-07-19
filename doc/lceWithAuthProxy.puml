@@ -1,0 +1,29 @@
+@startuml
+'https://plantuml.com/state-diagram
+
+scale 480 width
+[*] --> Menu
+
+state Menu
+Menu: Item ID to load
+Menu -down-> Loading : LoadGesture(itemId)
+
+state Loading {
+    state Status <<choice>>
+}
+Status -[#blue]-> AuthProxy : onAuth
+Status -left[#blue]-> Content : onContent
+
+state Content
+Content -up-> Menu: BackGesture
+
+state AuthProxy {
+    state Login
+    state Password
+
+    [*] -> Login
+    Login -> Password
+}
+AuthProxy -[#blue]-> Loading : onAuth
+AuthProxy --> [*] : ExitGesture
+@enduml
