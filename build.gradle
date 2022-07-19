@@ -101,11 +101,11 @@ task runLoginUnitTests(type: Task, dependsOn: [':login:testDebugUnitTest'], grou
 }
 
 task runLceUnitTests(type: Task, dependsOn: [':lce:testDebugUnitTest'], group: 'verification') {
-    description 'Run unit tests for the app layer.'
+    description 'Run unit tests for LCE app.'
 }
 
 task runWelcomeUnitTests(type: Task, dependsOn: [':welcome:testDebugUnitTest'], group: 'verification') {
-    description 'Run unit tests for the app layer.'
+    description 'Run unit tests for welcome app.'
 }
 
 
