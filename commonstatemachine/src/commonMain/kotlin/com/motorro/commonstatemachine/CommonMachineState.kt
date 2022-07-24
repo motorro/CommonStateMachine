@@ -22,12 +22,12 @@ open class CommonMachineState<G: Any, U : Any> {
     /**
      * Hosting state machine
      */
-    private var machine: CommonStateMachine<G, U>? = null
+    private var machine: MachineOutput<G, U>? = null
 
     /**
      * Starts state
      */
-    fun start(machine: CommonStateMachine<G, U>) {
+    fun start(machine: MachineOutput<G, U>) {
         this.machine = machine
         doStart()
     }
@@ -70,7 +70,7 @@ open class CommonMachineState<G: Any, U : Any> {
      * Ensures machine is set
      * @param block Block to run on machine
      */
-    private inline fun withMachine(block: (CommonStateMachine<G, U>) -> Unit) {
+    private inline fun withMachine(block: (MachineOutput<G, U>) -> Unit) {
         val machine = checkNotNull(machine) { "Can't update Machine while not active" }
         block(machine)
     }

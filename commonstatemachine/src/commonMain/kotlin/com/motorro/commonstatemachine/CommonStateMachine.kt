@@ -14,16 +14,10 @@
 package com.motorro.commonstatemachine
 
 /**
- * Common state machine
+ * Common state machine input - from the outside world to the current state
  * @param G UI gesture
- * @param U UI state
  */
-interface CommonStateMachine<G: Any, U: Any> {
-    /**
-     * Sets active machine state
-     */
-    fun setMachineState(machineState: CommonMachineState<G, U>)
-
+interface MachineInput<G: Any> {
     /**
      * Updates state with UI gesture
      * @param gesture UI gesture to proceed
@@ -31,15 +25,35 @@ interface CommonStateMachine<G: Any, U: Any> {
     fun process(gesture: G)
 
     /**
+     * Cleans-up and shuts down the state-machine
+     */
+    fun clear()
+}
+
+/**
+ * Common state machine output - from the current state to the outside world
+ * @param U UI state
+ */
+interface MachineOutput<G: Any, U: Any> {
+    /**
+     * Sets active machine state
+     * @param machineState State to transition to
+     */
+    fun setMachineState(machineState: CommonMachineState<G, U>)
+
+    /**
      * Updates UI state
      * @param uiState UI state
      */
     fun setUiState(uiState: U)
+}
 
-    /**
-     * Cleans-up state-machine
-     */
-    fun clear()
+/**
+ * Common state machine
+ * @param G UI gesture
+ * @param U UI state
+ */
+interface CommonStateMachine<G: Any, U: Any> : MachineInput<G>, MachineOutput<G, U> {
 
     /**
      * Base state-machine implementation
