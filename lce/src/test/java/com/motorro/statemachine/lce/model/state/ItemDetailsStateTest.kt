@@ -21,7 +21,7 @@ import kotlin.test.assertIs
 
 internal class ItemDetailsStateTest : BaseStateTest() {
     private val contents = "Contents"
-    private val state = ItemDetailsState(contents)
+    private val state = ContentState(contents)
 
     @Test
     fun displaysContentsOnStart() {

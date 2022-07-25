@@ -29,7 +29,7 @@ import java.io.IOException
  * @param id Item ID to load
  * @param defaultDispatcher Dispatcher to run load on (used for testing)
  */
-class ItemLoadingState(
+class LoadingState(
     @get:VisibleForTesting val id: ItemId,
     private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default
 ) : CoroutineState<LceGesture, LceUiState>() {
@@ -57,12 +57,12 @@ class ItemLoadingState(
 
     private fun toContent() {
         Timber.d("Data loaded: transferring to content...")
-        setMachineState(ItemDetailsState("Some item data..."))
+        setMachineState(ContentState("Some item data..."))
     }
 
     private fun toError() {
         Timber.d("Data load error: transferring to error...")
-        setMachineState(LoadErrorState(id, IOException("Failed to load item")))
+        setMachineState(ErrorState(id, IOException("Failed to load item")))
     }
 
     /**

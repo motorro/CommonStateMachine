@@ -23,7 +23,7 @@ import timber.log.Timber
  * Item list
  * Processes [LceGesture.ItemClicked] and transfers to loading state
  */
-class ItemListState : LceState() {
+class ItemListState : LceLogicalState() {
 
     private val items = listOf(
         ItemId.LOADS_CONTENT to "Item that loads",
@@ -49,7 +49,7 @@ class ItemListState : LceState() {
 
     private fun onItemClicked(id: ItemId) {
         Timber.d("Item clicked: transferring to loading...")
-        setMachineState(ItemLoadingState(id))
+        setMachineState(LoadingState(id))
     }
 
     private fun onBack() {

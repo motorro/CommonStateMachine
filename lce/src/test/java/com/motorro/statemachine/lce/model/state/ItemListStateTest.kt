@@ -38,7 +38,7 @@ class ItemListStateTest : BaseStateTest() {
         state.process(LceGesture.ItemClicked(ItemId.LOADS_CONTENT))
 
         verify {
-            stateMachine.setMachineState(withArg { assertIs<ItemLoadingState>(it) })
+            stateMachine.setMachineState(withArg { assertIs<LoadingState>(it) })
         }
     }
 

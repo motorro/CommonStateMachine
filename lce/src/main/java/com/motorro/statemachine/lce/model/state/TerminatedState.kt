@@ -19,7 +19,7 @@ import timber.log.Timber
 /**
  * Terminates activity
  */
-class TerminatedState : LceState() {
+class TerminatedState : LceLogicalState() {
     /**
      * A part of [start] template to initialize state
      */

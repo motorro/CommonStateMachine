@@ -2,11 +2,11 @@
 'https://plantuml.com/state-diagram
 
 scale 480 width
-[*] --> Menu
+[*] --> ItemList
 
-state Menu
-Menu: Item ID to load
-Menu -down-> Loading : LoadGesture(itemId)
+state ItemList
+ItemList: Item ID to load
+ItemList -down[#red]-> Loading : ItemClicked(itemId)
 
 state Loading {
     state Status <<choice>>
@@ -15,9 +15,11 @@ Status -[#blue]-> Error : onError
 Status -left[#blue]-> Content : onContent
 
 state Error
-Error --> Loading : RetryGesture
-Error --> [*] : ExitGesture
+Error -[#red]-> Loading : Retry
+Error -[#red]-> Terminated : Exit
 
 state Content
-Content -up-> Menu: BackGesture
+Content -up[#red]-> ItemList: Back
+
+state Terminated
 @enduml

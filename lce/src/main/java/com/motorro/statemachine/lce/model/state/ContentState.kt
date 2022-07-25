@@ -13,25 +13,22 @@
 
 package com.motorro.statemachine.lce.model.state
 
-import com.motorro.statemachine.lce.data.ItemId
 import com.motorro.statemachine.lce.data.LceGesture
 import com.motorro.statemachine.lce.data.LceUiState
 import timber.log.Timber
 
 /**
- * Item load error state
+ * Displays item details
  * Processes [LceGesture.Back] to transfer back to list
- * Processes [LceGesture.Retry] to retry load
- * Processes [LceGesture.Exit] to exit flow
- * @param error Load error
+ * @param contents Loaded contents
  */
-class LoadErrorState(private val failed: ItemId, private val error: Throwable) : LceState() {
+class ContentState(private val contents: String) : LceLogicalState() {
     /**
      * A part of [start] template to initialize state
      */
     override fun doStart() {
-        Timber.d("Displaying error...")
-        setUiState(LceUiState.Error(error))
+        Timber.d("Displaying content...")
+        setUiState(LceUiState.Item(contents))
     }
 
     /**
@@ -39,23 +36,11 @@ class LoadErrorState(private val failed: ItemId, private val error: Throwable) :
      */
     override fun doProcess(gesture: LceGesture) = when (gesture) {
         LceGesture.Back -> onBack()
-        LceGesture.Retry -> onRetry()
-        LceGesture.Exit -> onExit()
         else -> super.doProcess(gesture)
-    }
-
-    private fun onRetry() {
-        Timber.d("Retry: retrying load...")
-        setMachineState(ItemLoadingState(failed))
     }
 
     private fun onBack() {
         Timber.d("Back: returning to item list view...")
         setMachineState(ItemListState())
-    }
-
-    private fun onExit() {
-        Timber.d("Exit: Terminating flow...")
-        setMachineState(TerminatedState())
     }
 }

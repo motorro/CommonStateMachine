@@ -28,10 +28,10 @@ import org.junit.Test
 import kotlin.test.assertIs
 
 internal class ItemLoadingStateTest : BaseStateTest() {
-    private lateinit var state: ItemLoadingState
+    private lateinit var state: LoadingState
 
     private fun createState(itemId: ItemId) {
-        state = ItemLoadingState(itemId, Dispatchers.Main)
+        state = LoadingState(itemId, Dispatchers.Main)
     }
 
     @Before
@@ -65,7 +65,7 @@ internal class ItemLoadingStateTest : BaseStateTest() {
         state.start(stateMachine)
         advanceUntilIdle()
 
-        verify { stateMachine.setMachineState(withArg { assertIs<ItemDetailsState>(it) }) }
+        verify { stateMachine.setMachineState(withArg { assertIs<ContentState>(it) }) }
     }
 
     @Test
@@ -75,7 +75,7 @@ internal class ItemLoadingStateTest : BaseStateTest() {
         state.start(stateMachine)
         advanceUntilIdle()
 
-        verify { stateMachine.setMachineState(withArg { assertIs<LoadErrorState>(it) }) }
+        verify { stateMachine.setMachineState(withArg { assertIs<ErrorState>(it) }) }
     }
 
     @Test

@@ -21,7 +21,7 @@ import timber.log.Timber
 /**
  * Basic flow state
  */
-abstract class LceState : CommonMachineState<LceGesture, LceUiState>() {
+abstract class LceLogicalState : CommonMachineState<LceGesture, LceUiState>() {
     /**
      * A part of [process] template to process UI gesture
      */

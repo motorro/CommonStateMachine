@@ -24,7 +24,7 @@ import kotlin.test.assertIs
 
 internal class LoadErrorStateTest : BaseStateTest() {
     private val error = IOException()
-    private val state = LoadErrorState(ItemId.FAILS_WITH_ERROR, error)
+    private val state = ErrorState(ItemId.FAILS_WITH_ERROR, error)
 
     @Test
     fun displaysErrorOnStart() {
@@ -51,7 +51,7 @@ internal class LoadErrorStateTest : BaseStateTest() {
         verify {
             stateMachine.setMachineState(
                 withArg {
-                    assertIs<ItemLoadingState>(it)
+                    assertIs<LoadingState>(it)
                     assertEquals(ItemId.FAILS_WITH_ERROR, it.id)
                 }
             )

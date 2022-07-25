@@ -1,0 +1,43 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+hide empty members
+
+interface MachineInput<G> {
+    +process(gesture: G)
+    +clear()
+}
+
+interface MachineOutput<G, U> {
+    +setMachineState(machineState: CommonMachineState<G, U>)
+    +setUiState(uiState: U)
+}
+
+abstract class CommonMachineState<G, U> {
+        #doStart()
+        #doProcess(gesture: G)
+        #setUiState(uiState: U)
+        #setMachineState(machineState: CommonMachineState<G, U>)
+        #doClear()
+}
+CommonMachineState -up-> MachineOutput
+
+interface CommonStateMachine<G, U>
+CommonStateMachine -up-|> MachineInput
+CommonStateMachine -up-|> MachineOutput
+CommonStateMachine "1" o-left- "1" CommonMachineState : current
+
+class FlowStateMachine<G, U> {
+    +uiState: SharedFlow<U>
+}
+FlowStateMachine .up.> CommonStateMachine
+note left of FlowStateMachine
+    Some implementation that updates UI state
+    with a shared flow
+end note
+
+
+circle View
+View "ui state" <-up-> "gesture" FlowStateMachine
+
+@enduml
