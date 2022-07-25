@@ -13,7 +13,7 @@
 
 package com.motorro.statemachine.register.model.state
 
-import com.motorro.commonstatemachine.CoroutineState
+import com.motorro.commonstatemachine.coroutines.CoroutineState
 import com.motorro.statemachine.commoncore.log.Logger
 import com.motorro.statemachine.register.data.RegisterGesture
 import com.motorro.statemachine.register.data.RegisterUiState

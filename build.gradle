@@ -92,6 +92,10 @@ task runStateMachineTests(type: Task, dependsOn: [':commonstatemachine:allTests'
     description 'Run unit tests for the common state machine layer.'
 }
 
+task runCoroutinesTests(type: Task, dependsOn: [':coroutines:allTests'], group: 'verification') {
+    description 'Run unit tests for the coroutines extension layer.'
+}
+
 task runRegisterUnitTests(type: Task, dependsOn: [':commonregister:allTests'], group: 'verification') {
     description 'Run unit tests for the common register layer.'
 }
@@ -120,6 +124,7 @@ task runUnitTests(
         type: Task,
         dependsOn: [
                 'runStateMachineTests',
+                'runCoroutinesTests',
                 'runLoginUnitTests',
                 'runRegisterUnitTests',
                 'runLceUnitTests',

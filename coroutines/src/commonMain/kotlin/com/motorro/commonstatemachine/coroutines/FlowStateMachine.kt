@@ -11,8 +11,10 @@
  * limitations under the License.
  */
 
-package com.motorro.commonstatemachine
+package com.motorro.commonstatemachine.coroutines
 
+import com.motorro.commonstatemachine.CommonMachineState
+import com.motorro.commonstatemachine.CommonStateMachine
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow

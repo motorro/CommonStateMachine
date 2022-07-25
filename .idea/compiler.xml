@@ -24,6 +24,10 @@
       <module name="CommonStateMachine.commonstatemachine.jvmTest" target="1.8" />
       <module name="CommonStateMachine.commonstatemachine.main" target="11" />
       <module name="CommonStateMachine.commonstatemachine.test" target="11" />
+      <module name="CommonStateMachine.coroutines.commonMain" target="1.8" />
+      <module name="CommonStateMachine.coroutines.commonTest" target="1.8" />
+      <module name="CommonStateMachine.coroutines.jvmMain" target="1.8" />
+      <module name="CommonStateMachine.coroutines.jvmTest" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

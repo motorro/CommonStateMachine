@@ -13,7 +13,7 @@
 
 package com.motorro.statemachine.welcome.model.state
 
-import com.motorro.commonstatemachine.CoroutineState
+import com.motorro.commonstatemachine.coroutines.CoroutineState
 import com.motorro.statemachine.welcome.data.WelcomeGesture
 import com.motorro.statemachine.welcome.data.WelcomeUiState
 import timber.log.Timber

@@ -52,6 +52,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":commonstatemachine"))
+                implementation(project(":coroutines"))
                 implementation(project(":commoncore"))
                 implementation(project(":commonapi"))
                 implementation(libs.kotlin.coroutines.core)

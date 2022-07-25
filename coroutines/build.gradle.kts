@@ -72,15 +72,21 @@ kotlin {
         iosSimulatorArm64()
     ).forEach {
         it.binaries.framework {
-            baseName = "commonstatemachine"
+            baseName = "coroutines"
         }
     }
 
     sourceSets {
-        val commonMain by getting
+        val commonMain by getting {
+            dependencies {
+                implementation(project(":commonstatemachine"))
+                implementation(libs.kotlin.coroutines.core)
+            }
+        }
         val commonTest by getting {
             dependencies {
                 implementation(libs.test.kotlin)
+                implementation(libs.test.kotlin.coroutines)
             }
         }
         val jvmMain by getting
@@ -140,9 +146,9 @@ val javadocJar by tasks.creating(Jar::class) {
     from(tasks.dokkaHtml)
 }
 
-val libId = "commonstatemachine"
-val libName = "commonstatemachine"
-val libDesc = "Multiplatform state machine for mobile applications"
+val libId = "coroutines"
+val libName = "coroutines"
+val libDesc = "Coroutines extension for CommonStateMachine"
 val projectUrl: String by project.extra
 val projectScm: String by project.extra
 val ossrhUsername: String? by rootProject.extra

@@ -67,6 +67,7 @@ hilt {
 
 dependencies {
     implementation project(path: ':commonstatemachine')
+    implementation project(path: ':coroutines')
     implementation project(path: ':commonapi')
     implementation project(path: ':commoncore')
     implementation project(path: ':androidcore')

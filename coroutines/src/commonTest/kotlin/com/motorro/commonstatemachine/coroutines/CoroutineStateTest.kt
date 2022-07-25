@@ -13,7 +13,7 @@
 
 @file:OptIn(ExperimentalCoroutinesApi::class)
 
-package com.motorro.commonstatemachine
+package com.motorro.commonstatemachine.coroutines
 
 import kotlinx.coroutines.*
 import kotlinx.coroutines.test.StandardTestDispatcher

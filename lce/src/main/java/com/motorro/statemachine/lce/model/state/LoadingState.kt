@@ -14,7 +14,7 @@
 package com.motorro.statemachine.lce.model.state
 
 import androidx.annotation.VisibleForTesting
-import com.motorro.commonstatemachine.CoroutineState
+import com.motorro.commonstatemachine.coroutines.CoroutineState
 import com.motorro.statemachine.lce.data.ItemId
 import com.motorro.statemachine.lce.data.LceGesture
 import com.motorro.statemachine.lce.data.LceUiState

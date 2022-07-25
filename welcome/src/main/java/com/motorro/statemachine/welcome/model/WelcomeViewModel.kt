@@ -15,7 +15,7 @@ package com.motorro.statemachine.welcome.model
 
 import androidx.lifecycle.ViewModel
 import com.motorro.commonstatemachine.CommonMachineState
-import com.motorro.commonstatemachine.FlowStateMachine
+import com.motorro.commonstatemachine.coroutines.FlowStateMachine
 import com.motorro.statemachine.welcome.data.WelcomeGesture
 import com.motorro.statemachine.welcome.data.WelcomeUiState
 import com.motorro.statemachine.welcome.model.state.WelcomeStateFactory

@@ -48,8 +48,21 @@ version like that:
 dependencies {
     // Base state-machine components
     implementation "com.motorro.commonstatemachine:commonstatemachine:x.x.x"
-    // Coroutine extensions (in case you need them)
+    // Coroutine extensions (optional)
     implementation "com.motorro.commonstatemachine:coroutines:x.x.x"
+}
+```
+
+Multiplatform:
+
+```kotlin
+val commonMain by getting {
+    dependencies {
+      // Base state-machine components
+      implementation("com.motorro.commonstatemachine:commonstatemachine:x.x.x")
+      // Coroutine extensions (optional)
+      implementation("com.motorro.commonstatemachine:coroutines:x.x.x")
+    }
 }
 ```
 

@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/commoncore" />
             <option value="$PROJECT_DIR$/commonregister" />
             <option value="$PROJECT_DIR$/commonstatemachine" />
+            <option value="$PROJECT_DIR$/coroutines" />
             <option value="$PROJECT_DIR$/lce" />
             <option value="$PROJECT_DIR$/login" />
             <option value="$PROJECT_DIR$/register" />

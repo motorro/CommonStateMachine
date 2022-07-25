@@ -15,7 +15,7 @@ package com.motorro.statemachine.lce.model
 
 import androidx.lifecycle.ViewModel
 import com.motorro.commonstatemachine.CommonMachineState
-import com.motorro.commonstatemachine.FlowStateMachine
+import com.motorro.commonstatemachine.coroutines.FlowStateMachine
 import com.motorro.statemachine.lce.data.LceGesture
 import com.motorro.statemachine.lce.data.LceUiState
 import com.motorro.statemachine.lce.model.state.ItemListState

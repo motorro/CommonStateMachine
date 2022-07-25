@@ -13,7 +13,7 @@
 
 package com.motorro.statemachine.login.model.state
 
-import com.motorro.commonstatemachine.CoroutineState
+import com.motorro.commonstatemachine.coroutines.CoroutineState
 import com.motorro.statemachine.login.data.LoginGesture
 import com.motorro.statemachine.login.data.LoginUiState
 import timber.log.Timber

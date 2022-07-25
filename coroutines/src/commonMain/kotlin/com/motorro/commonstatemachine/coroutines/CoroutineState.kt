@@ -11,8 +11,9 @@
  * limitations under the License.
  */
 
-package com.motorro.commonstatemachine
+package com.motorro.commonstatemachine.coroutines
 
+import com.motorro.commonstatemachine.CommonMachineState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
