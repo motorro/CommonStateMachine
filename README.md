@@ -110,13 +110,10 @@ logical states:
 | -------------------- | --------- | ------------- | ---------- | -------------------------------- |
 | ItemList             | ItemList  | Back          | Terminated | Finishes activity                |
 |                      |           | ItemClicked   | Loading    | Loads requested item             |
-| -------------------- | ----------| ------------- | ---------- | -------------------------------- |
 | Loading              | Loading   | Back          | Item list  | Cancels load and returns to list |
 |                      |           | onContent     | Content    | Displays loaded item             | 
 |                      |           | onError       | Error      | Displays load error              |
-| -------------------- | ----------| ------------- | ---------- | -------------------------------- |
 | Content              | Item      | Back          | Item list  | Returns to the item list         |
-| -------------------- | ----------| ------------- | ---------- | -------------------------------- |
 | Error                | Error     | Back          | Item list  | Returns to the item list         |
 |                      |           | Retry         | Loading    | Retries load operation           |
 |                      |           | Exit          | Terminated | Finishes activity                |
