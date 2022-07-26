@@ -155,8 +155,23 @@ Methods:
 - `setUiState(uiState: U)` - Called by active state to update view.
 
 The concrete state machine implementation provides a way to update the view with a new UI state.
-For example the [FlowStateMachine](commonstatemachine/src/commonMain/kotlin/com/motorro/commonstatemachine/FlowStateMachine.kt)
-exports UI state changes through `uiState` shared flow.
+For example the [FlowStateMachine](coroutines/src/commonMain/kotlin/com/motorro/commonstatemachine/coroutines/FlowStateMachine.kt)
+exports UI state changes through `uiState` shared flow:
+
+```kotlin
+open class FlowStateMachine<G: Any, U: Any>(init: () -> CommonMachineState<G, U>) : CommonStateMachine.Base<G, U>(init) {
+  private val mediator = MutableSharedFlow<U>(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+
+  /**
+   * UI state
+   */
+  val uiState: SharedFlow<U> = mediator
+
+  final override fun setUiState(uiState: U) {
+    mediator.tryEmit(uiState)
+  }
+}
+```
 
 ### State
 
@@ -175,8 +190,18 @@ and two lifecycle methods:
 
 The state lives between `doStart` and `doClear` calls. You could safely call interaction methods
 and expect gesture processing calls within that period. Make sure to cleanup all your pending
-operations in `doClear` handler. For example, the [CoroutineState](commonstatemachine/src/commonMain/kotlin/com/motorro/commonstatemachine/CoroutineState.kt)
-provides you the `stateScope` coroutine scope that is being cancelled in `doClear`.
+operations in `doClear` handler. For example, the [CoroutineState](coroutines/src/commonMain/kotlin/com/motorro/commonstatemachine/coroutines/CoroutineState.kt)
+provides you the `stateScope` coroutine scope that is being cancelled in `doClear`:
+
+```kotlin
+abstract class CoroutineState<G: Any, U: Any>: CommonMachineState<G, U>() {
+  protected val stateScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+
+  override fun doClear() {
+    stateScope.cancel()
+  }
+}
+```
 
 ### Implementation
 
@@ -408,6 +433,322 @@ attempts to be as non-opinionated as possible. Each state is a black-box with a 
 developers may choose the most suitable tools to implement each one without affecting the other. The
 example above is a very basic one. However you could do things a bit more clean by using some of the 
 additional abstractions (see below).
+
+## Handy abstractions to mix-in
+
+In the basic example above all the work was done by the state objects. They did:
+
+- running a "network operation"
+- view-state data rendering
+- next state creation
+
+That is a quite a huge responsibility which might not be so good in terms of coupling and testing.
+So let's introduce some abstractions that will lift the burden off the state's shoulders.
+
+### Use-cases
+
+By use-case I assume any business logic external to your view logic implemented in a state. Be it 
+some network operation or some other "use-case" - provide it to your state and use them as you like.
+There is nothing new here - I'm sure you already use the approach in your flavour of 
+Clean Architecture or similar. Example of using an external use-case could be found in 
+[welcome example](login/src/main/java/com/motorro/statemachine/login/model/state/CredentialsCheckState.kt):
+
+```kotlin
+class CredentialsCheckState(private val checkCredentials: CheckCredentials) {
+
+    // State logic
+    
+    override fun doStart() {
+        stateScope.launch {
+            // Runs use-case 
+            val valid = checkCredentials()
+        }
+    }
+}
+```
+
+### View-state renderer
+
+Preparing the complex view-state from your state data might be a non-trivial task in applications
+with complex interface. Moving a coupling to the view-state and data structures from your state logic
+might be a good idea. Testing the exact view-state creation would be much easier if you make it 
+as more or less a clean function. Also your logic states may share the same rendering logic so 
+externalizing it would play greatly in terms of code reuse. For example the same view-state 
+rendering is used by [PasswordEntryState](login/src/main/java/com/motorro/statemachine/login/model/state/PasswordEntryState.kt)
+and [ErrorState](login/src/main/java/com/motorro/statemachine/login/model/state/ErrorState.kt) of 
+welcome example. You could inject your renderer in a state factory or get it from common context
+(see below).
+
+### State factories and dependency provision
+
+Creating new states explicitly to pass them to the state-machine later (like in the basic example)
+is not a good idea in terms of coupling and dependency provision. 
+
+The machine state, when created, may require three main classes of dependencies:
+
+- State-specific dependencies like use-cases state operates.
+- Inter-state data e.g. data loaded in a previous state, common data state, etc.
+- Common dependencies for all states in machine: renderers, resource providers, factories
+
+You are free to choose the way to provide dependencies however let's take a look at the approach
+that I came to while using the state-machine pattern.
+
+#### State-specific dependencies
+
+To provide dependencies that are specific to each particular state I go with dedicated state 
+factories that are injected with your DI framework. Let's take an [example above](#use-cases) and
+extend it with a state-factory:
+
+```kotlin
+class CredentialsCheckState(private val checkCredentials: CheckCredentials) {
+
+     // State logic
+
+    /**
+     * Dedicated state factory
+     */
+    @LoginScope
+    class Factory @Inject constructor(private val checkCredentials: CheckCredentials) {
+        operator fun invoke(): LoginState = CredentialsCheckState(
+            checkCredentials
+        )
+    }
+}
+```
+
+#### Inter-state data
+
+By inter-state data I assume any dynamic data that is passed between states. It may be a product of
+some calculation, user-generated data, etc. The most obvious way is providing it through the state 
+constructor:
+
+```kotlin
+class CredentialsCheckState(
+    private data: LoginDataState,
+    private val checkCredentials: CheckCredentials
+) {
+
+    /**
+     * Should have valid email at this point
+     */
+    private val email = requireNotNull(data.commonData.email) {
+        "Email is not provided"
+    }
+
+    /**
+     * Should have valid password at this point
+     */
+    private val password = requireNotNull(data.password) {
+        "Password is not provided"
+    }
+}
+```
+
+#### Dependencies common to all states of a state-machine
+
+Common dependencies may include renderers, state factories, common external interfaces and anything
+else that is required by all states that make up the state-machine. For convenience and to save the
+number of constructor params I suggest to bind them to some common interface and provide it as a 
+whole. Let's name it a common [Context](login/src/main/java/com/motorro/statemachine/login/model/state/LoginContext.kt):
+
+```kotlin
+interface LoginContext {
+    /**
+     * Common state factory (see below)
+     */
+    val factory: LoginStateFactory
+
+    /**
+     * External interface
+     */
+    val host: WelcomeFeatureHost
+
+    /**
+     * UI-state renderer
+     */
+    val renderer: LoginRenderer
+}
+```
+
+Than you could provide it to your state through the constructor parameters. To make things even
+easier let's make some [base state](login/src/main/java/com/motorro/statemachine/login/model/state/LoginState.kt)
+for the state-machine assembly and use a delegation to provide each context dependency:
+
+```kotlin
+abstract class LoginState(
+    context: LoginContext
+): CoroutineState<LoginGesture, LoginUiState>(), LoginContext by context {
+
+    override fun doProcess(gesture: LoginGesture) {
+        Timber.w("Unsupported gesture: %s", gesture)
+    }
+}
+```
+
+Thus every sub-class of the `LoginState` has any context dependency at hand by getting it from the 
+corresponding property as if the were provided explicitly:
+
+```kotlin
+class CredentialsCheckState(
+    context: LoginContext,
+    private val data: LoginDataState,
+    private val checkCredentials: CheckCredentials
+) : LoginState(context) {
+
+    override fun doStart() {
+        // Use a context-provided dependency
+        setUiState(renderer.renderLoading(data))
+    }
+
+    /**
+     * Factory updated to pass common context 
+     */
+    @LoginScope
+    class Factory @Inject constructor(private val checkCredentials: CheckCredentials) {
+        operator fun invoke(
+            context: LoginContext,
+            data: LoginDataState
+        ): LoginState = CredentialsCheckState(
+            context,
+            data,
+            checkCredentials
+        )
+    }
+}
+```
+
+#### Common state factory
+
+As I've already mentioned, creating new states explicitly to pass them to the state-machine later 
+(like in the basic example) is not a good idea in terms of coupling and dependency provision.
+
+Let's move it away from our machine states by introducing a common [factory interface](login/src/main/java/com/motorro/statemachine/login/model/state/LoginStateFactory.kt):
+that fill take the responsibility to provide dependencies and abstract our state creation logic:
+
+```kotlin
+interface LoginStateFactory {
+  /**
+   * Enter existing user password
+   * @param data Login data state
+   */
+  fun passwordEntry(data: LoginDataState): LoginState
+
+  /**
+   * Checks email/password
+   * @param data Data state
+   */
+  fun checking(data: LoginDataState): LoginState
+
+  /**
+   * Password error screen
+   */
+  fun error(data: LoginDataState, error: Throwable): LoginState
+}
+```
+
+Each factory method here will accept **only** the inter-state data providing both context and 
+state-specific dependencies implicitly. This will decouple state logic from the concrete 
+implementations and increase our [testability](login/src/test/java/com/motorro/statemachine/login/model/state/BaseStateTest.kt)
+greatly. 
+
+The exact factory implementation that binds together all data and dependencies will look like that:
+
+```kotlin
+@LoginScope
+class LoginStateFactoryImpl @Inject constructor(
+    host: WelcomeFeatureHost, // External interface
+    renderer: LoginRenderer, // Renderer
+    private val createCredentialsCheck: CredentialsCheckState.Factory // Concrete state factory
+) : LoginStateFactory {
+
+    // Dependencies common for each state provided through the context
+    private val context: LoginContext = object : LoginContext {
+        override val factory: LoginStateFactory = this@Impl
+        override val host: WelcomeFeatureHost = host
+        override val renderer: LoginRenderer = renderer
+    }
+
+    override fun passwordEntry(data: LoginDataState): LoginState {
+        // Create explicitly
+        return PasswordEntryState(context, data) 
+    }
+
+    override fun checking(data: LoginDataState): LoginState {
+        // Use provided state-factory
+        return createCredentialsCheck(context, data)
+    }
+
+    override fun error(data: LoginDataState, error: Throwable): LoginState {
+        // Create explicitly
+        return ErrorState(context, data, error)
+    }
+}
+```
+
+The factory is made available to your machine states through the common context:
+```kotlin
+class CredentialsCheckState(context: LoginContext) : LoginState(context) {
+    
+    // State logic...
+  
+    /**
+     * A part of [process] template to process UI gesture
+     */
+    override fun doProcess(gesture: LoginGesture) = when(gesture) {
+        LoginGesture.Back -> onBack()
+        else -> super.doProcess(gesture)
+    }
+
+    private fun onBack() {
+        // Use provided factory to create a new state
+        setMachineState(factory.passwordEntry(data))
+    }
+}
+```
+
+Then we could mock the factory in our tests and check state transitions:
+
+```kotlin
+class CredentialsCheckStateTest {
+    private val data = LoginDataState()
+    private val factory: LoginStateFactory = mockk()
+    private val passwordEntry: LoginState = mockk()
+
+    @Test
+    fun returnsToPasswordEntryOnBack() = runTest {
+      every { factory.passwordEntry(any()) } returns passwordEntry
+
+      state.start(stateMachine)
+      state.process(LoginGesture.Back)
+
+      verify { stateMachine.setMachineState(passwordEntry) }
+      verify { factory.passwordEntry(data) }
+    }
+}
+```
+
+We can also provide the state factory to the `ViewModel` and use it to initialize our state-machine:
+
+```kotlin
+@HiltViewModel
+class LoginViewModel @Inject constructor(private val factory: LoginStateFactory) : ViewModel() {
+
+    /**
+     * Creates initializing state
+     */
+    private fun initializeStateMachine(): CommonMachineState<WelcomeGesture, WelcomeUiState> {
+        // Obtain data required to start from a saved-state handle or injection
+        val commonData: LoginDataState = LoginDataState()
+        return factory.passwordEntry(commonData)
+    }    
+  
+    /**
+     * State machine
+     */
+    private val stateMachine = FlowStateMachine(::initializeStateMachine)
+}
+
+```
 
 
 
