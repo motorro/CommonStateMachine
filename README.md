@@ -156,11 +156,17 @@ For example the [FlowStateMachine](coroutines/src/commonMain/kotlin/com/motorro/
 exports UI state changes through `uiState` shared flow:
 
 ```kotlin
-open class FlowStateMachine<G: Any, U: Any>(init: () -> CommonMachineState<G, U>) : CommonStateMachine.Base<G, U>(init) {
-  private val mediator = MutableSharedFlow<U>(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+open class FlowStateMachine<G: Any, U: Any>(
+  init: () -> CommonMachineState<G, U>
+) : CommonStateMachine.Base<G, U>(init) {
+  
+  private val mediator = MutableSharedFlow<U>(
+    replay = 1, 
+    onBufferOverflow = BufferOverflow.DROP_OLDEST
+  )
 
   /**
-   * UI state
+   * ExportedUI state
    */
   val uiState: SharedFlow<U> = mediator
 
