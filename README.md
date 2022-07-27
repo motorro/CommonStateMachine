@@ -1,5 +1,42 @@
 # CommonStateMachine [![Check](https://github.com/motorro/CommonStateMachine/actions/workflows/check.yml/badge.svg?branch=master)](https://github.com/motorro/CommonStateMachine/actions/workflows/check.yml) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.motorro.commonstatemachine/commonstatemachine/badge.png)](https://repo1.maven.org/maven2/com/motorro/commonstatemachine/commonstatemachine/)
 
+## Contents
+<!-- toc -->
+
+- [Introduction](#introduction)
+- [Dependencies](#dependencies)
+- [Examples](#examples)
+- [The basic task - Load-Content-Error](#the-basic-task---load-content-error)
+  * [States and transitions](#states-and-transitions)
+  * [State machine](#state-machine)
+  * [State](#state)
+  * [Implementation](#implementation)
+    + [Item list state](#item-list-state)
+    + [Item loading state](#item-loading-state)
+    + [Item contents state](#item-contents-state)
+    + [Error state](#error-state)
+    + [Wiring with the application](#wiring-with-the-application)
+  * [Result](#result)
+- [Handy abstractions to mix-in](#handy-abstractions-to-mix-in)
+  * [Use-cases](#use-cases)
+  * [View-state renderer](#view-state-renderer)
+  * [State factories and dependency provision](#state-factories-and-dependency-provision)
+    + [State-specific dependencies](#state-specific-dependencies)
+    + [Inter-state data](#inter-state-data)
+    + [Dependencies common to all states of a state-machine](#dependencies-common-to-all-states-of-a-state-machine)
+    + [Common state factory](#common-state-factory)
+- [Multi-module applications](#multi-module-applications)
+  * [Common API](#common-api)
+  * [Module flow](#module-flow)
+  * [Adopting feature-flows](#adopting-feature-flows)
+    + [Gestures and view-states](#gestures-and-view-states)
+    + [View implementation](#view-implementation)
+    + [Adopting foreign state-flow](#adopting-foreign-state-flow)
+- [Conclusion](#conclusion)
+- [Note on multiplatform](#note-on-multiplatform)
+
+<!-- tocstop -->
+
 ## Introduction
 
 An MVI pattern of architecting modern applications has been getting more and more popular in the 
@@ -42,41 +79,6 @@ Key features:
 - Explicit `Back` gesture management with the total control of yours
 - Get rid of `SingleLiveEvent` for navigation, dialogs and even side-effects like toasts if you 
   like to by completely describing the current UI state.
-
-<!-- toc -->
-
-- [Dependencies](#dependencies)
-- [Examples](#examples)
-- [The basic task - Load-Content-Error](#the-basic-task---load-content-error)
-  * [States and transitions](#states-and-transitions)
-  * [State machine](#state-machine)
-  * [State](#state)
-  * [Implementation](#implementation)
-    + [Item list state](#item-list-state)
-    + [Item loading state](#item-loading-state)
-    + [Item contents state](#item-contents-state)
-    + [Error state](#error-state)
-    + [Wiring with the application](#wiring-with-the-application)
-  * [Result](#result)
-- [Handy abstractions to mix-in](#handy-abstractions-to-mix-in)
-  * [Use-cases](#use-cases)
-  * [View-state renderer](#view-state-renderer)
-  * [State factories and dependency provision](#state-factories-and-dependency-provision)
-    + [State-specific dependencies](#state-specific-dependencies)
-    + [Inter-state data](#inter-state-data)
-    + [Dependencies common to all states of a state-machine](#dependencies-common-to-all-states-of-a-state-machine)
-    + [Common state factory](#common-state-factory)
-- [Multi-module applications](#multi-module-applications)
-  * [Common API](#common-api)
-  * [Module flow](#module-flow)
-  * [Adopting feature-flows](#adopting-feature-flows)
-    + [Gestures and view-states](#gestures-and-view-states)
-    + [View implementation](#view-implementation)
-    + [Adopting foreign state-flow](#adopting-foreign-state-flow)
-- [Conclusion](#conclusion)
-- [Note on multiplatform](#note-on-multiplatform)
-
-<!-- tocstop -->
 
 ## Dependencies
 
