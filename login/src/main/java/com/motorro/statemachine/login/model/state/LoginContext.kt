@@ -20,7 +20,7 @@ import com.motorro.statemachine.login.model.LoginRenderer
 /**
  * Context for login flow
  */
-interface LoginContext {
+internal interface LoginContext {
     /**
      * State factory
      */

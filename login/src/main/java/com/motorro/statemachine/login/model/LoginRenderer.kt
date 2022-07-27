@@ -24,7 +24,7 @@ import javax.inject.Inject
  * Renders Login flow view states
  */
 @LoginScope
-class LoginRenderer @Inject constructor(resourceWrapper: ResourceWrapper): ResourceWrapper by resourceWrapper {
+internal class LoginRenderer @Inject constructor(resourceWrapper: ResourceWrapper): ResourceWrapper by resourceWrapper {
     /**
      * Renders password form
      */

@@ -1,0 +1,45 @@
+@startuml
+'https://plantuml.com/state-diagram
+
+scale 800 width
+[*] -right-> Terms
+
+state Terms
+Terms -right[#red]-> Email : Action
+
+state Email
+Email -down[#red]-> CheckEmail : Action
+
+state CheckEmail {
+    state Registered <<choice>>
+}
+Registered -down[#blue]-> Login : onExists
+Registered -down[#blue]-> Registration : onNew
+
+state Login {
+    [*] -> EnterPassword
+    state EnterPassword
+    EnterPassword -right[#red]-> CheckPassword : Action
+    state CheckPassword {
+        state Correct <<choice>>
+    }
+    Correct -down[#blue]-> PasswordError : onIncorrect
+    Correct -down[#blue]-> [*] : onCorrect
+    state PasswordError
+    PasswordError -up[#red]-> EnterPassword : Back
+}
+Login -down[#blue]-> Complete: onComplete
+Login -up[#red]-> Email: Back
+
+state Registration {
+    [*] -> CreatePassword
+    state CreatePassword
+    CreatePassword -down[#red]-> Register : Action
+    state Register
+    Register -down-> [*]
+}
+Registration -[#blue]> Complete: onComplete
+Registration -up[#red]-> Email: Back
+
+state Complete
+@enduml

@@ -19,8 +19,10 @@ Key advantages of MVI:
 - Unidirectional data flow
 - Thorough and complete testing of all logic with unit tests
 
-However (as with any technology) there are some downsides that you come across along with your app growth:
-- Too much of overkill for simple functions like LCE (Load/Content/Error) display
+However (as with any technology) there are some downsides that you come across along with your 
+app growth:
+
+- Too much overkill for simple functions like LCE (Load/Content/Error) display
 - Too much reducer logic based on if/else of the current data state which plays badly in complex 
   multi-step scenarios.
 - Quite a learning curve to grasp the technology
@@ -30,7 +32,7 @@ more freedom to choose technology and to build a cohesive logic and data process
 "less-opinionated" way.
 
 Key features:
-- [Well-known approach](https://en.wikipedia.org/wiki/Finite-state_machine) - nothing new :)
+- [Well-known approach](https://en.wikipedia.org/wiki/Finite-state_machine) - nothing new
 - **No restriction** on your coding approach, technology stack and style
 - A great way to isolate and test your logic - [low coupling and high cohesion](https://www.geeksforgeeks.org/software-engineering-coupling-and-cohesion/)
 - Should work well in kotlin-multiplatform projects
@@ -38,6 +40,8 @@ Key features:
 - Designed for [Jetpack Compose](https://developer.android.com/jetpack/compose) but it is not a restriction
 - May (if you like to) work as a navigation library
 - Explicit `Back` gesture management with the total control of yours
+- Get rid of `SingleLiveEvent` for navigation, dialogs and even side-effects like toasts if you 
+  like to by completely describing the current UI state.
 
 ## Dependencies
 
@@ -470,6 +474,12 @@ class CredentialsCheckState(private val checkCredentials: CheckCredentials) {
 }
 ```
 
+**Note on threading:** the library doesn't provide any threading support and not thread-safe. So it
+is your responsibility to implement correct thread handling so all state changes happen on 
+the desired thread. 
+[CoroutineState](coroutines/src/commonMain/kotlin/com/motorro/commonstatemachine/coroutines/CoroutineState.kt)
+creates it's scope with `Dispatchers.Main.immediate`.
+
 ### View-state renderer
 
 Preparing the complex view-state from your state data might be a non-trivial task in applications
@@ -752,6 +762,319 @@ class LoginViewModel @Inject constructor(private val factory: LoginStateFactory)
 }
 
 ```
+
+## Multi-module applications
+
+Let's take a more complicated example with a multi-screen flow like the [customer on-boarding](welcome).
+![Welcome flow](doc/screenshots/welcome/flow.png)
+The user is required to accept terms and conditions and to enter his email. Then the logic checks if 
+he is already registered or a new customer and runs the appropriate flow to login or to register 
+a user. Imagine we want the login flow and the registration flow to be in separate modules to split 
+the work between teams. The state diagram would be the following:
+![Welcome state diagram](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/motorro/CommonStateMachine/master/doc/welcomeState.puml)
+
+The project uses the following modules:
+
+* **welcome** - common flow: preloading, email entry, customer check, complete
+* **commoncore** - common abstractions to build application: dispatchers, resources, etc. 
+* **commonapi** - common multi-platform module to connect the main app with modules
+* **login** - login flow
+* **commonregister** - multi-platform registration logic
+* **register** - android view module for registration (separate because I've failed to implemented 
+  it in android source of `commonregister` due to some multiplatform misconfiguration)
+
+### Common API
+
+As you could see in the diagram above each `login` and `commonregister` start after the email is 
+checked and the answer to user's registration status is obtained. The module flow starts from
+password entry screen though a bit different. Each module flow returns to the main flow either:
+
+- when flow completes succefully - transfers to `Complete`
+- when user hits `Back` - transfers back to email entry
+
+Let's define the main flow interaction [API](commonapi/src/commonMain/kotlin/com/motorro/statemachine/commonapi/welcome/model/state/WelcomeFeatureHost.kt)
+then:
+```kotlin
+interface WelcomeFeatureHost {
+    /**
+     * Returns user to email entry screen
+     * @param data Common registration state data
+     */
+    fun backToEmailEntry(data: WelcomeDataState)
+
+    /**
+     * Authentication complete
+     * @param email Authenticated user's email
+     */
+    fun complete(email: String)
+}
+```
+
+We then place the definition to the module available to all modules: `commonapi` and provide the 
+interface through the common state context like this:
+```kotlin
+interface LoginContext {
+    /**
+     * Flow host
+     */
+    val host: WelcomeFeatureHost
+
+    // Other dependencies...
+}
+```
+
+### Module flow
+
+Each module has it's own sealed system of gesture/view-states:
+
+| Module name    | Gestures        | UI-states         |
+| -------------- | --------------- | ----------------- |
+| welcome        | WelcomeGesture  | WelcomeUiState    |
+| login          | LoginGesture    | LoginUiState      |
+| commonregister | RegisterGesture | RegisterUiState   |
+
+Each module is completely independent in terms of gestures and UI states, and we also have a 
+proprietary set of 'handy abstractions' for each module: renderers, factories, use-cases, etc. 
+See the source code for more details. Now that we have all module-flows designed and tested we need 
+to find a way to connect completely heterogeneous systems to a single flow.
+
+### Adopting feature-flows
+
+Given that gesture and view system are bound to state-machine through generics we need to build  
+some adapters to be able to run the flow within the main application state-flow. Things to do:
+
+- Adapt gestures so they are plugged-in to the `welcome` gesture flow.
+- Adapt view-states so the view-system could display them.
+- Somehow run the alien state-flow within the `welcome` state-machine.
+
+#### Gestures and view-states
+
+To adopt feature-module gestures there are at least two solutions:
+
+1. Get rid of sealed systems and inherit the common-api base marker interface for all gestures and
+   view-states. Though simple, the solution is not ideal as we lose the type-safe `when` exhaustive 
+   checks when we dispatch gestures in our states. So let's drop it...
+2. Make a wrapping adapter that wraps the foreign gesture/view-state and unwrap it later when 
+   passing them to concrete implementation. Thus we don't loose compiler support and type-safety.
+   Let's follow this route
+
+Gesture [adapter](welcome/src/main/java/com/motorro/statemachine/welcome/data/WelcomeGesture.kt):
+```kotlin
+sealed class WelcomeGesture {
+    // Native gestures...
+
+    /**
+     * Login flow gesture
+     * @property value Login flow gesture
+     */
+    data class Login(val value: LoginGesture) : WelcomeGesture()
+
+    /**
+     * Register flow gesture
+     * @property value Register flow gesture
+     */
+    data class Register(val value: RegisterGesture) : WelcomeGesture()
+}
+```
+
+UI-state [adapter](welcome/src/main/java/com/motorro/statemachine/welcome/data/WelcomeUiState.kt):
+```kotlin
+sealed class WelcomeUiState {
+    /**
+     * Login state wrapper
+     * @property value Login UI state
+     */
+    data class Login(val value: LoginUiState) : WelcomeUiState()
+
+    /**
+     * Register state wrapper
+     * @property value Register UI state
+     */
+    data class Register(val value: RegisterUiState) : WelcomeUiState()
+}
+```
+
+#### View implementation
+
+Now let's build feature and host composables to take advantage of our adapters. 
+
+Feature [master-view](login/src/main/java/com/motorro/statemachine/login/view/LoginScreen.kt):
+```kotlin
+@Composable
+fun LoginScreen(state: LoginUiState, onGesture: (LoginGesture) -> Unit) {
+    // Login screen rendering...
+}
+
+@Composable
+fun RegistrationScreen(state: RegisterUiState, onGesture: (RegisterGesture) -> Unit) {
+  // Registration screen rendering...
+}
+```
+
+Application [master-view](welcome/src/main/java/com/motorro/statemachine/welcome/view/WelcomeScreen.kt):
+```kotlin
+fun WelcomeScreen(onTerminate: @Composable () -> Unit) {
+    val model = hiltViewModel<WelcomeViewModel>()
+    val state = model.state.collectAsState(WelcomeUiState.Loading)
+
+    BackHandler(onBack = { model.process(Back) })
+
+    when (val uiState = state.value) {
+        
+        // Native ui-state rendering...
+
+        // Render login screens
+        is WelcomeUiState.Login -> LoginScreen(
+            state = uiState.value,
+            onGesture = { model.process(Login(it)) }
+        )
+      
+        // Render registration screens      
+        is WelcomeUiState.Register -> RegistrationScreen(
+            state = uiState.value,
+            onGesture = { model.process(Register(it))}
+        )
+    }
+}
+```
+
+To sum-up:
+
+1. We delegate rendering of ui-states to feature composables by unwrapping proprietary states from
+   common view-state system
+2. We wrap any feature gesture to our master-gesture system and pass them to our model to process.
+
+#### Adopting foreign state-flow
+
+The last thing we need to do to be able to run a feature module in our host system is to be able to
+run feature logical states in our application state machine. Remember we have bound both a gesture 
+system and the ui-state system to both our state-machine and machine-state:
+```kotlin
+/**
+ * Common state machine
+ * @param G UI gesture
+ * @param U UI state
+ */
+interface CommonStateMachine<G: Any, U: Any> : MachineInput<G>, MachineOutput<G, U>
+
+/**
+ * Common state-machine state
+ * @param G UI gesture
+ * @param U UI state
+ */
+open class CommonMachineState<G: Any, U : Any>
+```
+
+Seems like a problem but not really. Given that our states has a simple and clear state [lifecycle](#state)
+we could encapsulate the feature state-machine logic in our host state with a [ProxyMachineState](commonstatemachine/src/commonMain/kotlin/com/motorro/commonstatemachine/ProxyMachineState.kt)
+by running a _child_ state-machine inside the host state!
+
+![ProxyLifecycle](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/motorro/CommonStateMachine/master/doc/ProxyLifecycle.puml)
+
+Whenever a `ProxyMachineState` is started it launches it's internal instance of a state-machine 
+bound to the feature gesture and view system. It also bridges two incompatible gesture/view systems
+by wrapping/unwrapping and adopting one system to another. Let's see the example of a login flow
+[proxy](welcome/src/main/java/com/motorro/statemachine/welcome/model/state/LoginFlowState.kt) 
+to make things clear:
+
+```kotlin
+
+/**
+ * Proxy definition (for readability)
+ */
+private typealias LoginProxy = ProxyMachineState<
+        WelcomeGesture, // Host gesture system
+        WelcomeUiState, // Host ui-state system
+        LoginGesture,   // Feature gesture system
+        LoginUiState    // Feature ui-state system
+>
+
+class LoginFlowState(
+    private val context: WelcomeContext,
+    private val data: WelcomeDataState,
+    private val loginComponentBuilder: LoginComponentBuilder
+) : LoginProxy(), WelcomeFeatureHost {
+    /**
+     * Creates initial child state
+     */
+    override fun init(): CommonMachineState<LoginGesture, LoginUiState> {
+        val component = loginComponentBuilder.host(this).build()
+        val starter = EntryPoints.get(component, LoginEntryPoint::class.java).flowStarter()
+
+        return starter.start(data)
+    }
+
+    /**
+     * Maps child UI state to parent if relevant
+     * @param parent Parent gesture
+     * @return Mapped gesture or null if not applicable
+     */
+    override fun mapGesture(parent: WelcomeGesture): LoginGesture? = when (parent) {
+        is WelcomeGesture.Login -> parent.value   // Unwraps LoginGesture from host system
+        WelcomeGesture.Back -> LoginGesture.Back  // Translates from one system to another
+        else -> null                              // Ignores irrelevant gestures
+    }
+
+    /**
+     * Maps child UI state to parent
+     * @param child Child UI state
+     */
+    override fun mapUiState(child: LoginUiState): WelcomeUiState = WelcomeUiState.Login(child)
+
+    /**
+     * Returns user to email entry screen
+     * @param data Common registration state data
+     */
+    override fun backToEmailEntry(data: WelcomeDataState) {
+        setMachineState(context.factory.emailEntry(data))
+    }
+
+    /**
+     * Authentication complete
+     * @param email Authenticated user's email
+     */
+    override fun complete(email: String) {
+        setMachineState(context.factory.complete(email))
+    }
+}
+```
+
+To create a proxy you need to implement three core methods:
+
+- `init()` - creates a starting state for a proxy state-machine. We fetch a [FlowStarter](commonapi/src/commonMain/kotlin/com/motorro/statemachine/commonapi/welcome/model/state/FlowStarter.kt)
+  interface (which is just a feature state factory segregation) to create a starting state.
+- `mapGesture(parent: PG)` - maps a gesture from the parent system to the child system. You may 
+  unwrap the gesture we have implemented in the previous state, adopt one system to another as with
+  the `Back` gesture or discard irrelevant gesture by returning `null` from your implementation.
+- `mapUiState(child: CU)` - performs a transition from a child ui-state system to the host one. We
+  just wrap one into another as it is being consumed by feature module view as  
+  in [View implementation](#view-implementation)
+
+For our example project we provide the `WelcomeFeatureHost` interface to return back to email entry
+or to advance to `Complete` state as described in [Common Api](#common-api). The proxy implements 
+this interface by switching host machine to email or complete states in corresponding 
+`backToEmailEntry` and `complete` functions.
+
+## Conclusion
+
+I hope someone finds the article (and the library if you like to take it as-is) helpful in building
+complex multi-screen applications with multi-module ability. This approach aims to give you as much
+freedom as possible to implement your flows. Of cause it is not a silver bullet but the flexibility
+in structuring your app it promotes plays well in most scenarios. You could combine all your 
+application steps in a single state flow or build separate models and inject them to the parts of 
+your navigation library graph. And you could also use any architecture inside your states - simple
+coroutines to fetch the data, complex RxJava flows or even another MVI library in more complex cases.
+The library was created with multi-platform approach in mind as it contains no concrete platform
+dependencies and coroutines extentions are optional. So you may create your view logic once and 
+adopt it's output to your platform view components.
+
+## Note on multiplatform ##
+Although the logic for registration flow of `Welcome` app is made common,
+I've failed to implement registration view in `androidMain` source due to some Kotlin-multiplatform
+glitches or misconfiguration. The problem is Android sources fail to import common dependencies 
+from other common modules. If anyone could help me fixing that issue and moving `register` module
+to `commonregister` I'll much appreciate this. Also if someone would like to try building an iOS
+sample around `commonregister` module - that will be awesome!
 
 
 

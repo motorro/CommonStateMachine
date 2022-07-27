@@ -42,9 +42,9 @@ class RegistrationFlowState(
      */
     override fun init(): CommonMachineState<RegisterGesture, RegisterUiState> {
         val component = registerComponentBuilder.host(this).build()
-        val factory = EntryPoints.get(component, RegisterEntryPoint::class.java).factory()
+        val starter = EntryPoints.get(component, RegisterEntryPoint::class.java).flowStarter()
 
-        return factory.start(data)
+        return starter.start(data)
     }
 
     /**

@@ -13,14 +13,26 @@
 
 package com.motorro.statemachine.login.di
 
+import com.motorro.statemachine.commonapi.welcome.model.state.FlowStarter
+import com.motorro.statemachine.login.data.LoginGesture
+import com.motorro.statemachine.login.data.LoginUiState
 import com.motorro.statemachine.login.model.state.LoginStateFactory
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 
 @Module
 @InstallIn(LoginComponent::class)
-interface LoginModule {
+internal class LoginModule {
+    @Provides
+    @LoginScope
+    fun flowStarter(factory: LoginStateFactory): FlowStarter<LoginGesture, LoginUiState> = factory
+}
+
+@Module
+@InstallIn(LoginComponent::class)
+internal interface LoginBindingModule {
     @Binds
     @LoginScope
     fun factory(impl: LoginStateFactory.Impl): LoginStateFactory

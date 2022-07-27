@@ -24,7 +24,7 @@ import javax.inject.Inject
 /**
  * Emulates login operation
  */
-class CredentialsCheckState(
+internal class CredentialsCheckState(
     context: LoginContext,
     private val data: LoginDataState,
     private val checkCredentials: CheckCredentials

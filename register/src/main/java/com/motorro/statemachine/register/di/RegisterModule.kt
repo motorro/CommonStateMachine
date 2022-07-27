@@ -13,9 +13,12 @@
 
 package com.motorro.statemachine.register.di
 
+import com.motorro.statemachine.commonapi.welcome.model.state.FlowStarter
 import com.motorro.statemachine.commonapi.welcome.model.state.WelcomeFeatureHost
 import com.motorro.statemachine.commoncore.coroutines.DispatcherProvider
 import com.motorro.statemachine.commoncore.resources.ResourceWrapper
+import com.motorro.statemachine.register.data.RegisterGesture
+import com.motorro.statemachine.register.data.RegisterUiState
 import com.motorro.statemachine.register.model.RegistrationRenderer
 import com.motorro.statemachine.register.model.state.RegisterStateFactory
 import com.motorro.statemachine.register.model.state.RegistrationState
@@ -50,4 +53,8 @@ class RegisterModule {
         renderer,
         createRegistration
     )
+
+    @Provides
+    @RegisterScope
+    fun flowStarter(factory: RegisterStateFactory): FlowStarter<RegisterGesture, RegisterUiState> = factory
 }

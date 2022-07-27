@@ -51,6 +51,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation(project(":commonstatemachine"))
                 implementation(libs.kotlin.coroutines.core)
             }
         }

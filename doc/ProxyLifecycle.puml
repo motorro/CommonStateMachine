@@ -1,0 +1,42 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+control HostMachine
+boundary ProxyState
+control ProxyMachine
+participant FeatureState
+
+HostMachine -> ProxyState : start
+activate ProxyState
+
+create FeatureState
+ProxyState -> FeatureState : create
+
+create ProxyMachine
+ProxyState -> ProxyMachine : create
+activate ProxyMachine
+
+ProxyMachine -> FeatureState : start
+activate FeatureState
+
+HostMachine -> ProxyState : process
+ProxyState -> ProxyMachine : process
+ProxyMachine -> FeatureState : process
+
+... Some time later ...
+
+HostMachine -> ProxyState : clear
+ProxyState -> ProxyMachine : clear
+deactivate ProxyState
+ProxyMachine -> FeatureState : clear
+deactivate ProxyMachine
+deactivate FeatureState
+destroy FeatureState
+destroy ProxyMachine
+
+destroy ProxyState
+
+
+@enduml

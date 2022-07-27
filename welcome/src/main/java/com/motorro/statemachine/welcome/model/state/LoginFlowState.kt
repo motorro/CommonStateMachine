@@ -42,9 +42,9 @@ class LoginFlowState(
      */
     override fun init(): CommonMachineState<LoginGesture, LoginUiState> {
         val component = loginComponentBuilder.host(this).build()
-        val factory = EntryPoints.get(component, LoginEntryPoint::class.java).factory()
+        val starter = EntryPoints.get(component, LoginEntryPoint::class.java).flowStarter()
 
-        return factory.start(data)
+        return starter.start(data)
     }
 
     /**

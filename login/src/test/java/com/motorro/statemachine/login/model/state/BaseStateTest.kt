@@ -31,7 +31,7 @@ import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 
-open class BaseStateTest {
+internal open class BaseStateTest {
     protected val stateMachine: CommonStateMachine<LoginGesture, LoginUiState> = mockk(relaxed = true)
     protected val factory: LoginStateFactory = mockk()
     protected val host: WelcomeFeatureHost = mockk()

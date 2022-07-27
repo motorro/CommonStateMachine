@@ -11,23 +11,18 @@
  * limitations under the License.
  */
 
-package com.motorro.statemachine.login.model.state
+package com.motorro.statemachine.commonapi.welcome.model.state
 
-import com.motorro.commonstatemachine.coroutines.CoroutineState
-import com.motorro.statemachine.login.data.LoginGesture
-import com.motorro.statemachine.login.data.LoginUiState
-import timber.log.Timber
+import com.motorro.commonstatemachine.CommonMachineState
+import com.motorro.statemachine.commonapi.welcome.data.WelcomeDataState
 
 /**
- * Base class for login flow state
+ * Common interface to start feature-flow
  */
-internal abstract class LoginState(
-    context: LoginContext
-): CoroutineState<LoginGesture, LoginUiState>(), LoginContext by context {
+interface FlowStarter<G: Any, U: Any> {
     /**
-     * A part of [process] template to process UI gesture
+     * Creates a starting state
+     * @param data Common data state
      */
-    override fun doProcess(gesture: LoginGesture) {
-        Timber.w("Unsupported gesture: %s", gesture)
-    }
+    fun start(data: WelcomeDataState): CommonMachineState<G, U>
 }

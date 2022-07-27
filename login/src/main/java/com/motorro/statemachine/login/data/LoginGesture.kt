@@ -25,11 +25,11 @@ sealed class LoginGesture {
     /**
      * Go forward (default call to action)
      */
-    object Action: LoginGesture()
+    internal object Action: LoginGesture()
 
     /**
      * Password field changed
      * @property value Password value
      */
-    data class PasswordChanged(val value: String) : LoginGesture()
+    internal data class PasswordChanged(val value: String) : LoginGesture()
 }

@@ -13,9 +13,13 @@
 
 package com.motorro.statemachine.login.model.state
 
+import com.motorro.commonstatemachine.CommonMachineState
 import com.motorro.statemachine.commonapi.welcome.data.WelcomeDataState
+import com.motorro.statemachine.commonapi.welcome.model.state.FlowStarter
 import com.motorro.statemachine.commonapi.welcome.model.state.WelcomeFeatureHost
 import com.motorro.statemachine.login.data.LoginDataState
+import com.motorro.statemachine.login.data.LoginGesture
+import com.motorro.statemachine.login.data.LoginUiState
 import com.motorro.statemachine.login.di.LoginScope
 import com.motorro.statemachine.login.model.LoginRenderer
 import timber.log.Timber
@@ -24,12 +28,12 @@ import javax.inject.Inject
 /**
  * Login flow state factory
  */
-interface LoginStateFactory {
+internal interface LoginStateFactory : FlowStarter<LoginGesture, LoginUiState> {
     /**
      * Creates a starting state
      * @param data Common data state
      */
-    fun start(data: WelcomeDataState): LoginState = passwordEntry(LoginDataState(data))
+    override fun start(data: WelcomeDataState): CommonMachineState<LoginGesture, LoginUiState> = passwordEntry(LoginDataState(data))
 
     /**
      * Enter existing user password

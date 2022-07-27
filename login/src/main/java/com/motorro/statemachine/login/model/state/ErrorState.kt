@@ -20,7 +20,7 @@ import timber.log.Timber
 /**
  * Login error
  */
-class ErrorState(
+internal class ErrorState(
     context: LoginContext,
     private val data: LoginDataState,
     private val error: Throwable

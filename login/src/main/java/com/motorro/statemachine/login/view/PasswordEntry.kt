@@ -31,7 +31,7 @@ import com.motorro.statemachine.login.R
 import com.motorro.statemachine.login.data.LoginUiState
 
 @Composable
-fun PasswordEntry(
+internal fun PasswordEntry(
     state: LoginUiState.PasswordEntry,
     onPasswordChanged: (String) -> Unit,
     onPrevious: () -> Unit,

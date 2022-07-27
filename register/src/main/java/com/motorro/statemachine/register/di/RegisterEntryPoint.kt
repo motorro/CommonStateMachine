@@ -13,7 +13,9 @@
 
 package com.motorro.statemachine.register.di
 
-import com.motorro.statemachine.register.model.state.RegisterStateFactory
+import com.motorro.statemachine.commonapi.welcome.model.state.FlowStarter
+import com.motorro.statemachine.register.data.RegisterGesture
+import com.motorro.statemachine.register.data.RegisterUiState
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 
@@ -24,7 +26,7 @@ import dagger.hilt.InstallIn
 @InstallIn(RegisterComponent::class)
 interface RegisterEntryPoint {
     /**
-     * Register state factory
+     * Flow starter
      */
-    fun factory(): RegisterStateFactory
+    fun flowStarter(): FlowStarter<RegisterGesture, RegisterUiState>
 }

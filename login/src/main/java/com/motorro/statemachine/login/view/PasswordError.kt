@@ -26,7 +26,7 @@ import com.motorro.statemachine.login.R
 import com.motorro.statemachine.login.data.LoginUiState
 
 @Composable
-fun PasswordError(state: LoginUiState.LoginError, onDismiss: () -> Unit) {
+internal fun PasswordError(state: LoginUiState.LoginError, onDismiss: () -> Unit) {
 
     PasswordEntry(
         state = state.passwordEntry,

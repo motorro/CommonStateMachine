@@ -20,7 +20,7 @@ import timber.log.Timber
 /**
  * Password entry screen
  */
-class PasswordEntryState(
+internal class PasswordEntryState(
     context: LoginContext,
     private var data: LoginDataState
 ) : LoginState(context) {

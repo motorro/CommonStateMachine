@@ -13,7 +13,9 @@
 
 package com.motorro.statemachine.login.di
 
-import com.motorro.statemachine.login.model.state.LoginStateFactory
+import com.motorro.statemachine.commonapi.welcome.model.state.FlowStarter
+import com.motorro.statemachine.login.data.LoginGesture
+import com.motorro.statemachine.login.data.LoginUiState
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 
@@ -24,7 +26,7 @@ import dagger.hilt.InstallIn
 @InstallIn(LoginComponent::class)
 interface LoginEntryPoint {
     /**
-     * Login state factory
+     * Flow starter
      */
-    fun factory(): LoginStateFactory
+    fun flowStarter(): FlowStarter<LoginGesture, LoginUiState>
 }

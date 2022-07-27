@@ -26,7 +26,7 @@ import javax.inject.Inject
  * Emulates user's credentials check
  */
 @LoginScope
-class CheckCredentials @Inject constructor(private val dispatchers: DispatcherProvider) {
+internal class CheckCredentials @Inject constructor(private val dispatchers: DispatcherProvider) {
     /**
      * Tries to log-in user
      * @param email User to check

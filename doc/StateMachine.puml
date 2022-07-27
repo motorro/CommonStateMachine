@@ -14,11 +14,11 @@ interface MachineOutput<G, U> {
 }
 
 abstract class CommonMachineState<G, U> {
-        #doStart()
-        #doProcess(gesture: G)
-        #setUiState(uiState: U)
-        #setMachineState(machineState: CommonMachineState<G, U>)
-        #doClear()
+    #doStart()
+    #doProcess(gesture: G)
+    #setUiState(uiState: U)
+    #setMachineState(machineState: CommonMachineState<G, U>)
+    #doClear()
 }
 CommonMachineState -up-> MachineOutput
 

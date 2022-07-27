@@ -19,7 +19,7 @@ import com.motorro.statemachine.register.data.RegisterGesture
 import com.motorro.statemachine.register.data.RegisterUiState
 
 /**
- * Login screen flow
+ * Registration screen flow
  */
 @Composable
 fun RegistrationScreen(state: RegisterUiState, onGesture: (RegisterGesture) -> Unit) {
