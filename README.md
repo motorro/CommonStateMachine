@@ -43,6 +43,41 @@ Key features:
 - Get rid of `SingleLiveEvent` for navigation, dialogs and even side-effects like toasts if you 
   like to by completely describing the current UI state.
 
+<!-- toc -->
+
+- [Dependencies](#dependencies)
+- [Examples](#examples)
+- [The basic task - Load-Content-Error](#the-basic-task---load-content-error)
+  * [States and transitions](#states-and-transitions)
+  * [State machine](#state-machine)
+  * [State](#state)
+  * [Implementation](#implementation)
+    + [Item list state](#item-list-state)
+    + [Item loading state](#item-loading-state)
+    + [Item contents state](#item-contents-state)
+    + [Error state](#error-state)
+    + [Wiring with the application](#wiring-with-the-application)
+  * [Result](#result)
+- [Handy abstractions to mix-in](#handy-abstractions-to-mix-in)
+  * [Use-cases](#use-cases)
+  * [View-state renderer](#view-state-renderer)
+  * [State factories and dependency provision](#state-factories-and-dependency-provision)
+    + [State-specific dependencies](#state-specific-dependencies)
+    + [Inter-state data](#inter-state-data)
+    + [Dependencies common to all states of a state-machine](#dependencies-common-to-all-states-of-a-state-machine)
+    + [Common state factory](#common-state-factory)
+- [Multi-module applications](#multi-module-applications)
+  * [Common API](#common-api)
+  * [Module flow](#module-flow)
+  * [Adopting feature-flows](#adopting-feature-flows)
+    + [Gestures and view-states](#gestures-and-view-states)
+    + [View implementation](#view-implementation)
+    + [Adopting foreign state-flow](#adopting-foreign-state-flow)
+- [Conclusion](#conclusion)
+- [Note on multiplatform](#note-on-multiplatform)
+
+<!-- tocstop -->
+
 ## Dependencies
 
 The project has a very simple core to implement yourself but you could also grab the latest core
@@ -1075,6 +1110,3 @@ glitches or misconfiguration. The problem is Android sources fail to import comm
 from other common modules. If anyone could help me fixing that issue and moving `register` module
 to `commonregister` I'll much appreciate this. Also if someone would like to try building an iOS
 sample around `commonregister` module - that will be awesome!
-
-
-
