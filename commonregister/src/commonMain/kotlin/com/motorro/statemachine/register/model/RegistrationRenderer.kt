@@ -46,7 +46,7 @@ interface RegistrationRenderer {
             repeatPassword: String?,
             error: PasswordValidationError?
         ): RegisterUiState = RegisterUiState.PasswordEntry(
-            data.commonData.email.orEmpty(),
+            data.email,
             data.password.orEmpty(),
             repeatPassword.orEmpty(),
             error?.let(::getPasswordError)

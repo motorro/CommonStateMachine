@@ -837,13 +837,12 @@ interface WelcomeFeatureHost {
      * Returns user to email entry screen
      * @param data Common registration state data
      */
-    fun backToEmailEntry(data: WelcomeDataState)
+    fun backToEmailEntry()
 
     /**
      * Authentication complete
-     * @param email Authenticated user's email
      */
-    fun complete(email: String)
+    fun complete()
 }
 ```
 
@@ -1031,6 +1030,14 @@ class LoginFlowState(
     private val data: WelcomeDataState,
     private val loginComponentBuilder: LoginComponentBuilder
 ) : LoginProxy(), WelcomeFeatureHost {
+
+    /**
+     * Should have valid email at this point
+     */
+    private val email = requireNotNull(data.email) {
+      "Email is not provided"
+    }
+  
     /**
      * Creates initial child state
      */
@@ -1038,7 +1045,7 @@ class LoginFlowState(
         val component = loginComponentBuilder.host(this).build()
         val starter = EntryPoints.get(component, LoginEntryPoint::class.java).flowStarter()
 
-        return starter.start(data)
+        return starter.start(email)
     }
 
     /**

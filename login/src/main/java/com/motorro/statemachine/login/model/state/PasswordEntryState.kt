@@ -26,13 +26,6 @@ internal class PasswordEntryState(
 ) : LoginState(context) {
 
     /**
-     * Should have valid email at this point
-     */
-    private val email = requireNotNull(data.commonData.email) {
-        "Email is not provided"
-    }
-
-    /**
      * A part of [start] template to initialize state
      */
     override fun doStart() {
@@ -57,7 +50,7 @@ internal class PasswordEntryState(
 
     private fun onBack() {
         Timber.d("Returning to e-mail entry...")
-        host.backToEmailEntry(data.commonData)
+        host.backToEmailEntry()
     }
 
     private fun onPasswordChanged(gesture: LoginGesture.PasswordChanged) {

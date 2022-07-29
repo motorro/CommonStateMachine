@@ -16,7 +16,6 @@
 package com.motorro.statemachine.register.model.state
 
 import com.motorro.statemachine.commonapi.welcome.data.GOOD
-import com.motorro.statemachine.commonapi.welcome.data.WelcomeDataState
 import com.motorro.statemachine.register.R_CONTENT
 import com.motorro.statemachine.register.data.PasswordValidationError
 import com.motorro.statemachine.register.data.RegisterDataState
@@ -27,7 +26,7 @@ import kotlin.test.assertEquals
 
 class PasswordEntryStateTest : BaseStateTest() {
     private val password = "password"
-    private val data = RegisterDataState(WelcomeDataState(GOOD))
+    private val data = RegisterDataState(GOOD)
 
     private lateinit var state: PasswordEntryState
 
@@ -193,7 +192,7 @@ class PasswordEntryStateTest : BaseStateTest() {
         state.process(RegisterGesture.Back)
 
         assertEquals(
-            listOf(data.commonData),
+            1,
             host.backToEmails
         )
     }

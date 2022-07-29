@@ -30,7 +30,7 @@ internal class LoginRenderer @Inject constructor(resourceWrapper: ResourceWrappe
      */
     fun renderPassword(data: LoginDataState, isValid: Boolean): LoginUiState.PasswordEntry =
         LoginUiState.PasswordEntry(
-            data.commonData.email.orEmpty(),
+            data.email,
             data.password.orEmpty(),
             isValid
         )

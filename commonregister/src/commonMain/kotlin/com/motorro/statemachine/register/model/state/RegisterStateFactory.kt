@@ -14,7 +14,6 @@
 package com.motorro.statemachine.register.model.state
 
 import com.motorro.commonstatemachine.CommonMachineState
-import com.motorro.statemachine.commonapi.welcome.data.WelcomeDataState
 import com.motorro.statemachine.commonapi.welcome.model.state.FlowStarter
 import com.motorro.statemachine.commonapi.welcome.model.state.WelcomeFeatureHost
 import com.motorro.statemachine.commoncore.log.Logger
@@ -29,9 +28,9 @@ import com.motorro.statemachine.register.model.RegistrationRenderer
 interface RegisterStateFactory : FlowStarter<RegisterGesture, RegisterUiState> {
     /**
      * Creates a starting state
-     * @param data Common data state
+     * @param email Email to proceed with
      */
-    override fun start(data: WelcomeDataState): CommonMachineState<RegisterGesture, RegisterUiState> = passwordEntry(RegisterDataState(data))
+    override fun start(email: String): CommonMachineState<RegisterGesture, RegisterUiState> = passwordEntry(RegisterDataState(email))
 
     /**
      * Password entry screen

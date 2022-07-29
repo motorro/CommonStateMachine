@@ -15,12 +15,12 @@ package com.motorro.statemachine.welcome.model.state
 
 import com.motorro.commonstatemachine.CommonMachineState
 import com.motorro.commonstatemachine.ProxyMachineState
-import com.motorro.statemachine.commonapi.welcome.data.WelcomeDataState
 import com.motorro.statemachine.commonapi.welcome.model.state.WelcomeFeatureHost
 import com.motorro.statemachine.register.data.RegisterGesture
 import com.motorro.statemachine.register.data.RegisterUiState
 import com.motorro.statemachine.register.di.RegisterComponentBuilder
 import com.motorro.statemachine.register.di.RegisterEntryPoint
+import com.motorro.statemachine.welcome.data.WelcomeDataState
 import com.motorro.statemachine.welcome.data.WelcomeGesture
 import com.motorro.statemachine.welcome.data.WelcomeUiState
 import dagger.hilt.EntryPoints
@@ -37,6 +37,14 @@ class RegistrationFlowState(
     private val data: WelcomeDataState,
     private val registerComponentBuilder: RegisterComponentBuilder
 ) : RegistrationProxy(), WelcomeFeatureHost {
+
+    /**
+     * Should have valid email at this point
+     */
+    private val email = requireNotNull(data.email) {
+        "Email is not provided"
+    }
+
     /**
      * Creates initial child state
      */
@@ -44,7 +52,7 @@ class RegistrationFlowState(
         val component = registerComponentBuilder.host(this).build()
         val starter = EntryPoints.get(component, RegisterEntryPoint::class.java).flowStarter()
 
-        return starter.start(data)
+        return starter.start(email)
     }
 
     /**
@@ -66,9 +74,9 @@ class RegistrationFlowState(
 
     /**
      * Returns user to email entry screen
-     * @param data Common registration state data
+     * @param email Common registration state data
      */
-    override fun backToEmailEntry(data: WelcomeDataState) {
+    override fun backToEmailEntry() {
         Timber.d("Transferring to e-mail entry...")
         setMachineState(context.factory.emailEntry(data))
     }
@@ -77,7 +85,7 @@ class RegistrationFlowState(
      * Authentication complete
      * @param email Authenticated user's email
      */
-    override fun complete(email: String) {
+    override fun complete() {
         Timber.d("Transferring to complete screen...")
         setMachineState(context.factory.complete(email))
     }

@@ -14,7 +14,6 @@
 package com.motorro.statemachine.commonapi.welcome.model.state
 
 import com.motorro.commonstatemachine.CommonMachineState
-import com.motorro.statemachine.commonapi.welcome.data.WelcomeDataState
 
 /**
  * Common interface to start feature-flow
@@ -22,7 +21,7 @@ import com.motorro.statemachine.commonapi.welcome.data.WelcomeDataState
 interface FlowStarter<G: Any, U: Any> {
     /**
      * Creates a starting state
-     * @param data Common data state
+     * @param email Email to proceed with
      */
-    fun start(data: WelcomeDataState): CommonMachineState<G, U>
+    fun start(email: String): CommonMachineState<G, U>
 }

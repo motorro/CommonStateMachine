@@ -15,12 +15,12 @@ package com.motorro.statemachine.welcome.model.state
 
 import com.motorro.commonstatemachine.CommonMachineState
 import com.motorro.commonstatemachine.ProxyMachineState
-import com.motorro.statemachine.commonapi.welcome.data.WelcomeDataState
 import com.motorro.statemachine.commonapi.welcome.model.state.WelcomeFeatureHost
 import com.motorro.statemachine.login.data.LoginGesture
 import com.motorro.statemachine.login.data.LoginUiState
 import com.motorro.statemachine.login.di.LoginComponentBuilder
 import com.motorro.statemachine.login.di.LoginEntryPoint
+import com.motorro.statemachine.welcome.data.WelcomeDataState
 import com.motorro.statemachine.welcome.data.WelcomeGesture
 import com.motorro.statemachine.welcome.data.WelcomeUiState
 import dagger.hilt.EntryPoints
@@ -37,6 +37,14 @@ class LoginFlowState(
     private val data: WelcomeDataState,
     private val loginComponentBuilder: LoginComponentBuilder
 ) : LoginProxy(), WelcomeFeatureHost {
+
+    /**
+     * Should have valid email at this point
+     */
+    private val email = requireNotNull(data.email) {
+        "Email is not provided"
+    }
+
     /**
      * Creates initial child state
      */
@@ -44,7 +52,7 @@ class LoginFlowState(
         val component = loginComponentBuilder.host(this).build()
         val starter = EntryPoints.get(component, LoginEntryPoint::class.java).flowStarter()
 
-        return starter.start(data)
+        return starter.start(email)
     }
 
     /**
@@ -66,9 +74,8 @@ class LoginFlowState(
 
     /**
      * Returns user to email entry screen
-     * @param data Common registration state data
      */
-    override fun backToEmailEntry(data: WelcomeDataState) {
+    override fun backToEmailEntry() {
         Timber.d("Transferring to e-mail entry...")
         setMachineState(context.factory.emailEntry(data))
     }
@@ -77,7 +84,7 @@ class LoginFlowState(
      * Authentication complete
      * @param email Authenticated user's email
      */
-    override fun complete(email: String) {
+    override fun complete() {
         Timber.d("Transferring to complete screen...")
         setMachineState(context.factory.complete(email))
     }

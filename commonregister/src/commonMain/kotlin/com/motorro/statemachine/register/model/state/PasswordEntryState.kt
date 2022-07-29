@@ -29,13 +29,6 @@ class PasswordEntryState(
 ) : RegisterState(context) {
 
     /**
-     * Should have valid email at this point
-     */
-    private val email = requireNotNull(data.commonData.email) {
-        "Email is not provided"
-    }
-
-    /**
      * Local state - repeat password
      */
     private var repeatPassword: String? = null
@@ -74,7 +67,7 @@ class PasswordEntryState(
 
     private fun onBack() {
         Logger.d("Returning to e-mail entry...")
-        host.backToEmailEntry(data.commonData)
+        host.backToEmailEntry()
     }
 
     private fun onPasswordChanged(gesture: RegisterGesture.PasswordChanged) {

@@ -16,7 +16,6 @@
 package com.motorro.statemachine.register.model.state
 
 import com.motorro.statemachine.commonapi.welcome.data.GOOD
-import com.motorro.statemachine.commonapi.welcome.data.WelcomeDataState
 import com.motorro.statemachine.register.MockRegistration
 import com.motorro.statemachine.register.R_CONTENT
 import com.motorro.statemachine.register.data.RegisterDataState
@@ -30,7 +29,7 @@ import kotlin.test.assertEquals
 
 abstract class RegisterStateTest: BaseStateTest() {
     private val password = "password"
-    private val data = RegisterDataState(WelcomeDataState(GOOD), password)
+    private val data = RegisterDataState(GOOD, password)
 
     private val registration = MockRegistration()
     private lateinit var state: RegistrationState
@@ -70,7 +69,7 @@ abstract class RegisterStateTest: BaseStateTest() {
         advanceUntilIdle()
 
         assertEquals(
-            listOf(data.commonData.email),
+            1,
             host.completes
         )
     }
@@ -82,7 +81,7 @@ abstract class RegisterStateTest: BaseStateTest() {
         state.process(RegisterGesture.Back)
 
         assertEquals(
-            listOf(data.commonData),
+            1,
             host.backToEmails
         )
     }

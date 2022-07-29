@@ -29,13 +29,6 @@ class RegistrationState(
 ) : RegisterState(context) {
 
     /**
-     * Should have valid email at this point
-     */
-    private val email = requireNotNull(data.commonData.email) {
-        "Email is not provided"
-    }
-
-    /**
      * Should have valid password at this point
      */
     private val password = requireNotNull(data.password) {
@@ -49,9 +42,9 @@ class RegistrationState(
         setUiState(renderer.renderRegistration(data))
         Logger.d("Registering user...")
         stateScope.launch {
-            register(email, password)
+            register(data.email, password)
             Logger.d("Registered. Transferring to complete screen...")
-            host.complete(email)
+            host.complete()
         }
     }
 

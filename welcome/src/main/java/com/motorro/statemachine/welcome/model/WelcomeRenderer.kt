@@ -13,8 +13,8 @@
 
 package com.motorro.statemachine.welcome.model
 
-import com.motorro.statemachine.commonapi.welcome.data.WelcomeDataState
 import com.motorro.statemachine.commoncore.resources.ResourceWrapper
+import com.motorro.statemachine.welcome.data.WelcomeDataState
 import com.motorro.statemachine.welcome.data.WelcomeUiState
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject

@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package com.motorro.statemachine.commonapi.welcome.data
+package com.motorro.statemachine.welcome.data
 
 /**
  * Welcome data state

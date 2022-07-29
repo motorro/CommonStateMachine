@@ -14,7 +14,6 @@
 package com.motorro.statemachine.login.model.state
 
 import com.motorro.statemachine.commonapi.welcome.data.GOOD
-import com.motorro.statemachine.commonapi.welcome.data.WelcomeDataState
 import com.motorro.statemachine.login.data.LoginDataState
 import com.motorro.statemachine.login.data.LoginGesture
 import io.mockk.*
@@ -23,7 +22,7 @@ import org.junit.Test
 internal class PasswordEntryStateTest : BaseStateTest() {
 
     private fun createState(
-        data: LoginDataState = LoginDataState(WelcomeDataState(GOOD))
+        data: LoginDataState = LoginDataState(GOOD)
     ) = PasswordEntryState(
         context,
         data
@@ -31,7 +30,7 @@ internal class PasswordEntryStateTest : BaseStateTest() {
 
     @Test
     fun displaysNonValidStateOnEmptyPassword() {
-        val data = LoginDataState(WelcomeDataState(GOOD))
+        val data = LoginDataState(GOOD)
         val state = createState()
 
         state.start(stateMachine)
@@ -47,7 +46,7 @@ internal class PasswordEntryStateTest : BaseStateTest() {
     @Test
     fun displaysValidStateOnValidPassword() {
         val password = "password"
-        val data = LoginDataState(WelcomeDataState(GOOD), password)
+        val data = LoginDataState(GOOD, password)
         val state = createState(data)
 
         state.start(stateMachine)
@@ -63,7 +62,7 @@ internal class PasswordEntryStateTest : BaseStateTest() {
     @Test
     fun updatesPassword() {
         val password = "password"
-        val data = LoginDataState(WelcomeDataState(GOOD), "")
+        val data = LoginDataState(GOOD, "")
         val state = createState(data)
 
         state.start(stateMachine)
@@ -82,7 +81,7 @@ internal class PasswordEntryStateTest : BaseStateTest() {
     @Test
     fun transfersToCheckIfValid() {
         val password = "password"
-        val data = LoginDataState(WelcomeDataState(GOOD), password)
+        val data = LoginDataState(GOOD, password)
         val state = createState(data)
         val checking: LoginState = mockk()
         every { factory.checking(any()) } returns checking
@@ -97,7 +96,7 @@ internal class PasswordEntryStateTest : BaseStateTest() {
     @Test
     fun doesNotTransferToCheckIfNotValid() {
         val password = ""
-        val data = LoginDataState(WelcomeDataState(GOOD), password)
+        val data = LoginDataState(GOOD, password)
         val state = createState(data)
 
         state.start(stateMachine)
@@ -109,13 +108,13 @@ internal class PasswordEntryStateTest : BaseStateTest() {
 
     @Test
     fun returnsToEmailEntryOnBack() {
-        val data = LoginDataState(WelcomeDataState(GOOD))
-        every { host.backToEmailEntry(any()) } just Runs
+        val data = LoginDataState(GOOD)
+        every { host.backToEmailEntry() } just Runs
         val state = createState()
 
         state.start(stateMachine)
         state.process(LoginGesture.Back)
 
-        verify { host.backToEmailEntry(data.commonData) }
+        verify { host.backToEmailEntry() }
     }
 }

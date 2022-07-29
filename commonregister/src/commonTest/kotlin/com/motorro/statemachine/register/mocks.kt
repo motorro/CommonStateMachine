@@ -15,7 +15,6 @@ package com.motorro.statemachine.register
 
 import com.motorro.commonstatemachine.CommonMachineState
 import com.motorro.commonstatemachine.CommonStateMachine
-import com.motorro.statemachine.commonapi.welcome.data.WelcomeDataState
 import com.motorro.statemachine.commonapi.welcome.model.state.WelcomeFeatureHost
 import com.motorro.statemachine.commoncore.resources.ResourceWrapper
 import com.motorro.statemachine.register.data.PasswordValidationError
@@ -79,15 +78,15 @@ class MockContext : RegisterContext {
 }
 
 class MockHost : WelcomeFeatureHost {
-    val backToEmails = mutableListOf<WelcomeDataState>()
-    val completes = mutableListOf<String>()
+    var backToEmails = 0
+    var completes = 0
 
-    override fun backToEmailEntry(data: WelcomeDataState) {
-        backToEmails.add(data)
+    override fun backToEmailEntry() {
+        ++backToEmails
     }
 
-    override fun complete(email: String) {
-        completes.add(email)
+    override fun complete() {
+        ++completes
     }
 }
 

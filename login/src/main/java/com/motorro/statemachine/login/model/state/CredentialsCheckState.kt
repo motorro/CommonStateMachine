@@ -31,13 +31,6 @@ internal class CredentialsCheckState(
 ) : LoginState(context) {
 
     /**
-     * Should have valid email at this point
-     */
-    private val email = requireNotNull(data.commonData.email) {
-        "Email is not provided"
-    }
-
-    /**
      * Should have valid password at this point
      */
     private val password = requireNotNull(data.password) {
@@ -51,10 +44,10 @@ internal class CredentialsCheckState(
         setUiState(renderer.renderLoading(data))
         Timber.d("Checking for user credentials...")
         stateScope.launch {
-            val valid = checkCredentials(email, password)
+            val valid = checkCredentials(data.email, password)
             if (valid) {
                 Timber.d("Correct credentials. Transferring to complete screen...")
-                host.complete(email)
+                host.complete()
             } else {
                 Timber.w("Login error. Transferring to error screen...")
                 setMachineState(factory.error(data, IllegalArgumentException("Wrong username or password")))

@@ -16,7 +16,6 @@
 package com.motorro.statemachine.login.model.state
 
 import com.motorro.statemachine.commonapi.welcome.data.GOOD
-import com.motorro.statemachine.commonapi.welcome.data.WelcomeDataState
 import com.motorro.statemachine.login.data.LoginDataState
 import com.motorro.statemachine.login.data.LoginGesture
 import com.motorro.statemachine.login.usecase.CheckCredentials
@@ -30,7 +29,7 @@ import kotlin.test.assertTrue
 
 internal class CredentialsCheckStateTest : BaseStateTest() {
     private val password = "password"
-    private val data = LoginDataState(WelcomeDataState(GOOD), password)
+    private val data = LoginDataState(GOOD, password)
 
     private val checkCredentials: CheckCredentials = mockk()
     private lateinit var state: CredentialsCheckState
@@ -40,7 +39,7 @@ internal class CredentialsCheckStateTest : BaseStateTest() {
     init {
         every { factory.passwordEntry(any()) } returns passwordEntry
         every { factory.error(any(), any()) } returns error
-        every { host.complete(any()) } just Runs
+        every { host.complete() } just Runs
     }
 
     override fun before() {
@@ -75,7 +74,7 @@ internal class CredentialsCheckStateTest : BaseStateTest() {
         state.start(stateMachine)
         advanceUntilIdle()
 
-        verify { host.complete(GOOD) }
+        verify { host.complete() }
         coVerify { checkCredentials(GOOD, password) }
     }
 
