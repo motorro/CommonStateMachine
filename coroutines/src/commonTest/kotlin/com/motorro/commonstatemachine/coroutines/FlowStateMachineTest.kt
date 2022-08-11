@@ -15,9 +15,9 @@
 
 package com.motorro.commonstatemachine.coroutines
 
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -28,10 +28,10 @@ class FlowStateMachineTest {
     private val stateMachine = FlowStateMachine { state }
 
     @Test
-    fun updatesUiStateCollector() = runTest {
+    fun updatesUiStateCollector() = runTest(UnconfinedTestDispatcher()) {
 
         val values = mutableListOf<Int>()
-        val collectJob = launch(UnconfinedTestDispatcher()) {
+        val collectJob = launch {
             stateMachine.uiState.toList(values)
         }
 
@@ -48,13 +48,13 @@ class FlowStateMachineTest {
     }
 
     @Test
-    fun updatesLateUiStateCollector() = runTest {
+    fun updatesLateUiStateCollector() = runTest(UnconfinedTestDispatcher()) {
         state.doSetUiState(1)
         state.doSetUiState(2)
         state.doSetUiState(3)
 
         val values = mutableListOf<Int>()
-        val collectJob = launch(UnconfinedTestDispatcher()) {
+        val collectJob = launch {
             stateMachine.uiState.toList(values)
         }
 
@@ -62,5 +62,21 @@ class FlowStateMachineTest {
         assertEquals(1, values.size)
 
         collectJob.cancel()
+    }
+
+    @Test
+    fun notifiesOnActiveAndInactive() = runTest(UnconfinedTestDispatcher()) {
+        val activeScope = CoroutineScope(SupervisorJob() + UnconfinedTestDispatcher())
+        stateMachine.mapUiSubscriptions(activeScope, onActive = { 1 }, onInactive = { 2 })
+
+        assertEquals(listOf(2), state.processed)
+
+        val collectJob = launch {
+            stateMachine.uiState.collect()
+        }
+        collectJob.cancel()
+        activeScope.cancel()
+
+        assertEquals(listOf(2, 1, 2), state.processed)
     }
 }

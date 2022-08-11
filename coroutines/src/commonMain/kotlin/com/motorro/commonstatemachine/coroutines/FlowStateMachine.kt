@@ -15,9 +15,9 @@ package com.motorro.commonstatemachine.coroutines
 
 import com.motorro.commonstatemachine.CommonMachineState
 import com.motorro.commonstatemachine.CommonStateMachine
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.*
 
 /**
  * State machine that emits UI state as Flow
@@ -35,7 +35,12 @@ open class FlowStateMachine<G: Any, U: Any>(init: () -> CommonMachineState<G, U>
     /**
      * UI state
      */
-    val uiState: SharedFlow<U> = mediator
+    val uiState: SharedFlow<U> = mediator.asSharedFlow()
+
+    /**
+     * Subscription count of [uiState] to allow special actions on view connect/disconnect
+     */
+    val uiStateSubscriptionCount: StateFlow<Int> = mediator.subscriptionCount
 
     /**
      * Updates UI state
@@ -44,4 +49,26 @@ open class FlowStateMachine<G: Any, U: Any>(init: () -> CommonMachineState<G, U>
     final override fun setUiState(uiState: U) {
         mediator.tryEmit(uiState)
     }
+}
+
+/**
+ * Watches UI-state subscriptions and updates state machine with gestures produced by [onActive]
+ * and [onInactive].
+ * May be used to suspend expensive operations in machine-states when no active subscribers
+ * present on [FlowStateMachine.uiState]
+ * @param scope Scope to run mapper
+ * @param onActive Produces a gesture when view is active
+ * @param onInactive Produces a gesture when view is inactive
+ */
+fun <G: Any, U: Any> FlowStateMachine<G, U>.mapUiSubscriptions(
+    scope: CoroutineScope,
+    onActive: (() -> G)? = null,
+    onInactive: (() -> G)? = null
+) {
+    uiStateSubscriptionCount
+        .map { count -> count > 0 }
+        .distinctUntilChanged()
+        .mapNotNull { active -> if (active) onActive?.invoke() else onInactive?.invoke() }
+        .onEach(::process)
+        .launchIn(scope)
 }

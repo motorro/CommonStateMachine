@@ -162,7 +162,7 @@ logical states:
 Each logical state should be able to:
 
 - Update `UiState`
-- Process some **relevant** user interactions - `Gestures` while ignoring irrelevant
+- Process some **relevant** user interactions - `Gestures` ignoring irrelevant
 - Hold some internal data state
 - Transition to another logical state passing some of the shared data between
 
@@ -209,7 +209,12 @@ open class FlowStateMachine<G: Any, U: Any>(
   /**
    * ExportedUI state
    */
-  val uiState: SharedFlow<U> = mediator
+  val uiState: SharedFlow<U> = mediator.asSharedFlow()
+
+  /**
+   * Subscription count to allow special actions on view connect/disconnect
+   */
+  val subscriptionCount: StateFlow<Int> = mediator.subscriptionCount
 
   final override fun setUiState(uiState: U) {
     mediator.tryEmit(uiState)
@@ -478,7 +483,7 @@ developers may choose the most suitable tools to implement each one without affe
 example above is a very basic one. However you could do things a bit more clean by using some of the 
 additional abstractions (see below).
 
-## Handy abstractions to mix-in
+## Tools and Handy abstractions to mix-in
 
 In the basic example above all the work was done by the state objects. They did:
 
@@ -620,7 +625,7 @@ interface LoginContext {
 }
 ```
 
-Than you could provide it to your state through the constructor parameters. To make things even
+Then you could provide it to your state through the constructor parameters. To make things even
 easier let's make some [base state](login/src/main/java/com/motorro/statemachine/login/model/state/LoginState.kt)
 for the state-machine assembly and use a delegation to provide each context dependency:
 
@@ -672,8 +677,8 @@ class CredentialsCheckState(
 As I've already mentioned, creating new states explicitly to pass them to the state-machine later 
 (like in the basic example) is not a good idea in terms of coupling and dependency provision.
 
-Let's move it away from our machine states by introducing a common [factory interface](login/src/main/java/com/motorro/statemachine/login/model/state/LoginStateFactory.kt):
-that fill take the responsibility to provide dependencies and abstract our state creation logic:
+Let's move it away from our machine states by introducing a common [factory interface](login/src/main/java/com/motorro/statemachine/login/model/state/LoginStateFactory.kt)
+that will take the responsibility to provide dependencies and abstract our state creation logic:
 
 ```kotlin
 interface LoginStateFactory {
@@ -798,6 +803,49 @@ class LoginViewModel @Inject constructor(private val factory: LoginStateFactory)
     private val stateMachine = FlowStateMachine(::initializeStateMachine)
 }
 
+```
+
+### View lifecycle with `FlowStateMachine`
+
+Imaging we have a resource-consuming operation, like location tracking, running in our state. It may 
+save client's resources if we choose to pause tracking when the view is inactive - app goes to
+background or the Android activity is paused. In that case I suggest to create some special gestures
+and pass them to state-machine for processing. For example, the [FlowStateMachine](coroutines/src/commonMain/kotlin/com/motorro/commonstatemachine/coroutines/FlowStateMachine.kt) 
+exports the `uiStateSubscriptionCount` property that is a flow of number of subscribers listening to
+the `uiState` property. If you use some [repeatOnLifecycle](https://developer.android.com/reference/kotlin/androidx/lifecycle/package-summary#(androidx.lifecycle.Lifecycle).repeatOnLifecycle(androidx.lifecycle.Lifecycle.State,kotlin.coroutines.SuspendFunction1))
+to subscribe `uiState`, you could use this property to figure out some special processing. For 
+convenience there is an `mapUiSubscriptions` extension function available to reduces boilerplate.
+It accepts two gesture-producing functions and updates the state-machine with them when subscriber's
+state changes:
+
+```kotlin
+class WithIdleViewModel : ViewModel() {
+    /**
+     * Creates initial state for state-machine
+     * You could process a deep-link here or restore from a saved state
+     */
+    private fun initStateMachine(): CommonMachineState<SomeGesture, SomeUiState> = InitialState()
+
+    /**
+     * State-machine instance
+     */
+    private val stateMachine = FlowStateMachine(::initStateMachine)
+
+    /**
+     * UI State
+     */
+    val state: SharedFlow<SomeUiState> = stateMachine.uiState
+
+    init {
+        // Subscribes to active subscribers count and updates state machine with corresponding
+        // gestures
+        stateMachine.mapUiSubscriptions(
+          viewModelScope,
+          onActive = { SomeGesture.OnActive },
+          onInactive = { SomeGesture.OnInactive }
+        )
+    }
+}
 ```
 
 ## Multi-module applications
