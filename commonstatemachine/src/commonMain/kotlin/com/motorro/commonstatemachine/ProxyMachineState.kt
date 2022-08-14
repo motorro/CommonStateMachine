@@ -65,7 +65,7 @@ abstract class ProxyMachineState<PG: Any, PU: Any, CG: Any, CU: Any> : CommonMac
     protected abstract fun init(): CommonMachineState<CG, CU>
 
     /**
-     * Maps child UI state to parent if relevant
+     * Maps parent UI state to child if relevant
      * @param parent Parent gesture
      * @return Mapped gesture or null if not applicable
      */
