@@ -25,7 +25,6 @@ interface WelcomeFeatureHost {
 
     /**
      * Authentication complete
-     * @param email Authenticated user's email
      */
     fun complete()
 }

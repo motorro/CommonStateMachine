@@ -1115,18 +1115,16 @@ class LoginFlowState(
 
     /**
      * Returns user to email entry screen
-     * @param data Common registration state data
      */
-    override fun backToEmailEntry(data: WelcomeDataState) {
-        setMachineState(context.factory.emailEntry(data))
+    override fun backToEmailEntry() {
+      setMachineState(context.factory.emailEntry(data))
     }
 
     /**
      * Authentication complete
-     * @param email Authenticated user's email
      */
-    override fun complete(email: String) {
-        setMachineState(context.factory.complete(email))
+    override fun complete() {
+      setMachineState(context.factory.complete(email))
     }
 }
 ```

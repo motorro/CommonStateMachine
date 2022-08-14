@@ -82,7 +82,6 @@ class LoginFlowState(
 
     /**
      * Authentication complete
-     * @param email Authenticated user's email
      */
     override fun complete() {
         Timber.d("Transferring to complete screen...")
