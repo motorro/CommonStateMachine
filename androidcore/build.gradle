@@ -59,7 +59,6 @@ dependencies {
 
     implementation libs.bundles.compose.core
     implementation libs.compose.activity
-    implementation libs.compose.navigation
     implementation libs.compose.foundation
     implementation libs.compose.foundation.layouts
 

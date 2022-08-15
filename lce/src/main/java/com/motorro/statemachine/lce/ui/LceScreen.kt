@@ -13,6 +13,7 @@
 
 package com.motorro.statemachine.lce.ui
 
+import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
@@ -31,6 +32,7 @@ import com.motorro.statemachine.lce.data.LceUiState
 import com.motorro.statemachine.lce.model.LceViewModel
 
 @Composable
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 fun LceScreen(onExit: @Composable () -> Unit) {
     val model: LceViewModel = viewModel()
     val state = model.state.collectAsState(LceUiState.Loading)

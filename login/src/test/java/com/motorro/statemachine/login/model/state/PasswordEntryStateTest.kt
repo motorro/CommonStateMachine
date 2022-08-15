@@ -108,7 +108,6 @@ internal class PasswordEntryStateTest : BaseStateTest() {
 
     @Test
     fun returnsToEmailEntryOnBack() {
-        val data = LoginDataState(GOOD)
         every { host.backToEmailEntry() } just Runs
         val state = createState()
 

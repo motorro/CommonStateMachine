@@ -1160,8 +1160,9 @@ adopt it's output to your platform view components.
 
 ## Note on multiplatform ##
 Although the logic for registration flow of `Welcome` app is made common,
-I've failed to implement registration view in `androidMain` source due to some Kotlin-multiplatform
-glitches or misconfiguration. The problem is Android sources fail to import common dependencies 
-from other common modules. If anyone could help me fixing that issue and moving `register` module
-to `commonregister` I'll much appreciate this. Also if someone would like to try building an iOS
-sample around `commonregister` module - that will be awesome!
+I've failed to implement registration view in `androidMain` source due to [some Kotlin-multiplatform
+glitches](https://youtrack.jetbrains.com/issue/KTIJ-22056/KMM-Cant-reference-shared-module-commonMain-source-set-classes-from-another-modules-androidMain-source-set) 
+or misconfiguration. The problem is Android sources fail to import common dependencies from other 
+common modules. If anyone could help me fixing that issue and moving `register` module to 
+`commonregister` I'll much appreciate this. Also if someone would like to try building an iOS sample 
+around `commonregister` module - that will be awesome!
