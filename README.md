@@ -1,5 +1,10 @@
 # CommonStateMachine [![Check](https://github.com/motorro/CommonStateMachine/actions/workflows/check.yml/badge.svg?branch=master)](https://github.com/motorro/CommonStateMachine/actions/workflows/check.yml) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.motorro.commonstatemachine/commonstatemachine/badge.png)](https://repo1.maven.org/maven2/com/motorro/commonstatemachine/commonstatemachine/)
 
+Please checkout the Medium article on pattern/library usage.
+- [Part I - basics](https://proandroiddev.com/mvi-architecture-with-a-state-machine-basics-721c5ebed893)
+- [Part II - tools](https://proandroiddev.com/mvi-architecture-with-a-state-machine-tools-721c5ebed893-47f46413415d)
+- [Part III - multi-module and multi-platform](https://proandroiddev.com/mvi-architecture-with-a-state-machine-modules-3e242666c7c)
+
 ## Contents
 <!-- toc -->
 
