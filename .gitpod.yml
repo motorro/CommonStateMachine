@@ -2,10 +2,12 @@ image:
   file: .gitpod.Dockerfile
 
 tasks:
-  - name: build
-    env:
-      GRADLE_USER_HOME: /workspace/.gradle
-      M2_HOME: /workspace/.m2
-    init: ./gradlew build
+  - before: |
+      export GRADLE_USER_HOME="/workspace/.gradle"
+      export M2_HOME="/workspace/.m2"
+  - init: ./gradlew build
 
-
+jetbrains:
+  intellij:
+    prebuilds:
+      version: stable
