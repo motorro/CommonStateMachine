@@ -2,6 +2,10 @@ image:
   file: .gitpod.Dockerfile
 
 tasks:
-  - init: ./gradlew build
+  - name: build
+    env:
+      GRADLE_USER_HOME: /workspace/.gradle
+      M2_HOME: /workspace/.m2
+    init: ./gradlew build
 
 
