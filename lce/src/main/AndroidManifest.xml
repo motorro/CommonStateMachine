@@ -13,7 +13,7 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.motorro.statemachine.lce">
+>
 
     <application
         android:allowBackup="true"

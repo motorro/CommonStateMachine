@@ -136,6 +136,7 @@ android {
         minSdk = androidMinSdkVersion
         targetSdk = androidTargetSdkVersion
     }
+    namespace = "com.motorro.commonstatemachine.coroutines"
 }
 val dokkaHtml by tasks.getting(DokkaTask::class)
 

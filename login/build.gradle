@@ -49,6 +49,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion libs.versions.compose.compiler.get()
     }
+    namespace 'com.motorro.statemachine.login'
 }
 
 dependencies {

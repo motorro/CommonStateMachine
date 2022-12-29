@@ -91,4 +91,5 @@ android {
         minSdk = androidMinSdkVersion
         targetSdk = androidTargetSdkVersion
     }
+    namespace = "com.motorro.statemachine.commonregister"
 }

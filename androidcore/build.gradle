@@ -48,6 +48,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion libs.versions.compose.compiler.get()
     }
+    namespace 'com.motorro.statemachine.androidcore'
 }
 
 dependencies {
