@@ -40,10 +40,15 @@ ext {
         }
 
         def descriptions = grgit.describe(match: ["v[0-9]*"]) =~ versionRegexp
+        def description = null
         if (descriptions.getCount() < 1) {
-            throw new GradleException('Git description does not have any version info. Make sure you have a semver tag (v1.2) or (v1.2.3) in a repository.')
+            logger.info('Git description does not have any version info. Make sure you have a semver tag (v1.2) or (v1.2.3) in a repository.')
+            logger.info('Using `v0.0.1` for this build')
+            description = ["v0.0.1", "0", "0", "1", "0"]
+        } else {
+            description = descriptions[0]
         }
-        def description = descriptions[0]
+        
         int major = description[1].toInteger()
         int minor = description[2].toInteger()
         int patch = "" != description[3] ? description[3].toInteger() : 0

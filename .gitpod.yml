@@ -6,7 +6,6 @@ tasks:
       export GRADLE_USER_HOME="/workspace/.gradle"
       export M2_HOME="/workspace/.m2"
   - init: |
-      git fetch --tags
       ./gradlew build
 
 jetbrains:
