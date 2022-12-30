@@ -2,11 +2,8 @@ image:
   file: .gitpod.Dockerfile
 
 tasks:
-  - before: |
-      export GRADLE_USER_HOME="/workspace/.gradle"
-      export M2_HOME="/workspace/.m2"
-  - init: |
-      ./gradlew build
+  - before: export GRADLE_USER_HOME="/workspace/.gradle"; export M2_HOME="/workspace/.m2"; export KONAN_DATA_DIR="workspace/.konan"
+  - init: git fetch --tags && ./gradlew runUnitTests :lce:assemble :welcome:assemble
 
 jetbrains:
   intellij:

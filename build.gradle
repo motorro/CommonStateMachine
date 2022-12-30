@@ -35,10 +35,10 @@ allprojects {
     ext {
         versionCode = buildVersionCode()
         versionName = buildVersionName()
-        androidBuildToolsVersion = '32.0.0'
+        androidBuildToolsVersion = '33.0.0'
         androidMinSdkVersion = 24
-        androidTargetSdkVersion = 32
-        androidCompileSdkVersion = 32
+        androidTargetSdkVersion = 33
+        androidCompileSdkVersion = 33
 
         developerId = 'motorro'
         developerName = 'Nikolai Kotchetkov'
