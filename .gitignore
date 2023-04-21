@@ -15,4 +15,3 @@ build
 .externalNativeBuild
 .cxx
 local.properties
-/kotlin-js-store/yarn.lock
