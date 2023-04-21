@@ -21,7 +21,7 @@ sealed class LoginUiState {
     /**
      * Loading data...
      */
-    internal object Loading : LoginUiState()
+    object Loading : LoginUiState()
 
     /**
      * Password entry for login flow
@@ -29,7 +29,7 @@ sealed class LoginUiState {
      * @property password Password field value
      * @property actionEnabled Action (next) button state
      */
-    internal data class PasswordEntry(
+    data class PasswordEntry(
         val email: String,
         val password: String,
         val actionEnabled: Boolean
@@ -40,7 +40,7 @@ sealed class LoginUiState {
      * @property passwordEntry Password screen data
      * @property message Error message
      */
-    internal data class LoginError(
+    data class LoginError(
         val passwordEntry: PasswordEntry,
         val message: String
     ) : LoginUiState()

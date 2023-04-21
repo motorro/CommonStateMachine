@@ -36,7 +36,7 @@ class RegistrationFlowState(
     private val context: WelcomeContext,
     private val data: WelcomeDataState,
     private val registerComponentBuilder: RegisterComponentBuilder
-) : RegistrationProxy(), WelcomeFeatureHost {
+) : RegistrationProxy(RegisterUiState.Loading), WelcomeFeatureHost {
 
     /**
      * Should have valid email at this point
@@ -74,7 +74,6 @@ class RegistrationFlowState(
 
     /**
      * Returns user to email entry screen
-     * @param email Common registration state data
      */
     override fun backToEmailEntry() {
         Timber.d("Transferring to e-mail entry...")
@@ -83,7 +82,6 @@ class RegistrationFlowState(
 
     /**
      * Authentication complete
-     * @param email Authenticated user's email
      */
     override fun complete() {
         Timber.d("Transferring to complete screen...")

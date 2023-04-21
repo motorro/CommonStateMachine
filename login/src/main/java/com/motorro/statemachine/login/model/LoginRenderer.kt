@@ -38,6 +38,7 @@ internal class LoginRenderer @Inject constructor(resourceWrapper: ResourceWrappe
     /**
      * Renders loading screen
      */
+    @Suppress("UNUSED_PARAMETER")
     fun renderLoading(data: LoginDataState): LoginUiState = LoginUiState.Loading
 
     /**

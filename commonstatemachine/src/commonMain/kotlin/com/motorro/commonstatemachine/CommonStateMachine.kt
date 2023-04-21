@@ -49,11 +49,27 @@ interface MachineOutput<G: Any, U: Any> {
 }
 
 /**
+ * Current public machine status
+ */
+interface MachineStatus<U : Any> {
+    /**
+     * Checks if machine is started
+     */
+    fun isStarted(): Boolean
+
+    /**
+     * Current UI state
+     * @return current UI state or `null` if not yet available
+     */
+    fun getUiState(): U
+}
+
+/**
  * Common state machine
  * @param G UI gesture
  * @param U UI state
  */
-interface CommonStateMachine<G: Any, U: Any> : MachineInput<G>, MachineOutput<G, U> {
+interface CommonStateMachine<G: Any, U: Any> : MachineInput<G>, MachineOutput<G, U>, MachineStatus<U> {
 
     /**
      * Base state-machine implementation
@@ -72,6 +88,11 @@ interface CommonStateMachine<G: Any, U: Any> : MachineInput<G>, MachineOutput<G,
          * Start fuze
          */
         private var started: Boolean = false
+
+        /**
+         * Checks if machine is started
+         */
+        final override fun isStarted(): Boolean = started
 
         /**
          * Sets active machine state

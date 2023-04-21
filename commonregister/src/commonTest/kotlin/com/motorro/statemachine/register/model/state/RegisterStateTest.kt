@@ -21,12 +21,14 @@ import com.motorro.statemachine.register.R_CONTENT
 import com.motorro.statemachine.register.data.RegisterDataState
 import com.motorro.statemachine.register.data.RegisterGesture
 import com.motorro.statemachine.register.data.RegisterUiState
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
+@OptIn(ExperimentalCoroutinesApi::class)
 abstract class RegisterStateTest: BaseStateTest() {
     private val password = "password"
     private val data = RegisterDataState(GOOD, password)

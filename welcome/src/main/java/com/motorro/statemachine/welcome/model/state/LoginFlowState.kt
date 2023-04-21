@@ -36,7 +36,7 @@ class LoginFlowState(
     private val context: WelcomeContext,
     private val data: WelcomeDataState,
     private val loginComponentBuilder: LoginComponentBuilder
-) : LoginProxy(), WelcomeFeatureHost {
+) : LoginProxy(LoginUiState.Loading), WelcomeFeatureHost {
 
     /**
      * Should have valid email at this point
