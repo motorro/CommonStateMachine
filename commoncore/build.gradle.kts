@@ -65,7 +65,7 @@ kotlin {
                 implementation(libs.timber)
             }
         }
-        val androidUnitTest by getting
+        val androidTest by getting
         val jsMain by getting
         val jsTest by getting
     }
@@ -88,8 +88,4 @@ android {
         targetSdk = androidTargetSdkVersion
     }
     namespace = "com.motorro.statemachine.commoncore"
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
 }

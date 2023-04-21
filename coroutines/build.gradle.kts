@@ -38,7 +38,7 @@ kotlin {
 
     jvm {
         compilations.all {
-            kotlinOptions.jvmTarget = "17"
+            kotlinOptions.jvmTarget = "1.8"
         }
         testRuns["test"].executionTask.configure {
             useJUnitPlatform()
@@ -94,7 +94,7 @@ kotlin {
         val androidMain by getting {
             dependsOn(jvmMain)
         }
-        val androidUnitTest by getting {
+        val androidTest by getting {
             dependsOn(commonTest)
         }
         val jsMain by getting
@@ -137,17 +137,6 @@ android {
         targetSdk = androidTargetSdkVersion
     }
     namespace = "com.motorro.commonstatemachine.coroutines"
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    publishing {
-        singleVariant("release") {
-            withSourcesJar()
-            withJavadocJar()
-        }
-    }
 }
 val dokkaHtml by tasks.getting(DokkaTask::class)
 

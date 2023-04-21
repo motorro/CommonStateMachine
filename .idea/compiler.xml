@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="17">
+    <bytecodeTargetLevel target="11">
       <module name="CommonStateMachine.commonapi.commonMain" target="1.8" />
       <module name="CommonStateMachine.commonapi.commonTest" target="1.8" />
       <module name="CommonStateMachine.commonapi.jvmMain" target="1.8" />
