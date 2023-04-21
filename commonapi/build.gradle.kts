@@ -62,7 +62,7 @@ kotlin {
             }
         }
         val androidMain by getting
-        val androidTest by getting
+        val androidUnitTest by getting
         val jsMain by getting
         val jsTest by getting
     }
@@ -85,4 +85,8 @@ android {
         targetSdk = androidTargetSdkVersion
     }
     namespace = "com.motorro.statemachine.commonapi"
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
 }
