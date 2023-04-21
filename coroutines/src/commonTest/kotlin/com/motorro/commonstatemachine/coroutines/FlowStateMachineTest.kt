@@ -25,7 +25,7 @@ import kotlin.test.assertEquals
 
 class FlowStateMachineTest {
     private val state = StateMock<Int, Int>()
-    private val stateMachine = FlowStateMachine { state }
+    private val stateMachine = FlowStateMachine(0) { state }
 
     @Test
     fun updatesUiStateCollector() = runTest(UnconfinedTestDispatcher()) {
@@ -35,14 +35,16 @@ class FlowStateMachineTest {
             stateMachine.uiState.toList(values)
         }
 
+        assertEquals(0, values[0])
+
         state.doSetUiState(1)
-        assertEquals(1, values[0])
+        assertEquals(1, values[1])
 
         state.doSetUiState(2)
         state.doSetUiState(3)
-        assertEquals(3, values[2])
+        assertEquals(3, values[3])
 
-        assertEquals(3, values.size)
+        assertEquals(4, values.size)
 
         collectJob.cancel()
     }

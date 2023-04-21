@@ -16,26 +16,38 @@ package com.motorro.commonstatemachine.coroutines
 import com.motorro.commonstatemachine.CommonMachineState
 import com.motorro.commonstatemachine.CommonStateMachine
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.onEach
 
 /**
  * State machine that emits UI state as Flow
+ * @param initialUiState Initial UI state
  */
-open class FlowStateMachine<G: Any, U: Any>(init: () -> CommonMachineState<G, U>) : CommonStateMachine.Base<G, U>(init) {
+open class FlowStateMachine<G: Any, U: Any>(initialUiState: U, init: () -> CommonMachineState<G, U>) : CommonStateMachine.Base<G, U>(init) {
     /**
      * State mediator
      */
-    private val mediator = MutableSharedFlow<U>(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+    private val mediator: MutableStateFlow<U> = MutableStateFlow(initialUiState)
 
     init {
         start()
     }
 
     /**
+     * Current UI state
+     * @return current UI state or `null` if not yet available
+     */
+    override fun getUiState(): U = mediator.value
+
+    /**
      * UI state
      */
-    val uiState: SharedFlow<U> = mediator.asSharedFlow()
+    val uiState: StateFlow<U> = mediator
 
     /**
      * Subscription count of [uiState] to allow special actions on view connect/disconnect

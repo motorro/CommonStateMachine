@@ -13,6 +13,11 @@ interface MachineOutput<G, U> {
     +setUiState(uiState: U)
 }
 
+interface MachineStatus<U> {
+    +isStarted()
+    +getUiState(): U
+}
+
 abstract class CommonMachineState<G, U> {
     #doStart()
     #doProcess(gesture: G)
@@ -25,10 +30,11 @@ CommonMachineState -up-> MachineOutput
 interface CommonStateMachine<G, U>
 CommonStateMachine -up-|> MachineInput
 CommonStateMachine -up-|> MachineOutput
+CommonStateMachine -up-|> MachineStatus
 CommonStateMachine "1" o-left- "1" CommonMachineState : current
 
 class FlowStateMachine<G, U> {
-    +uiState: SharedFlow<U>
+    +uiState: StateFlow<U>
 }
 FlowStateMachine .up.> CommonStateMachine
 note left of FlowStateMachine

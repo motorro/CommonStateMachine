@@ -38,11 +38,15 @@ class StateMock<G: Any, U: Any> : CommonMachineState<G, U>() {
     }
 }
 
-class MachineMock<G: Any, U: Any> : CommonStateMachine<G, U> {
+class MachineMock<G: Any, U: Any>(uiState: U) : CommonStateMachine<G, U> {
     val machineStates = mutableListOf<CommonMachineState<G, U>>()
     val processed = mutableListOf<G>()
-    val uiStates = mutableListOf<U>()
+    val uiStates = mutableListOf(uiState)
     var cleared = false
+
+    override fun isStarted(): Boolean = true
+
+    override fun getUiState(): U = uiStates.last()
 
     override fun setMachineState(machineState: CommonMachineState<G, U>) {
         machineStates.add(machineState)

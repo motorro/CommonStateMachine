@@ -20,16 +20,18 @@ import com.motorro.statemachine.welcome.data.WelcomeGesture
 import com.motorro.statemachine.welcome.data.WelcomeUiState
 import com.motorro.statemachine.welcome.model.state.WelcomeStateFactory
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
+@OptIn(ExperimentalCoroutinesApi::class)
 class WelcomeViewModel @Inject constructor(private val factory: WelcomeStateFactory) : ViewModel() {
     /**
      * State machine
      */
-    private val stateMachine = FlowStateMachine(::initializeStateMachine)
+    private val stateMachine = FlowStateMachine(WelcomeUiState.Loading, ::initializeStateMachine)
 
     /**
      * Creates initializing state
@@ -42,7 +44,7 @@ class WelcomeViewModel @Inject constructor(private val factory: WelcomeStateFact
     /**
      * UI State
      */
-    val state: SharedFlow<WelcomeUiState> = stateMachine.uiState
+    val state: Flow<WelcomeUiState> = stateMachine.uiState
 
     /**
      * Updates state with UI gesture

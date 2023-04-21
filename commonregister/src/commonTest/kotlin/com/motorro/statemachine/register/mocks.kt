@@ -54,6 +54,10 @@ class MachineMock : CommonStateMachine<RegisterGesture, RegisterUiState> {
     val uiStates = mutableListOf<RegisterUiState>()
     var cleared = false
 
+    override fun isStarted(): Boolean = true
+
+    override fun getUiState(): RegisterUiState = uiStates.last()
+
     override fun setMachineState(machineState: CommonMachineState<RegisterGesture, RegisterUiState>) {
         machineStates.add(machineState)
     }

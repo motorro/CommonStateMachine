@@ -23,7 +23,13 @@ class CommonStateMachineTest {
             start()
         }
 
-        override fun setUiState(uiState: Int) = Unit
+        private var uiState: Int = 0
+
+        override fun getUiState(): Int = uiState
+
+        override fun setUiState(uiState: Int) {
+            this.uiState = uiState
+        }
     }
 
     @Test

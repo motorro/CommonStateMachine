@@ -6,9 +6,11 @@ Please checkout the Medium article on pattern/library usage.
 - [Part III - multi-module and multi-platform](https://proandroiddev.com/mvi-architecture-with-a-state-machine-modules-3e242666c7c)
 
 ## Contents
+
 <!-- toc -->
 
 - [Introduction](#introduction)
+- [v3.X Breaking change](#v3x-breaking-change)
 - [Dependencies](#dependencies)
 - [Examples](#examples)
 - [The basic task - Load-Content-Error](#the-basic-task---load-content-error)
@@ -22,7 +24,7 @@ Please checkout the Medium article on pattern/library usage.
     + [Error state](#error-state)
     + [Wiring with the application](#wiring-with-the-application)
   * [Result](#result)
-- [Handy abstractions to mix-in](#handy-abstractions-to-mix-in)
+- [Tools and Handy abstractions to mix-in](#tools-and-handy-abstractions-to-mix-in)
   * [Use-cases](#use-cases)
   * [View-state renderer](#view-state-renderer)
   * [State factories and dependency provision](#state-factories-and-dependency-provision)
@@ -30,6 +32,7 @@ Please checkout the Medium article on pattern/library usage.
     + [Inter-state data](#inter-state-data)
     + [Dependencies common to all states of a state-machine](#dependencies-common-to-all-states-of-a-state-machine)
     + [Common state factory](#common-state-factory)
+  * [View lifecycle with `FlowStateMachine`](#view-lifecycle-with-flowstatemachine)
 - [Multi-module applications](#multi-module-applications)
   * [Common API](#common-api)
   * [Module flow](#module-flow)
@@ -84,6 +87,12 @@ Key features:
 - Explicit `Back` gesture management with the total control of yours
 - Get rid of `SingleLiveEvent` for navigation, dialogs and even side-effects like toasts if you 
   like to by completely describing the current UI state.
+
+## v3.X Breaking change
+
+To be able to get the current UI state of the state-machine and to get rid of inconsistency of the 
+UI state is not yet defined (no updates of UI state happened) the `FlowStateMachine` and 
+the `ProxyMachineState` now require to pass initial UI state in constructors. 
 
 ## Dependencies
 
@@ -203,18 +212,22 @@ exports UI state changes through `uiState` shared flow:
 
 ```kotlin
 open class FlowStateMachine<G: Any, U: Any>(
+  initialUiState: U,
   init: () -> CommonMachineState<G, U>
 ) : CommonStateMachine.Base<G, U>(init) {
   
-  private val mediator = MutableSharedFlow<U>(
-    replay = 1, 
-    onBufferOverflow = BufferOverflow.DROP_OLDEST
-  )
+  private val mediator = MutableStateFlow<U>(initialUiState)
 
   /**
    * ExportedUI state
    */
-  val uiState: SharedFlow<U> = mediator.asSharedFlow()
+  val uiState: StateFlow<U> = mediator
+
+  /**
+   * Current UI state
+   * @return current UI state or `null` if not yet available
+   */
+  override fun getUiState(): U = mediator.value
 
   /**
    * Subscription count to allow special actions on view connect/disconnect
@@ -417,7 +430,7 @@ class LceViewModel : ViewModel() {
     /**
      * UI State to export
      */
-    val state: SharedFlow<LceUiState> = stateMachine.uiState
+    val state: StateFlow<LceUiState> = stateMachine.uiState
 
     /**
      * Delegates gesture processing to the state-machine and the active state
@@ -834,12 +847,12 @@ class WithIdleViewModel : ViewModel() {
     /**
      * State-machine instance
      */
-    private val stateMachine = FlowStateMachine(::initStateMachine)
+    private val stateMachine = FlowStateMachine(Loading, ::initStateMachine)
 
     /**
      * UI State
      */
-    val state: SharedFlow<SomeUiState> = stateMachine.uiState
+    val state: StateFlow<SomeUiState> = stateMachine.uiState
 
     init {
         // Subscribes to active subscribers count and updates state machine with corresponding
@@ -1082,7 +1095,7 @@ class LoginFlowState(
     private val context: WelcomeContext,
     private val data: WelcomeDataState,
     private val loginComponentBuilder: LoginComponentBuilder
-) : LoginProxy(), WelcomeFeatureHost {
+) : LoginProxy(Loading), WelcomeFeatureHost {
 
     /**
      * Should have valid email at this point

@@ -19,12 +19,14 @@ import com.motorro.commonstatemachine.coroutines.FlowStateMachine
 import com.motorro.statemachine.lce.data.LceGesture
 import com.motorro.statemachine.lce.data.LceUiState
 import com.motorro.statemachine.lce.model.state.ItemListState
-import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import timber.log.Timber
 
 /**
  * Wraps state-machine with view-model
  */
+@OptIn(ExperimentalCoroutinesApi::class)
 class LceViewModel : ViewModel() {
     /**
      * Creates initial state for state-machine
@@ -34,12 +36,12 @@ class LceViewModel : ViewModel() {
     /**
      * State-machine instance
      */
-    private val stateMachine = FlowStateMachine(::initStateMachine)
+    private val stateMachine = FlowStateMachine(LceUiState.Loading, ::initStateMachine)
 
     /**
      * UI State
      */
-    val state: SharedFlow<LceUiState> = stateMachine.uiState
+    val state: Flow<LceUiState> = stateMachine.uiState
 
     /**
      * Updates state with UI gesture

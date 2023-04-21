@@ -18,9 +18,9 @@ import kotlin.test.assertTrue
 
 internal class ProxyMachineStateTest {
 
-    private val stateMachine = MachineMock<String, String>()
+    private val stateMachine = MachineMock<String, String>("")
 
-    private class TestProxyState(private val state: CommonMachineState<Int, Int>) : com.motorro.commonstatemachine.ProxyMachineState<String, String, Int, Int>() {
+    private class TestProxyState(private val state: CommonMachineState<Int, Int>) : ProxyMachineState<String, String, Int, Int>(0) {
         override fun init(): CommonMachineState<Int, Int> = state
         override fun mapGesture(parent: String): Int? = parent.toInt().takeIf { it >= 0 }
         override fun mapUiState(child: Int): String = child.toString()

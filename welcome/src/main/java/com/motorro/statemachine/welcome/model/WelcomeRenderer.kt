@@ -51,6 +51,7 @@ class WelcomeRenderer @Inject constructor(resourceWrapper: ResourceWrapper): Res
     /**
      * Renders email checking
      */
+    @Suppress("UNUSED_PARAMETER")
     fun renderChecking(data: WelcomeDataState): WelcomeUiState = WelcomeUiState.Loading
 
     /**

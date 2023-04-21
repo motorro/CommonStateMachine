@@ -29,7 +29,7 @@ class CommonMachineStateTest {
 
     @Test
     fun stateWillUpdateUiStateIfStarted() {
-        val machine = MachineMock<Int, Int>()
+        val machine = MachineMock<Int, Int>(0)
         val state = TestState()
         state.start(machine)
         state.checkUiStateUpdate(1)
@@ -46,7 +46,7 @@ class CommonMachineStateTest {
 
     @Test
     fun stateWillProcessGestureIfStarted() {
-        val machine = MachineMock<Int, Int>()
+        val machine = MachineMock<Int, Int>(0)
         val state = TestState()
         state.start(machine)
         state.process(2)
@@ -63,7 +63,7 @@ class CommonMachineStateTest {
 
     @Test
     fun stateWillUpdateMachineStateIfStarted() {
-        val machine = MachineMock<Int, Int>()
+        val machine = MachineMock<Int, Int>(0)
         val state1 = TestState()
         val state2 = TestState()
         state1.start(machine)

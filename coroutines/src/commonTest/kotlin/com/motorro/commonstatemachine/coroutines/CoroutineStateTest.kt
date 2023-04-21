@@ -25,6 +25,7 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class CoroutineStateTest {
     private class ScopeTestState : CoroutineState<Int, Int>() {
         lateinit var job: Job
@@ -53,7 +54,7 @@ class CoroutineStateTest {
     fun cancelsScopeOnClear() = runTest {
         val state = ScopeTestState()
 
-        state.start(MachineMock())
+        state.start(MachineMock(0))
         yield()
         state.clear()
         yield()

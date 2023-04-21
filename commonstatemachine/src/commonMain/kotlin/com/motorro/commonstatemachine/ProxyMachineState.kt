@@ -20,10 +20,11 @@ package com.motorro.commonstatemachine
  * @param PU Parent UI state
  * @param CG Child gesture
  * @param CU Child UI state
+ * @param initialChildUiState Initial child UI state
  * @see mapUiState
  * @see mapGesture
  */
-abstract class ProxyMachineState<PG: Any, PU: Any, CG: Any, CU: Any> : CommonMachineState<PG, PU>() {
+abstract class ProxyMachineState<PG: Any, PU: Any, CG: Any, CU: Any>(initialChildUiState: CU) : CommonMachineState<PG, PU>() {
     /**
      * Proxy state machine
      */
@@ -33,10 +34,20 @@ abstract class ProxyMachineState<PG: Any, PU: Any, CG: Any, CU: Any> : CommonMac
             start()
         }
 
+        private var uiState: CU = initialChildUiState
+
+        override fun getUiState(): CU = uiState
+
         override fun setUiState(uiState: CU) {
+            this.uiState = uiState
             this@ProxyMachineState.setUiState(mapUiState(uiState))
         }
     }
+
+    /**
+     * Returns child machine state
+     */
+    protected fun getChildMachineState(): MachineStatus<CU> = machine
 
     /**
      * A part of [start] template to initialize state
