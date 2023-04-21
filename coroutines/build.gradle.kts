@@ -94,7 +94,7 @@ kotlin {
         val androidMain by getting {
             dependsOn(jvmMain)
         }
-        val androidTest by getting {
+        val androidUnitTest by getting {
             dependsOn(commonTest)
         }
         val jsMain by getting

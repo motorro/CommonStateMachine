@@ -65,7 +65,7 @@ kotlin {
                 implementation(libs.timber)
             }
         }
-        val androidTest by getting
+        val androidUnitTest by getting
         val jsMain by getting
         val jsTest by getting
     }
