@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 /*
  * Copyright 2022 Nikolai Kotchetkov.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,10 +37,10 @@ allprojects {
     ext {
         versionCode = buildVersionCode()
         versionName = buildVersionName()
-        androidBuildToolsVersion = '33.0.0'
+        androidBuildToolsVersion = '34.0.0'
         androidMinSdkVersion = 24
-        androidTargetSdkVersion = 33
-        androidCompileSdkVersion = 33
+        androidTargetSdkVersion = 34
+        androidCompileSdkVersion = 34
 
         developerId = 'motorro'
         developerName = 'Nikolai Kotchetkov'
@@ -48,7 +50,7 @@ allprojects {
         projectUrl = 'https://github.com/motorro/CommonStateMachine'
     }
 
-    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    tasks.withType(KotlinCompile).configureEach {
         kotlinOptions {
             freeCompilerArgs += [
                     "-opt-in=kotlin.RequiresOptIn",
@@ -57,7 +59,7 @@ allprojects {
         }
     }
 
-    tasks.withType(Test) {
+    tasks.withType(Test).configureEach {
         forkEvery = 100
         testLogging {
             // set options for log level LIFECYCLE
@@ -88,32 +90,38 @@ allprojects {
 
 }
 
-task runStateMachineTests(type: Task, dependsOn: [':commonstatemachine:allTests'], group: 'verification') {
+tasks.register('runStateMachineTests', Task) {
+    dependsOn[':commonstatemachine:allTests']
     description 'Run unit tests for the common state machine layer.'
 }
 
-task runCoroutinesTests(type: Task, dependsOn: [':coroutines:allTests'], group: 'verification') {
+tasks.register('runCoroutinesTests', Task) {
+    dependsOn[':coroutines:allTests']
     description 'Run unit tests for the coroutines extension layer.'
 }
 
-task runRegisterUnitTests(type: Task, dependsOn: [':commonregister:allTests'], group: 'verification') {
+tasks.register('runRegisterUnitTests', Task) {
+    dependsOn[':commonregister:allTests']
     description 'Run unit tests for the common register layer.'
 }
 
-task runLoginUnitTests(type: Task, dependsOn: [':login:testDebugUnitTest'], group: 'verification') {
+tasks.register('runLoginUnitTests', Task) {
+    dependsOn[':login:testDebugUnitTest']
     description 'Run unit tests for the login module.'
 }
 
-task runLceUnitTests(type: Task, dependsOn: [':lce:testDebugUnitTest'], group: 'verification') {
+tasks.register('runLceUnitTests', Task) {
+    dependsOn[':lce:testDebugUnitTest']
     description 'Run unit tests for LCE app.'
 }
 
-task runWelcomeUnitTests(type: Task, dependsOn: [':welcome:testDebugUnitTest'], group: 'verification') {
+tasks.register('runWelcomeUnitTests', Task) {
+    dependsOn[':welcome:testDebugUnitTest']
     description 'Run unit tests for welcome app.'
 }
 
 
-task displayVersion(type: Task, group: 'documentation') {
+tasks.register('displayVersion', Task) {
     description 'Display application version name'
     doLast {
         println("Application version: ${versionName}")

@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNUSED_VARIABLE", "DSL_SCOPE_VIOLATION")
+@file:Suppress("DSL_SCOPE_VIOLATION")
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -27,7 +27,7 @@ group = "com.motorro"
 version = versionName
 
 kotlin {
-    android {
+    androidTarget {
         publishLibraryVariants("release", "debug")
     }
 
@@ -40,11 +40,11 @@ kotlin {
         binaries.library()
         useCommonJs()
         browser {
-            testTask {
+            testTask(Action {
                 useMocha {
                     timeout = "10s"
                 }
-            }
+            })
         }
     }
 
@@ -82,7 +82,12 @@ android {
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
         minSdk = androidMinSdkVersion
-        targetSdk = androidTargetSdkVersion
     }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
     namespace = "com.motorro.statemachine.commonapi"
 }

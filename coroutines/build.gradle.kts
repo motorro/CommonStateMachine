@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNUSED_VARIABLE", "DSL_SCOPE_VIOLATION")
+@file:Suppress("DSL_SCOPE_VIOLATION")
 
 import org.jetbrains.dokka.gradle.DokkaTask
 import java.net.URI
@@ -38,14 +38,14 @@ kotlin {
 
     jvm {
         compilations.all {
-            kotlinOptions.jvmTarget = "1.8"
+            kotlinOptions.jvmTarget = "17"
         }
         testRuns["test"].executionTask.configure {
             useJUnitPlatform()
         }
     }
 
-    android {
+    androidTarget {
         publishLibraryVariants("release", "debug")
     }
 
@@ -58,11 +58,11 @@ kotlin {
         binaries.library()
         useCommonJs()
         browser {
-            testTask {
+            testTask(Action {
                 useMocha {
                     timeout = "10s"
                 }
-            }
+            })
         }
     }
 
@@ -134,18 +134,21 @@ android {
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
         minSdk = androidMinSdkVersion
-        targetSdk = androidTargetSdkVersion
     }
     namespace = "com.motorro.commonstatemachine.coroutines"
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
+    }
 }
 val dokkaHtml by tasks.getting(DokkaTask::class)
-
-val javadocJar by tasks.creating(Jar::class) {
-    dependsOn(dokkaHtml)
-    group = "documentation"
-    archiveClassifier.set("javadoc")
-    from(tasks.dokkaHtml)
-}
 
 val libId = "coroutines"
 val libName = "coroutines"
@@ -172,7 +175,6 @@ publishing {
         }
     }
     publications.withType<MavenPublication> {
-        artifact(javadocJar)
         pom {
             name.set(libName)
             description.set(libDesc)
@@ -197,9 +199,14 @@ publishing {
             }
         }
     }
+}
 
-    signing {
-        useInMemoryPgpKeys(signingKey, signingPassword)
-        sign(publishing.publications)
-    }
+signing {
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign(publishing.publications)
+}
+
+val signingTasks = tasks.withType<Sign>()
+tasks.withType<AbstractPublishToMaven>().configureEach {
+    dependsOn(signingTasks)
 }
