@@ -144,6 +144,13 @@ android {
 }
 val dokkaHtml by tasks.getting(DokkaTask::class)
 
+val javadocJar by tasks.creating(Jar::class) {
+    dependsOn(dokkaHtml)
+    group = "documentation"
+    archiveClassifier.set("javadoc")
+    from(tasks.dokkaHtml)
+}
+
 val libId = "commonstatemachine"
 val libName = "commonstatemachine"
 val libDesc = "Multiplatform state machine for mobile applications"
@@ -169,6 +176,7 @@ publishing {
         }
     }
     publications.withType<MavenPublication> {
+        artifact(javadocJar)
         pom {
             name.set(libName)
             description.set(libDesc)

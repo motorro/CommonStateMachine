@@ -150,6 +150,13 @@ android {
 }
 val dokkaHtml by tasks.getting(DokkaTask::class)
 
+val javadocJar by tasks.creating(Jar::class) {
+    dependsOn(dokkaHtml)
+    group = "documentation"
+    archiveClassifier.set("javadoc")
+    from(tasks.dokkaHtml)
+}
+
 val libId = "coroutines"
 val libName = "coroutines"
 val libDesc = "Coroutines extension for CommonStateMachine"
@@ -175,6 +182,7 @@ publishing {
         }
     }
     publications.withType<MavenPublication> {
+        artifact(javadocJar)
         pom {
             name.set(libName)
             description.set(libDesc)
