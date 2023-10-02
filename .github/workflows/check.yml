@@ -32,7 +32,7 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Check with gradle
-      run: ./gradlew runUnitTests :lce:assemble :welcome:assemble
+      run: ./gradlew runUnitTests :examples:lce:assemble :examples:welcome:welcome:assemble
     - name: Upload testDebugUnitTest results
       uses: actions/upload-artifact@v2
       if: failure()
