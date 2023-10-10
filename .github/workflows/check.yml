@@ -10,7 +10,7 @@ on:
 jobs:
   checks:
     name: Checks
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -32,7 +32,7 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Check with gradle
-      run: ./gradlew runUnitTests :examples:lce:assemble :examples:welcome:welcome:assemble
+      run: ./gradlew runUnitTests :examples:lce:assembleDebug :examples:welcome:welcome:assembleDebug
     - name: Upload testDebugUnitTest results
       uses: actions/upload-artifact@v2
       if: failure()
