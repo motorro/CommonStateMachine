@@ -79,8 +79,8 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(project(":commonstatemachine"))
-                implementation(libs.kotlin.coroutines.core)
+                api(project(":commonstatemachine"))
+                api(libs.kotlin.coroutines.core)
             }
         }
         val commonTest by getting {

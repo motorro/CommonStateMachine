@@ -28,20 +28,8 @@ abstract class ProxyMachineState<PG: Any, PU: Any, CG: Any, CU: Any>(initialChil
     /**
      * Proxy state machine
      */
-    private val machine = object : CommonStateMachine.Base<CG, CU>(::init) {
-
-        fun doStart() {
-            start()
-        }
-
-        private var uiState: CU = initialChildUiState
-
-        override fun getUiState(): CU = uiState
-
-        override fun setUiState(uiState: CU) {
-            this.uiState = uiState
-            this@ProxyMachineState.setUiState(mapUiState(uiState))
-        }
+    private val machine = ProxyStateMachine(initialChildUiState, ::init) {
+        setUiState(mapUiState(it))
     }
 
     /**

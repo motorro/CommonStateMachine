@@ -77,7 +77,11 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting
+        val commonMain by getting {
+            dependencies {
+                api(project(":tmap"))
+            }
+        }
         val commonTest by getting {
             dependencies {
                 implementation(libs.test.kotlin)
