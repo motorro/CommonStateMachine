@@ -16,30 +16,31 @@ package com.motorro.commonstatemachine.tmap
 /**
  * Typed key
  */
-interface TKey<out E : Any>
+interface TKey<E : Any>
 
 /**
  * Element bound with a key
  */
-interface TElement<out E: Any> {
-    val key: TKey<E>
+interface TElement<E: Any, K: TKey<E>> {
+    val key: K
     val value: E
 }
 
 /**
  * Stores typed key-value pairs
  */
-interface TMap : Collection<TElement<*>> {
+interface TMap : Collection<TElement<*, *>> {
 
-    operator fun <E : Any> get(key: TKey<E>): E?
+    operator fun <E: Any, K: TKey<E>> get(key: K): E?
 
-    operator fun <E : Any> plus(value: TElement<E>): TMap
+    operator fun <E: Any, K: TKey<E>> plus(value: TElement<E, K>): TMap
 
     fun minusKey(key: TKey<*>): TMap
 
     companion object {
         fun empty(): TMap = EmptyTMap
-        fun of(vararg element: TElement<*>): TMap = TMapImpl(element.associateBy{ it.key })
+        fun of(vararg element: TElement<*, *>): TMap = of(element.toList())
+        fun of(elements: Iterable<TElement<*, *>>): TMap = TMapImpl(elements.associateBy{ it.key })
     }
 }
 
@@ -49,33 +50,33 @@ interface TMap : Collection<TElement<*>> {
  * @receiver Key
  * @param value Value
  */
-infix fun <E: Any> TKey<E>.tot(value: E): TElement<E> = TElementImpl(this, value)
+infix fun <E: Any, K: TKey<E>> K.tot(value: E): TElement<E, K> = TElementImpl(this, value)
 
 /**
  * Element implementation
  */
-private data class TElementImpl<out E: Any>(
-    override val key: TKey<E>,
+private data class TElementImpl<E: Any, K: TKey<E>>(
+    override val key: K,
     override val value: E
-) : TElement<E>
+) : TElement<E, K>
 
 /**
  * Empty map
  */
 private data object EmptyTMap : TMap {
 
-    private val iterator = object : Iterator<TElement<*>> {
+    private val iterator = object : Iterator<TElement<*, *>> {
         override fun hasNext(): Boolean = false
-        override fun next(): TElement<*> = throw NoSuchElementException("No next element. Empty collection")
+        override fun next(): TElement<*, *> = throw NoSuchElementException("No next element. Empty collection")
     }
 
-    override fun <E: Any> get(key: TKey<E>): E? = null
-    override fun <E: Any> plus(value: TElement<E>) = TMapImpl(linkedMapOf(value.key to value))
+    override fun <E : Any, K : TKey<E>> get(key: K): E? = null
+    override fun <E : Any, K : TKey<E>> plus(value: TElement<E, K>): TMap = TMapImpl(linkedMapOf(value.key to value))
     override fun minusKey(key: TKey<*>)= this
 
     override val size: Int = 0
-    override fun contains(element: TElement<*>) = false
-    override fun containsAll(elements: Collection<TElement<*>>) = false
+    override fun contains(element: TElement<*, *>) = false
+    override fun containsAll(elements: Collection<TElement<*, *>>) = false
     override fun isEmpty() = true
     override fun iterator() = iterator
 }
@@ -83,11 +84,11 @@ private data object EmptyTMap : TMap {
 /**
  * A map with contents
  */
-private class TMapImpl(private val contents: Map<TKey<*>, TElement<*>>) : TMap {
+private class TMapImpl(private val contents: Map<TKey<*>, TElement<*, *>>) : TMap {
 
     @Suppress("UNCHECKED_CAST")
-    override fun <E : Any> get(key: TKey<E>) = contents[key]?.value?.let { it as E }
-    override fun <E : Any> plus(value: TElement<E>) = TMapImpl(contents.plus(value.key to value))
+    override fun <E : Any, K : TKey<E>> get(key: K): E? = contents[key]?.value?.let { it as E }
+    override fun <E : Any, K : TKey<E>> plus(value: TElement<E, K>): TMap = TMapImpl(contents.plus(value.key to value))
     override fun minusKey(key: TKey<*>) = when {
         contents.containsKey(key) && 1 == contents.size -> EmptyTMap
         contents.containsKey(key) -> TMapImpl(contents.minus(key))
@@ -95,14 +96,14 @@ private class TMapImpl(private val contents: Map<TKey<*>, TElement<*>>) : TMap {
     }
 
     override val size: Int get() = contents.size
-    override fun contains(element: TElement<*>) = contents.containsValue(element)
-    override fun containsAll(elements: Collection<TElement<*>>) = elements.all { contains(it) }
+    override fun contains(element: TElement<*, *>) = contents.containsValue(element)
+    override fun containsAll(elements: Collection<TElement<*, *>>) = elements.all { contains(it) }
     override fun isEmpty(): Boolean = contents.isEmpty()
 
-    override fun iterator() = object : Iterator<TElement<*>> {
+    override fun iterator() = object : Iterator<TElement<*, *>> {
         private val parent = contents.iterator()
         override fun hasNext(): Boolean = parent.hasNext()
-        override fun next(): TElement<*> = parent.next().value
+        override fun next(): TElement<*, *> = parent.next().value
     }
 
     override fun equals(other: Any?): Boolean {

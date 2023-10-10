@@ -41,7 +41,7 @@ class TMapTest {
     @Test
     fun emptyAddsElements() {
         val empty = TMap.empty()
-        val plusElement = empty.plus(StringKey tot "String")
+        val plusElement = empty.plus(StringKey.tot("String"))
 
         val fromContent: String? = plusElement[StringKey]
         assertNotNull(fromContent)
@@ -60,17 +60,17 @@ class TMapTest {
     @Test
     fun createsMapWithContent() {
         val withContent = TMap.of(
-            StringKey tot "String",
-            IntKey tot 1,
-            BoolKey tot true
+            StringKey.tot("String"),
+            IntKey.tot(1),
+            BoolKey.tot(true)
         )
 
         assertEquals(3, withContent.size)
         assertEquals(
             listOf(
-                StringKey tot "String",
-                IntKey tot 1,
-                BoolKey tot true
+                StringKey.tot("String"),
+                IntKey.tot(1),
+                BoolKey.tot(true)
             ),
             withContent.toList()
         )
@@ -91,17 +91,17 @@ class TMapTest {
     @Test
     fun createsMapWithNamedContent() {
         val withContent = TMap.of(
-            a tot "A",
-            b tot "B",
-            c tot "C"
+            a.tot("A"),
+            b.tot("B"),
+            c.tot("C")
         )
 
         assertEquals(3, withContent.size)
         assertEquals(
             listOf(
-                a tot "A",
-                b tot "B",
-                c tot "C"
+                a.tot("A"),
+                b.tot("B"),
+                c.tot("C")
             ),
             withContent.toList()
         )
@@ -125,17 +125,17 @@ class TMapTest {
     @Test
     fun withContentRemovesKey() {
         val withContent = TMap.of(
-            StringKey tot "String",
-            IntKey tot 1,
-            BoolKey tot true
+            StringKey.tot("String"),
+            IntKey.tot(1),
+            BoolKey.tot(true)
         )
 
         val withoutString = withContent.minusKey(StringKey)
         assertEquals(2, withoutString.size)
         assertEquals(
             listOf(
-                IntKey tot 1,
-                BoolKey tot true
+                IntKey.tot(1),
+                BoolKey.tot(true)
             ),
             withoutString.toList()
         )
@@ -148,16 +148,16 @@ class TMapTest {
     @Test
     fun withContentRemovesAbsentKey() {
         val withContent = TMap.of(
-            StringKey tot "String",
-            IntKey tot 1
+            StringKey.tot("String"),
+            IntKey.tot(1)
         )
 
         val withoutBool = withContent.minusKey(BoolKey)
         assertEquals(2, withoutBool.size)
         assertEquals(
             listOf(
-                StringKey tot "String",
-                IntKey tot 1
+                StringKey.tot("String"),
+                IntKey.tot(1)
             ),
             withoutBool.toList()
         )
