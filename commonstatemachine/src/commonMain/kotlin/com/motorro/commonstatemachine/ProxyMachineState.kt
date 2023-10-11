@@ -41,7 +41,7 @@ abstract class ProxyMachineState<PG: Any, PU: Any, CG: Any, CU: Any>(initialChil
      * A part of [start] template to initialize state
      */
     override fun doStart() {
-        machine.doStart()
+        machine.start()
     }
 
     /**

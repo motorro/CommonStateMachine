@@ -13,6 +13,9 @@
 
 package com.motorro.commonstatemachine.lifecycle
 
+import com.motorro.commonstatemachine.multi.Activated
+import kotlin.properties.Delegates
+
 /**
  * Provides some activity state to be able to shut-down
  * tasks like background monitoring while the host is inactive
@@ -56,10 +59,70 @@ interface LifecycleState {
     /**
      * State observer
      */
-    interface Observer {
+    fun interface Observer {
         /**
          * Called when state changes
          */
         fun onStateChange(state: State)
     }
 }
+
+/**
+ * A [LifecycleState] basic implementation
+ */
+internal class LifecycleStateImpl(startIn: LifecycleState.State) : LifecycleState, Activated {
+    /**
+     * Current state
+     */
+    private var lifecycle: LifecycleState.State by Delegates.observable(startIn) { _, old, new ->
+        if (new != old) {
+            observers.forEach { it.onStateChange(new) }
+        }
+    }
+
+    /**
+     * State observers
+     */
+    private var observers = setOf<LifecycleState.Observer>()
+
+    /**
+     * Is active or not
+     */
+    override fun isActive(): Boolean = LifecycleState.State.ACTIVE == lifecycle
+
+    /**
+     * Activates lifecycle
+     */
+    override fun activate() {
+        lifecycle = LifecycleState.State.ACTIVE
+    }
+
+    /**
+     * Deactivates lifecycle
+     */
+    override fun deactivate() {
+        lifecycle = LifecycleState.State.PAUSED
+    }
+
+    /**
+     * Activity state
+     */
+    override fun getState(): LifecycleState.State = lifecycle
+
+    /**
+     * Adds state observer.
+     * @param observer Observer to get state updates
+     */
+    override fun addObserver(observer: LifecycleState.Observer) {
+        observers = observers.plus(observer)
+    }
+
+    /**
+     * Removes state observer
+     * @param observer Observer to get state updates
+     */
+    override fun removeObserver(observer: LifecycleState.Observer) {
+        observers = observers.minus(observer)
+    }
+}
+

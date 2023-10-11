@@ -46,15 +46,10 @@ internal class ProxyStateMachine<G : Any, U : Any>(
     }
 
     /**
-     * Runs machine
-     */
-    fun doStart() = start()
-
-    /**
      * Cleans-up the machine
      */
-    fun doClear() {
+    override fun clear() {
         uiStateChangeHandler = null
-        clear()
+        super.clear()
     }
 }

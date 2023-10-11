@@ -47,15 +47,15 @@ interface MachineInit<G: Any, U: Any> {
 
 /**
  * Creates a proxy machine given [MachineInit] structure
- * @param ls Machine lifecycle within [ProxyMachineContainer]
+ * @param lifeCycle Machine lifecycle within [ProxyMachineContainer]
  * @param onUiChanged UI-state change handler
  */
 internal fun <G: Any, U: Any> MachineInit<G, U>.machine(
-    ls: LifecycleState,
+    lifeCycle: LifecycleState,
     onUiChanged: (key: MachineKey<*, *>, uiState: Any) -> Unit
 ): ProxyStateMachine<G, U> = ProxyStateMachine(
     initialUiState,
-    { init(ls) },
+    { init(lifeCycle) },
     { onUiChanged(key, it) }
 )
 
