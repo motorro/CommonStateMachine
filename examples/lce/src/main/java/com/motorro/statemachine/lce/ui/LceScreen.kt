@@ -15,10 +15,12 @@ package com.motorro.statemachine.lce.ui
 
 import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -32,6 +34,7 @@ import com.motorro.statemachine.lce.data.LceUiState
 import com.motorro.statemachine.lce.model.LceViewModel
 
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 fun LceScreen(onExit: @Composable () -> Unit) {
     val model: LceViewModel = viewModel()
@@ -41,7 +44,6 @@ fun LceScreen(onExit: @Composable () -> Unit) {
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        backgroundColor = MaterialTheme.colors.background,
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.title)) },
@@ -50,27 +52,29 @@ fun LceScreen(onExit: @Composable () -> Unit) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
                             contentDescription = "Back",
-                            tint = Color.White
+                            tint = Color.Black
                         )
                     }
                 }
             )
         }
-    ) {
-        when (val uiState = state.value) {
-            LceUiState.Loading -> Loading()
-            is LceUiState.ItemList -> ItemList(
-                state = uiState,
-                onItemClicked = { model.process(ItemClicked(it)) }
-            )
-            is LceUiState.Error -> LoadError(
-                state = uiState,
-                onRetry = { model.process(Retry) },
-                onBack = { model.process(Back) },
-                onExit = { model.process(Exit) }
-            )
-            is LceUiState.Item -> ItemDetails(state = uiState)
-            LceUiState.Terminated -> onExit()
+    ) { contentPadding ->
+        Box(modifier = Modifier.padding(contentPadding)) {
+            when (val uiState = state.value) {
+                LceUiState.Loading -> Loading()
+                is LceUiState.ItemList -> ItemList(
+                    state = uiState,
+                    onItemClicked = { model.process(ItemClicked(it)) }
+                )
+                is LceUiState.Error -> LoadError(
+                    state = uiState,
+                    onRetry = { model.process(Retry) },
+                    onBack = { model.process(Back) },
+                    onExit = { model.process(Exit) }
+                )
+                is LceUiState.Item -> ItemDetails(state = uiState)
+                LceUiState.Terminated -> onExit()
+            }
         }
     }
 }

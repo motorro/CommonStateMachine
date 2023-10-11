@@ -18,7 +18,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.LaunchedEffect
 import com.motorro.statemachine.lce.ui.LceScreen
-import com.motorro.statemachine.lce.ui.theme.LceTheme
+import com.motorro.statemachine.lce.ui.theme.CommonStateMachineTheme
 import timber.log.Timber
 
 class MainActivity : ComponentActivity() {
@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
         Timber.plant(Timber.DebugTree())
 
         setContent {
-            LceTheme {
+            CommonStateMachineTheme {
                 LceScreen(
                     onExit = {
                         LaunchedEffect(key1 = Unit, block = { finish() })

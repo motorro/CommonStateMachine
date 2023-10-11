@@ -70,8 +70,8 @@ dependencies {
     implementation project(path: ':commonstatemachine')
     implementation project(path: ':coroutines')
     implementation project(path: ':examples:welcome:commonapi')
-    implementation project(path: ':examples:welcome:commoncore')
-    implementation project(path: ':examples:welcome:androidcore')
+    implementation project(path: ':examples:commoncore')
+    implementation project(path: ':examples:androidcore')
     implementation project(path: ':examples:welcome:login')
     implementation project(path: ':examples:welcome:register')
 

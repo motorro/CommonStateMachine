@@ -24,10 +24,10 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Switch
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,14 +51,14 @@ fun Welcome(state: WelcomeUiState.Welcome, onTermsToggled: () -> Unit, onNext: (
         Column(modifier = Modifier.fillMaxWidth()) {
             Text(
                 text = stringResource(id = R.string.welcome_title),
-                style = MaterialTheme.typography.h4
+                style = MaterialTheme.typography.headlineMedium
             )
 
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
                 text = state.message,
-                style = MaterialTheme.typography.body1
+                style = MaterialTheme.typography.bodyMedium
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -70,7 +70,7 @@ fun Welcome(state: WelcomeUiState.Welcome, onTermsToggled: () -> Unit, onNext: (
             ) {
                 Text(
                     text = stringResource(id = R.string.welcome_accept),
-                    style = MaterialTheme.typography.button
+                    style = MaterialTheme.typography.labelMedium
                 )
 
                 Switch(checked = state.termsAccepted, onCheckedChange = { onTermsToggled() })

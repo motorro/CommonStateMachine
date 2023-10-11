@@ -27,10 +27,10 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -64,20 +64,20 @@ fun PasswordEntry(
         Column(modifier = Modifier.fillMaxWidth()) {
             Text(
                 text = stringResource(id = R.string.register_password_entry_title),
-                style = MaterialTheme.typography.h4
+                style = MaterialTheme.typography.headlineMedium
             )
 
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = state.email,
-                style = MaterialTheme.typography.h3
+                style = MaterialTheme.typography.headlineMedium
             )
 
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
                 text = stringResource(id = R.string.register_password_entry_desc),
-                style = MaterialTheme.typography.body1
+                style = MaterialTheme.typography.bodyMedium
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -105,7 +105,7 @@ fun PasswordEntry(
                 Spacer(modifier = Modifier.height(12.dp))
 
                 Text(
-                    color = MaterialTheme.colors.error,
+                    color = MaterialTheme.colorScheme.error,
                     text = validationError
                 )
             }

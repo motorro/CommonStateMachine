@@ -53,7 +53,7 @@ kotlin {
             dependencies {
                 implementation(project(":commonstatemachine"))
                 implementation(project(":coroutines"))
-                implementation(project(":examples:welcome:commoncore"))
+                implementation(project(":examples:commoncore"))
                 implementation(project(":examples:welcome:commonapi"))
                 implementation(libs.kotlin.coroutines.core)
             }

@@ -17,12 +17,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
-import com.motorro.statemachine.ui.theme.StateMachineTheme
+import com.motorro.statemachine.lce.ui.theme.CommonStateMachineTheme
 import com.motorro.statemachine.welcome.view.WelcomeScreen
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -33,10 +32,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
-            StateMachineTheme {
+            CommonStateMachineTheme {
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
+                    modifier = Modifier.fillMaxSize()
                 ) {
                     WelcomeScreen(
                         onTerminate = {

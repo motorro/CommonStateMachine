@@ -63,10 +63,12 @@ android {
 dependencies {
     implementation project(path: ':commonstatemachine')
     implementation project(path: ':coroutines')
-    implementation project(path: ':examples:welcome:commoncore')
-    implementation project(path: ':examples:welcome:androidcore')
+    implementation project(path: ':examples:commoncore')
+    implementation project(path: ':examples:androidcore')
 
     coreLibraryDesugaring libs.desugaring
+
+    implementation libs.timber
 
     implementation libs.androidx.core
     implementation libs.androidx.lifecycle.runtime
