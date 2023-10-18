@@ -77,7 +77,7 @@ interface ActiveMachineContainer : ProxyMachineContainer {
         fun some(
             init: Collection<MachineInit<*, *>>,
             initiallyActive: Set<MachineKey<*, *>> = setOf(init.first().key)
-        ): ProxyMachineContainer = SomeActiveMachineContainer(init, initiallyActive)
+        ): ActiveMachineContainer = SomeActiveMachineContainer(init, initiallyActive)
     }
 }
 

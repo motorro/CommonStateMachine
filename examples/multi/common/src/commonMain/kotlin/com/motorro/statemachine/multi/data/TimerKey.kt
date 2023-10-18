@@ -18,4 +18,4 @@ import com.motorro.commonstatemachine.multi.MachineKey
 /**
  * Key to timer machine
  */
-class TimerKey(tag: String) : MachineKey<TimerUiState, TimerUiState>(tag)
+class TimerKey(tag: String) : MachineKey<TimerGesture, TimerUiState>(tag)

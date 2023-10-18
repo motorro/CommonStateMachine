@@ -16,12 +16,20 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.yield
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.ZERO
 import kotlin.time.Duration.Companion.seconds
 
 /**
  * Timer state
  */
-abstract class TimerState : CoroutineState<TimerGesture, TimerUiState>()
+abstract class TimerState : CoroutineState<TimerGesture, TimerUiState>() {
+    companion object {
+        /**
+         * Creates initial state
+         */
+        fun init(lifecycle: LifecycleState): TimerState = Running(lifecycle, ZERO)
+    }
+}
 
 /**
  * Running state

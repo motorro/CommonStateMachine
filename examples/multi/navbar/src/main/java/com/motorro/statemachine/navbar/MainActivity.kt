@@ -16,26 +16,74 @@ package com.motorro.statemachine.navbar
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.motorro.statemachine.navbar.model.MainViewModel
+import com.motorro.statemachine.navbar.model.data.NavbarGesture
 import com.motorro.statemachine.navbar.ui.theme.CommonStateMachineTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val model: MainViewModel = viewModel()
+            val state by model.uiState.collectAsState()
+
+            val currentTimer by remember {
+                derivedStateOf {
+                    state.timers.first { state.active == it.first }
+                }
+            }
+
             CommonStateMachineTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
+                Scaffold(
+                    bottomBar = {
+                        NavigationBar {
+                            state.timers.forEachIndexed { i, (key, _) ->
+                                NavigationBarItem(
+                                    icon = { Icon(Icons.Filled.Star, contentDescription = i.toString()) },
+                                    label = { Text("Timer ${ i + 1 }") },
+                                    selected = key == state.active,
+                                    onClick = { model.update(NavbarGesture.ActiveSelected(key)) }
+                                )
+                            }
+                        }
+                    }
+                ) { padding ->
+                    // A surface container using the 'background' color from the theme
+                    Surface(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(padding),
+                        color = MaterialTheme.colorScheme.background
+                    ) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.SpaceAround) {
+                            Text(style = MaterialTheme.typography.headlineLarge, text = currentTimer.first.tag.orEmpty())
+                            Text(style = MaterialTheme.typography.displayLarge, text = currentTimer.second.time.toComponents { h, m,s, _ ->
+                                "$h:$m:$s"
+                            })
+                        }
+                    }
                 }
             }
         }
