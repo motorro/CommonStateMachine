@@ -1,6 +1,6 @@
 [versions]
 kotlin = "1.9.10"
-dokka = "1.8.10"
+dokka = "1.9.10"
 coroutines = "1.7.3"
 compose = "1.5.3"
 compose_compiler = "1.5.3"
@@ -22,6 +22,7 @@ nexus_publish = { id = "io.github.gradle-nexus.publish-plugin", version = "1.0.0
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+kotlin-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version = "0.4.1" }
 
 desugaring = { module = "com.android.tools:desugar_jdk_libs", version = "2.0.3" }
 

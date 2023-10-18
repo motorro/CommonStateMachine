@@ -24,11 +24,11 @@ val androidTargetSdkVersion: Int by project.extra
 val androidCompileSdkVersion: Int by project.extra
 
 android {
-    namespace = "com.motorro.statemachine.navbar"
+    namespace = "com.motorro.statemachine.multi.navbar"
     compileSdk = androidCompileSdkVersion
 
     defaultConfig {
-        applicationId = "com.motorro.statemachine.navbar"
+        applicationId = "com.motorro.statemachine.multi.navbar"
         minSdk = androidMinSdkVersion
         targetSdk = androidTargetSdkVersion
         versionCode = versionCode
@@ -71,8 +71,11 @@ android {
 }
 
 dependencies {
+    implementation(project(":commonstatemachine"))
+    implementation(project(":coroutines"))
     implementation(project(":examples:commoncore"))
     implementation(project(":examples:androidcore"))
+    implementation(project(":examples:multi:common"))
 
     coreLibraryDesugaring(libs.desugaring)
 
