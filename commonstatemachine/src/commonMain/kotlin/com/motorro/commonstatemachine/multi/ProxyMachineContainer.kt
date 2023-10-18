@@ -23,7 +23,7 @@ interface ProxyMachineContainer {
     /**
      * Starts machines
      */
-    fun start(onUiChanged: (key: MachineKey<out Any, out Any>, uiState: Any) -> Unit)
+    fun start(onUiChanged: (key: MachineKey<*, *>, uiState: Any) -> Unit)
 
     /**
      * Returns a map of proxy machines
@@ -52,17 +52,17 @@ interface ActiveMachineContainer : ProxyMachineContainer {
     /**
      * Retrieves currently active machine key
      */
-    fun getActive(): Set<MachineKey<out Any, out Any>>
+    fun getActive(): Set<MachineKey<*, *>>
 
     /**
      * Sets active machine given the keys
      */
-    fun setActive(keys: Set<MachineKey<out Any, out Any>>)
+    fun setActive(keys: Set<MachineKey<*, *>>)
 
     /**
      * Sets active machine given the key
      */
-    fun setActive(vararg key: MachineKey<out Any, out Any>) = setActive(key.toSet())
+    fun setActive(vararg key: MachineKey<*, *>) = setActive(key.toSet())
 
     companion object {
         /**
@@ -90,7 +90,7 @@ internal class AllTogetherMachineContainer(private val init: Collection<MachineI
     /**
      * Proxy machines
      */
-    private var machines: Map<MachineKey<out Any, out Any>, ProxyStateMachine<out Any, out Any>> = emptyMap()
+    private var machines: Map<MachineKey<*, *>, ProxyStateMachine<*, *>> = emptyMap()
 
     /**
      * Machine lifecycle that is always started
@@ -104,7 +104,7 @@ internal class AllTogetherMachineContainer(private val init: Collection<MachineI
     /**
      * Starts machines
      */
-    override fun start(onUiChanged: (key: MachineKey<out Any, out Any>, uiState: Any) -> Unit) {
+    override fun start(onUiChanged: (key: MachineKey<*, *>, uiState: Any) -> Unit) {
         machines = init.associate { i -> i.key to i.machine(lifecycle, onUiChanged) }
         machines.forEach { it.value.start() }
     }
@@ -136,12 +136,12 @@ internal class SomeActiveMachineContainer(
     /**
      * Proxy machines
      */
-    private var machines: Map<MachineKey<out Any, out Any>, ActiveStateMachine<out Any, out Any>> = emptyMap()
+    private var machines: Map<MachineKey<*, *>, ActiveStateMachine<*, *>> = emptyMap()
 
     /**
      * Starts machines
      */
-    override fun start(onUiChanged: (key: MachineKey<out Any, out Any>, uiState: Any) -> Unit) {
+    override fun start(onUiChanged: (key: MachineKey<*, *>, uiState: Any) -> Unit) {
         machines = init.associate { i -> i.key to ActiveStateMachine(i, onUiChanged) }
         setActive(initiallyActive)
     }
@@ -161,14 +161,14 @@ internal class SomeActiveMachineContainer(
     /**
      * Retrieves currently active machine key
      */
-    override fun getActive(): Set<MachineKey<out Any, out Any>> {
+    override fun getActive(): Set<MachineKey<*, *>> {
         return machines.entries.filter { (_, machine) -> machine.isActive() }.map { it.key }.toSet()
     }
 
     /**
      * Sets active machine given the key
      */
-    override fun setActive(keys: Set<MachineKey<out Any, out Any>>) {
+    override fun setActive(keys: Set<MachineKey<*, *>>) {
         val active = getActive()
         val toDeactivate = active.minus(keys)
         val toActivate = keys.minus(active)

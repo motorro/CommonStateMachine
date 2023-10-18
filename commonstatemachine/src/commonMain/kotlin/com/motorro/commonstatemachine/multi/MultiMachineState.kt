@@ -45,7 +45,7 @@ abstract class MultiMachineState<PG: Any, PU: Any> : CommonMachineState<PG, PU>(
      * Updates machine view-state
      */
     @Suppress("UNUSED_PARAMETER")
-    private fun onUiStateChange(key: MachineKey<out Any, out Any>, uiState: Any) {
+    private fun onUiStateChange(key: MachineKey<*, *>, uiState: Any) {
         setUiState(buildUiState())
     }
 

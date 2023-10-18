@@ -26,7 +26,7 @@ import com.motorro.commonstatemachine.lifecycle.LifecycleStateImpl
  */
 internal class ActiveStateMachine<G: Any, U: Any>(
     init: MachineInit<G, U>,
-    onUiChanged: (MachineKey<out Any, out Any>, Any) -> Unit
+    onUiChanged: (MachineKey<*, *>, Any) -> Unit
 ) : CommonStateMachine<G, U>, Activated {
     /**
      * Machine lifecycle

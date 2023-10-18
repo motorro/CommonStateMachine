@@ -18,4 +18,4 @@ import com.motorro.commonstatemachine.CommonStateMachine
 /**
  * A map of state machines
  */
-internal typealias MachineMap = Map<MachineKey<out Any, out Any>, CommonStateMachine<out Any, out Any>>
+internal typealias MachineMap = Map<MachineKey<*, *>, CommonStateMachine<*, *>>
