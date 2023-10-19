@@ -125,7 +125,7 @@ interface CommonStateMachine<G: Any, U: Any> : MachineInput<G>, MachineOutput<G,
         /**
          * Cleans-up state-machine
          */
-        override fun clear() {
+        final override fun clear() {
             activeState.clear()
         }
 

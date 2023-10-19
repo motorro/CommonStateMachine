@@ -22,14 +22,8 @@ package com.motorro.commonstatemachine
 internal class ProxyStateMachine<G : Any, U : Any>(
     private var uiState: U,
     init: () -> CommonMachineState<G, U>,
-    onUiStateChange: (U) -> Unit
+    private val onUiStateChange: (U) -> Unit
 ) : CommonStateMachine.Base<G, U>(init) {
-    /**
-     * Updates upstream
-     * When cleared - set to null
-     */
-    private var uiStateChangeHandler: ((U) -> Unit)? = onUiStateChange
-
     /**
      * Current UI state
      * @return current UI state or `null` if not yet available
@@ -42,14 +36,6 @@ internal class ProxyStateMachine<G : Any, U : Any>(
      */
     override fun setUiState(uiState: U) {
         this.uiState = uiState
-        uiStateChangeHandler?.invoke(uiState)
-    }
-
-    /**
-     * Cleans-up the machine
-     */
-    override fun clear() {
-        uiStateChangeHandler = null
-        super.clear()
+        onUiStateChange(uiState)
     }
 }
