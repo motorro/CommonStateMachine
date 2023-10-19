@@ -46,7 +46,7 @@ abstract class MultiMachineState<PG: Any, PU: Any> : CommonMachineState<PG, PU>(
      */
     @Suppress("UNUSED_PARAMETER")
     private fun onUiStateChange(key: MachineKey<*, *>, uiState: Any) {
-        setUiState(buildUiState())
+        updateUi()
     }
 
     /**
@@ -61,6 +61,13 @@ abstract class MultiMachineState<PG: Any, PU: Any> : CommonMachineState<PG, PU>(
             }
         }
         return mapUiState(uiStateProvider)
+    }
+
+    /**
+     * Updates hosting machine with composed UI state
+     */
+    protected fun updateUi() {
+        setUiState(buildUiState())
     }
 
     /**

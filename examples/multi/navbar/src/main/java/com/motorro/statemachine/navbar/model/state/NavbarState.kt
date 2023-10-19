@@ -42,7 +42,10 @@ internal class NavbarState : MultiMachineState<NavbarGesture, NavbarUiState>() {
      * @param processor Use it to send child gesture to the relevant child machine
      */
     override fun mapGesture(parent: NavbarGesture, processor: GestureProcessor) = when(parent) {
-        is NavbarGesture.ActiveSelected -> container.setActive(parent.key)
+        is NavbarGesture.ActiveSelected -> {
+            container.setActive(parent.key)
+            updateUi()
+        }
         is NavbarGesture.Child -> processor.process(parent.key, parent.gesture)
     }
 

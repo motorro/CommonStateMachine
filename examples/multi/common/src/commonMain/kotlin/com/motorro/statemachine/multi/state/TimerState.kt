@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.isActive
-import kotlinx.coroutines.yield
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.ZERO
 import kotlin.time.Duration.Companion.seconds
@@ -62,7 +61,6 @@ internal class Running(private val lifecycle: LifecycleState, private var time: 
                         while (currentCoroutineContext().isActive) {
                             delay(DELAY)
                             emit(Unit)
-                            yield()
                         }
                     }
                 }
