@@ -1,6 +1,7 @@
 package com.motorro.statemachine.multi.state
 
-import com.motorro.commonstatemachine.lifecycle.LifecycleState
+import com.motorro.commonstatemachine.lifecycle.ActivatedMachineLifecycle
+import com.motorro.commonstatemachine.lifecycle.MachineLifecycle
 import com.motorro.statemachine.multi.data.TimerGesture
 import com.motorro.statemachine.multi.data.TimerUiState
 import kotlinx.coroutines.Dispatchers
@@ -21,7 +22,7 @@ import kotlin.time.Duration.Companion.seconds
 @ExperimentalCoroutinesApi
 class RunningTest {
     private lateinit var machine: MachineMock<TimerGesture, TimerUiState>
-    private lateinit var lifecycle: MockLifecycleState
+    private lateinit var lifecycle: ActivatedMachineLifecycle
     private lateinit var state: TimerState
 
     @BeforeTest
@@ -29,7 +30,7 @@ class RunningTest {
         Dispatchers.setMain(StandardTestDispatcher())
 
         machine = MachineMock(TimerUiState.Stopped(ZERO))
-        lifecycle = MockLifecycleState(LifecycleState.State.ACTIVE)
+        lifecycle = ActivatedMachineLifecycle(MachineLifecycle.State.ACTIVE)
         state = Running(lifecycle, ZERO)
     }
 

@@ -54,7 +54,6 @@ kotlin {
                 implementation(project(":commonstatemachine"))
                 implementation(project(":coroutines"))
                 implementation(libs.kotlin.coroutines.core)
-                implementation(libs.kotlin.coroutines.android)
                 implementation(libs.kotlin.datetime)
             }
         }
@@ -67,6 +66,7 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation(libs.timber)
+                implementation(libs.kotlin.coroutines.android)
             }
         }
         val androidUnitTest by getting

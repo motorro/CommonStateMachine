@@ -2,7 +2,7 @@ package com.motorro.statemachine.multi.state
 
 import com.motorro.commonstatemachine.coroutines.CoroutineState
 import com.motorro.commonstatemachine.coroutines.lifecycle.asFlow
-import com.motorro.commonstatemachine.lifecycle.LifecycleState
+import com.motorro.commonstatemachine.lifecycle.MachineLifecycle
 import com.motorro.statemachine.multi.data.TimerGesture
 import com.motorro.statemachine.multi.data.TimerUiState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -26,14 +26,14 @@ abstract class TimerState : CoroutineState<TimerGesture, TimerUiState>() {
         /**
          * Creates initial state
          */
-        fun init(lifecycle: LifecycleState): TimerState = Running(lifecycle, ZERO)
+        fun init(lifecycle: MachineLifecycle): TimerState = Running(lifecycle, ZERO)
     }
 }
 
 /**
  * Running state
  */
-internal class Running(private val lifecycle: LifecycleState, private var time: Duration) : TimerState() {
+internal class Running(private val lifecycle: MachineLifecycle, private var time: Duration) : TimerState() {
     /**
      * A part of [start] template to initialize state
      */
@@ -56,8 +56,8 @@ internal class Running(private val lifecycle: LifecycleState, private var time: 
         lifecycle.asFlow(stateScope)
             .flatMapLatest { state ->
                 when(state) {
-                    LifecycleState.State.PAUSED -> emptyFlow()
-                    LifecycleState.State.ACTIVE -> flow {
+                    MachineLifecycle.State.PAUSED -> emptyFlow()
+                    MachineLifecycle.State.ACTIVE -> flow {
                         while (currentCoroutineContext().isActive) {
                             delay(DELAY)
                             emit(Unit)
@@ -87,7 +87,7 @@ internal class Running(private val lifecycle: LifecycleState, private var time: 
 /**
  * Stopped time
  */
-internal class Stopped(private val lifecycle: LifecycleState, private val time: Duration) : TimerState() {
+internal class Stopped(private val lifecycle: MachineLifecycle, private val time: Duration) : TimerState() {
     /**
      * A part of [start] template to initialize state
      */

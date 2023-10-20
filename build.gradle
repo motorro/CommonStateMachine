@@ -101,22 +101,27 @@ tasks.register('runCoroutinesTests', Task) {
 }
 
 tasks.register('runRegisterUnitTests', Task) {
-    dependsOn[':commonregister:allTests']
+    dependsOn[':examples:welcome:commonregister:allTests']
     description 'Run unit tests for the common register layer.'
 }
 
 tasks.register('runLoginUnitTests', Task) {
-    dependsOn[':login:testDebugUnitTest']
+    dependsOn[':examples:welcome:login:testDebugUnitTest']
     description 'Run unit tests for the login module.'
 }
 
 tasks.register('runLceUnitTests', Task) {
-    dependsOn[':lce:testDebugUnitTest']
+    dependsOn[':examples:lce:testDebugUnitTest']
     description 'Run unit tests for LCE app.'
 }
 
 tasks.register('runWelcomeUnitTests', Task) {
-    dependsOn[':welcome:testDebugUnitTest']
+    dependsOn[':examples::welcome:testDebugUnitTest']
+    description 'Run unit tests for welcome app.'
+}
+
+tasks.register('runMultiCommonUnitTests', Task) {
+    dependsOn[':examples:multi:allTests']
     description 'Run unit tests for welcome app.'
 }
 
@@ -136,7 +141,8 @@ task runUnitTests(
                 'runLoginUnitTests',
                 'runRegisterUnitTests',
                 'runLceUnitTests',
-                'runWelcomeUnitTests'
+                'runWelcomeUnitTests',
+                'runMultiCommonUnitTests'
         ],
         group: 'verification'
 ) {

@@ -14,7 +14,7 @@
 package com.motorro.commonstatemachine.multi
 
 import com.motorro.commonstatemachine.ProxyStateMachine
-import com.motorro.commonstatemachine.lifecycle.LifecycleState
+import com.motorro.commonstatemachine.lifecycle.MachineLifecycle
 
 /**
  * Holds proxy-machines
@@ -37,8 +37,8 @@ interface ProxyMachineContainer {
 
     companion object {
         /**
-         * Creates a container where all machines run together and their [LifecycleState] is
-         * always [LifecycleState.State.ACTIVE]
+         * Creates a container where all machines run together and their [MachineLifecycle] is
+         * always [MachineLifecycle.State.ACTIVE]
          * @param init Machine init
          */
         fun allTogether(init: Collection<MachineInit<*, *>>): ProxyMachineContainer = AllTogetherMachineContainer(init)
@@ -67,7 +67,7 @@ interface ActiveMachineContainer : ProxyMachineContainer {
     companion object {
         /**
          * Creates a container where machines may be activated and deactivated
-         * Check their [LifecycleState] passed to init to guess if machine is active or paused
+         * Check their [MachineLifecycle] passed to init to guess if machine is active or paused
          * That may come handy when implementing some view-paging or nav-bar views
          * when you want to preserve machine states on several pages but want to pause
          * some resource-intensive pending operations when machine is not "in focus"
@@ -95,10 +95,11 @@ internal class AllTogetherMachineContainer(private val init: Collection<MachineI
     /**
      * Machine lifecycle that is always started
      */
-    private val lifecycle = object : LifecycleState {
-        override fun getState() = LifecycleState.State.ACTIVE
-        override fun addObserver(observer: LifecycleState.Observer) = Unit
-        override fun removeObserver(observer: LifecycleState.Observer) = Unit
+    private val lifecycle = object : MachineLifecycle {
+        override fun getState() = MachineLifecycle.State.ACTIVE
+        override fun hasObservers(): Boolean = false
+        override fun addObserver(observer: MachineLifecycle.Observer) = Unit
+        override fun removeObserver(observer: MachineLifecycle.Observer) = Unit
     }
 
     /**

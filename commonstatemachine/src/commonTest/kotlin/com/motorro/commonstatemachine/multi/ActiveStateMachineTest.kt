@@ -15,7 +15,7 @@ package com.motorro.commonstatemachine.multi
 
 import com.motorro.commonstatemachine.CommonMachineState
 import com.motorro.commonstatemachine.StateMock
-import com.motorro.commonstatemachine.lifecycle.LifecycleState
+import com.motorro.commonstatemachine.lifecycle.MachineLifecycle
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -27,7 +27,7 @@ class ActiveStateMachineTest {
     private lateinit var state: StateMock<Int, String>
     private lateinit var machine: ActiveStateMachine<Int, String>
 
-    private lateinit var status: MutableList<LifecycleState.State>
+    private lateinit var status: MutableList<MachineLifecycle.State>
     private lateinit var uiState: MutableList<Any>
 
     @BeforeTest
@@ -39,7 +39,7 @@ class ActiveStateMachineTest {
         val init = object : MachineInit<Int, String> {
             override val key: MachineKey<Int, String> = intKey
             override val initialUiState: String = "Initial"
-            override val init: (LifecycleState) -> CommonMachineState<Int, String> = { ls ->
+            override val init: (MachineLifecycle) -> CommonMachineState<Int, String> = { ls ->
                 ls.addObserver {
                     status.add(it)
                 }
@@ -85,7 +85,7 @@ class ActiveStateMachineTest {
     fun updatesLifecycleOnDeactivate() {
         machine.activate()
         machine.deactivate()
-        assertEquals(listOf(LifecycleState.State.PAUSED), status)
+        assertEquals(listOf(MachineLifecycle.State.PAUSED), status)
     }
 
     @Test
@@ -93,7 +93,7 @@ class ActiveStateMachineTest {
         machine.activate()
         machine.deactivate()
         machine.activate()
-        assertEquals(listOf(LifecycleState.State.PAUSED, LifecycleState.State.ACTIVE), status)
+        assertEquals(listOf(MachineLifecycle.State.PAUSED, MachineLifecycle.State.ACTIVE), status)
     }
 
     @Test

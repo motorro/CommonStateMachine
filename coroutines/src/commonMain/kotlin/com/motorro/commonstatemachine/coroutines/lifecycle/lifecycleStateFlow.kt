@@ -13,7 +13,7 @@
 
 package com.motorro.commonstatemachine.coroutines.lifecycle
 
-import com.motorro.commonstatemachine.lifecycle.LifecycleState
+import com.motorro.commonstatemachine.lifecycle.MachineLifecycle
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.awaitClose
@@ -25,15 +25,15 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 
 /**
- * Flow adapter for [LifecycleState]
+ * Flow adapter for [MachineLifecycle]
  */
-fun LifecycleState.asFlow(scope: CoroutineScope): StateFlow<LifecycleState.State> =
+fun MachineLifecycle.asFlow(scope: CoroutineScope): StateFlow<MachineLifecycle.State> =
     callbackFlow {
-        val observer  = object : LifecycleState.Observer {
+        val observer  = object : MachineLifecycle.Observer {
             /**
              * Called when state changes
              */
-            override fun onStateChange(state: LifecycleState.State) {
+            override fun onStateChange(state: MachineLifecycle.State) {
                 trySend(state)
             }
         }
@@ -49,21 +49,23 @@ fun LifecycleState.asFlow(scope: CoroutineScope): StateFlow<LifecycleState.State
 /**
  * Callback adapter for [StateFlow]
  */
-fun StateFlow<LifecycleState.State>.asCallback(coroutineScope: CoroutineScope): LifecycleState = object : LifecycleState {
+fun StateFlow<MachineLifecycle.State>.asCallback(coroutineScope: CoroutineScope): MachineLifecycle = object : MachineLifecycle {
 
-    private val observers = mutableSetOf <LifecycleState.Observer>()
+    private val observers = mutableSetOf <MachineLifecycle.Observer>()
     private var job: Job? = null
 
-    override fun getState(): LifecycleState.State = this@asCallback.value
+    override fun getState(): MachineLifecycle.State = this@asCallback.value
 
-    override fun addObserver(observer: LifecycleState.Observer) {
+    override fun hasObservers(): Boolean = observers.isNotEmpty()
+
+    override fun addObserver(observer: MachineLifecycle.Observer) {
         observers.add(observer)
         if (1 == observers.size) {
             start()
         }
     }
 
-    override fun removeObserver(observer: LifecycleState.Observer) {
+    override fun removeObserver(observer: MachineLifecycle.Observer) {
         observers.remove(observer)
         if (observers.isEmpty()) {
             stop()
@@ -79,7 +81,7 @@ fun StateFlow<LifecycleState.State>.asCallback(coroutineScope: CoroutineScope): 
         job = null
     }
 
-    private fun update(state: LifecycleState.State) {
+    private fun update(state: MachineLifecycle.State) {
         observers.forEach { it.onStateChange(state) }
     }
 }

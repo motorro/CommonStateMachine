@@ -1,7 +1,7 @@
 package com.motorro.statemachine.navbar.model.state
 
 import com.motorro.commonstatemachine.CommonMachineState
-import com.motorro.commonstatemachine.lifecycle.LifecycleState
+import com.motorro.commonstatemachine.lifecycle.MachineLifecycle
 import com.motorro.commonstatemachine.multi.ActiveMachineContainer
 import com.motorro.commonstatemachine.multi.GestureProcessor
 import com.motorro.commonstatemachine.multi.MachineInit
@@ -29,7 +29,7 @@ internal class NavbarState : MultiMachineState<NavbarGesture, NavbarUiState>() {
             object : MachineInit<TimerGesture, TimerUiState> {
                 override val key: TimerKey = key
                 override val initialUiState: TimerUiState = TimerUiState.Stopped(Duration.ZERO)
-                override val init: (LifecycleState) -> CommonMachineState<TimerGesture, TimerUiState> = {
+                override val init: (MachineLifecycle) -> CommonMachineState<TimerGesture, TimerUiState> = {
                     TimerState.init(it)
                 }
             }

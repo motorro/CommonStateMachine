@@ -8,20 +8,20 @@ import kotlin.test.assertTrue
 
 class CombineLifecycleStateTest {
 
-    private lateinit var parent: ActivatedLifecycleState
-    private lateinit var child: ActivatedLifecycleState
-    private lateinit var ls: LifecycleState
+    private lateinit var parent: ActivatedMachineLifecycle
+    private lateinit var child: ActivatedMachineLifecycle
+    private lateinit var ls: MachineLifecycle
 
-    private lateinit var s1: MutableList<LifecycleState.State>
-    private lateinit var s2: MutableList<LifecycleState.State>
-    private fun mix(s1: LifecycleState.State, s2: LifecycleState.State): LifecycleState.State {
+    private lateinit var s1: MutableList<MachineLifecycle.State>
+    private lateinit var s2: MutableList<MachineLifecycle.State>
+    private fun mix(s1: MachineLifecycle.State, s2: MachineLifecycle.State): MachineLifecycle.State {
         this.s1.add(s1)
         this.s2.add(s2)
 
-        return if (LifecycleState.State.ACTIVE == s1 || LifecycleState.State.ACTIVE == s2) {
-            LifecycleState.State.ACTIVE
+        return if (MachineLifecycle.State.ACTIVE == s1 || MachineLifecycle.State.ACTIVE == s2) {
+            MachineLifecycle.State.ACTIVE
         } else {
-            LifecycleState.State.PAUSED
+            MachineLifecycle.State.PAUSED
         }
     }
 
@@ -30,23 +30,23 @@ class CombineLifecycleStateTest {
         s1 = mutableListOf()
         s2 = mutableListOf()
 
-        parent = ActivatedLifecycleState(LifecycleState.State.PAUSED)
-        child = ActivatedLifecycleState(LifecycleState.State.PAUSED)
+        parent = ActivatedMachineLifecycle(MachineLifecycle.State.PAUSED)
+        child = ActivatedMachineLifecycle(MachineLifecycle.State.PAUSED)
 
-        ls = CombineLifecycleState(parent, child, ::mix)
+        ls = CombineMachineLifecycle(parent, child, ::mix)
     }
 
     @Test
     fun returnsCombinedState() {
-        assertEquals(LifecycleState.State.PAUSED, ls.getState())
-        assertEquals(listOf(LifecycleState.State.PAUSED), s1)
-        assertEquals(listOf(LifecycleState.State.PAUSED), s2)
+        assertEquals(MachineLifecycle.State.PAUSED, ls.getState())
+        assertEquals(listOf(MachineLifecycle.State.PAUSED), s1)
+        assertEquals(listOf(MachineLifecycle.State.PAUSED), s2)
     }
 
     @Test
     fun callsUpstreamOnEveryStateCheck() {
-        assertEquals(LifecycleState.State.PAUSED, ls.getState())
-        assertEquals(LifecycleState.State.PAUSED, ls.getState())
+        assertEquals(MachineLifecycle.State.PAUSED, ls.getState())
+        assertEquals(MachineLifecycle.State.PAUSED, ls.getState())
         assertEquals(2, s1.size)
         assertEquals(2, s2.size)
     }
@@ -60,7 +60,7 @@ class CombineLifecycleStateTest {
 
     @Test
     fun subscribesToUpstreamWhenSubscribedAndUnsubscribesWhenUnsubscribed() {
-        val observer = LifecycleState.Observer {
+        val observer = MachineLifecycle.Observer {
             // no-op
         }
 
@@ -86,8 +86,8 @@ class CombineLifecycleStateTest {
 
         assertTrue(updated)
 
-        assertEquals(LifecycleState.State.ACTIVE, s1.last())
-        assertEquals(LifecycleState.State.PAUSED, s2.last())
+        assertEquals(MachineLifecycle.State.ACTIVE, s1.last())
+        assertEquals(MachineLifecycle.State.PAUSED, s2.last())
     }
 
     @Test
@@ -101,7 +101,7 @@ class CombineLifecycleStateTest {
 
         assertTrue(updated)
 
-        assertEquals(LifecycleState.State.PAUSED, s1.last())
-        assertEquals(LifecycleState.State.ACTIVE, s2.last())
+        assertEquals(MachineLifecycle.State.PAUSED, s1.last())
+        assertEquals(MachineLifecycle.State.ACTIVE, s2.last())
     }
 }

@@ -6,42 +6,42 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class ActivatedLifecycleStateTest {
-    private lateinit var ls: ActivatedLifecycleState
+    private lateinit var ls: ActivatedMachineLifecycle
 
     @BeforeTest
     fun init() {
-        ls = ActivatedLifecycleState(LifecycleState.State.PAUSED)
+        ls = ActivatedMachineLifecycle(MachineLifecycle.State.PAUSED)
     }
 
     @Test
     fun returnsInitialState() {
-        assertEquals(LifecycleState.State.PAUSED, ls.getState())
+        assertEquals(MachineLifecycle.State.PAUSED, ls.getState())
     }
 
     @Test
     fun activates() {
         var activated = false
         ls.addObserver {
-            assertEquals(LifecycleState.State.ACTIVE, it)
+            assertEquals(MachineLifecycle.State.ACTIVE, it)
             activated = true
         }
         ls.activate()
         assertTrue(activated)
-        assertEquals(LifecycleState.State.ACTIVE, ls.getState())
+        assertEquals(MachineLifecycle.State.ACTIVE, ls.getState())
     }
 
     @Test
     fun deactivates() {
         ls.activate()
-        assertEquals(LifecycleState.State.ACTIVE, ls.getState())
+        assertEquals(MachineLifecycle.State.ACTIVE, ls.getState())
 
         var deactivated = false
         ls.addObserver {
-            assertEquals(LifecycleState.State.PAUSED, it)
+            assertEquals(MachineLifecycle.State.PAUSED, it)
             deactivated = true
         }
         ls.deactivate()
         assertTrue(deactivated)
-        assertEquals(LifecycleState.State.PAUSED, ls.getState())
+        assertEquals(MachineLifecycle.State.PAUSED, ls.getState())
     }
 }

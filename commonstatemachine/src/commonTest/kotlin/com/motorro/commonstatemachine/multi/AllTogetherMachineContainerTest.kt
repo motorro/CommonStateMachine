@@ -15,7 +15,7 @@ package com.motorro.commonstatemachine.multi
 
 import com.motorro.commonstatemachine.CommonMachineState
 import com.motorro.commonstatemachine.StateMock
-import com.motorro.commonstatemachine.lifecycle.LifecycleState
+import com.motorro.commonstatemachine.lifecycle.MachineLifecycle
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -34,7 +34,7 @@ class AllTogetherMachineContainerTest {
         init = object : MachineInit<Int, String> {
             override val key: MachineKey<Int, String> = intKey
             override val initialUiState: String = "INIT"
-            override val init: (LifecycleState) -> CommonMachineState<Int, String> = {
+            override val init: (MachineLifecycle) -> CommonMachineState<Int, String> = {
                 state
             }
         }

@@ -7,21 +7,21 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class BaseLifecycleStateTest {
-    private lateinit var ls: BaseLifecycleState
+    private lateinit var ls: BaseMachineLifecycle
 
     @BeforeTest
     fun init() {
-        ls = BaseLifecycleState(LifecycleState.State.PAUSED)
+        ls = BaseMachineLifecycle(MachineLifecycle.State.PAUSED)
     }
 
     @Test
     fun returnsInitialState() {
-        assertEquals(LifecycleState.State.PAUSED, ls.getState())
+        assertEquals(MachineLifecycle.State.PAUSED, ls.getState())
     }
 
     @Test
     fun returnsSubscribersStatus() {
-        val observer = LifecycleState.Observer {
+        val observer = MachineLifecycle.Observer {
             //no-op
         }
 
@@ -38,13 +38,13 @@ class BaseLifecycleStateTest {
     fun updatesState() {
         var updated = false
         ls.addObserver {
-            assertEquals(LifecycleState.State.ACTIVE, it)
+            assertEquals(MachineLifecycle.State.ACTIVE, it)
             updated = true
         }
 
-        ls.setState(LifecycleState.State.ACTIVE)
+        ls.setState(MachineLifecycle.State.ACTIVE)
 
-        assertEquals(LifecycleState.State.ACTIVE, ls.getState())
+        assertEquals(MachineLifecycle.State.ACTIVE, ls.getState())
         assertTrue(updated)
     }
 }

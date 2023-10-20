@@ -15,7 +15,7 @@ package com.motorro.commonstatemachine.multi
 
 import com.motorro.commonstatemachine.CommonMachineState
 import com.motorro.commonstatemachine.StateMock
-import com.motorro.commonstatemachine.lifecycle.LifecycleState
+import com.motorro.commonstatemachine.lifecycle.MachineLifecycle
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -33,8 +33,8 @@ class SomeActiveMachineContainerTest {
     private lateinit var init1: MachineInit<Int, Int>
     private lateinit var init2: MachineInit<String, String>
 
-    private lateinit var intLs: MutableList<LifecycleState.State>
-    private lateinit var stringLs: MutableList<LifecycleState.State>
+    private lateinit var intLs: MutableList<MachineLifecycle.State>
+    private lateinit var stringLs: MutableList<MachineLifecycle.State>
 
     @BeforeTest
     fun before() {
@@ -45,7 +45,7 @@ class SomeActiveMachineContainerTest {
         init1 = object : MachineInit<Int, Int> {
             override val key: MachineKey<Int, Int> = intKey
             override val initialUiState: Int = 1
-            override val init: (LifecycleState) -> CommonMachineState<Int, Int> = { ls ->
+            override val init: (MachineLifecycle) -> CommonMachineState<Int, Int> = { ls ->
                 ls.addObserver {
                     intLs.add(it)
                 }
@@ -56,7 +56,7 @@ class SomeActiveMachineContainerTest {
         init2 = object : MachineInit<String, String> {
             override val key: MachineKey<String, String> = stringKey
             override val initialUiState: String = "1"
-            override val init: (LifecycleState) -> CommonMachineState<String, String> = { ls ->
+            override val init: (MachineLifecycle) -> CommonMachineState<String, String> = { ls ->
                 ls.addObserver {
                     stringLs.add(it)
                 }
@@ -116,8 +116,8 @@ class SomeActiveMachineContainerTest {
         container.setActive(emptySet())
 
         assertEquals(emptySet(), container.getActive())
-        assertEquals(listOf(LifecycleState.State.PAUSED), intLs)
-        assertEquals(listOf(LifecycleState.State.PAUSED), stringLs)
+        assertEquals(listOf(MachineLifecycle.State.PAUSED), intLs)
+        assertEquals(listOf(MachineLifecycle.State.PAUSED), stringLs)
     }
 
     @Test
@@ -127,6 +127,6 @@ class SomeActiveMachineContainerTest {
 
         assertEquals(setOf(stringKey), container.getActive())
         assertTrue { stringState.started }
-        assertEquals(listOf(LifecycleState.State.PAUSED), intLs)
+        assertEquals(listOf(MachineLifecycle.State.PAUSED), intLs)
     }
 }

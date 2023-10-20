@@ -13,7 +13,7 @@
 
 package com.motorro.commonstatemachine.lifecycle
 
-import com.motorro.commonstatemachine.lifecycle.LifecycleState.State
+import com.motorro.commonstatemachine.lifecycle.MachineLifecycle.State
 
 /**
  * Provides some activity state to be able to shut-down
@@ -21,7 +21,7 @@ import com.motorro.commonstatemachine.lifecycle.LifecycleState.State
  * and to resume when back in action.
  * E.g.: Application focus
  */
-interface LifecycleState {
+interface MachineLifecycle {
 
     /**
      * Activity state
@@ -72,12 +72,12 @@ interface LifecycleState {
 }
 
 /**
- * Combines parent (receiver) state with [child] to get the combined state with OR on [LifecycleState.State.PAUSED]:
+ * Combines parent (receiver) state with [child] to get the combined state with OR on [MachineLifecycle.State.PAUSED]:
  * - Parent active, child paused - PAUSED
  * - Parent paused, child paused - PAUSED
  * - Parent active, child active - ACTIVE
  */
-fun LifecycleState.combinePaused(child: LifecycleState): LifecycleState = CombineLifecycleState(
+fun MachineLifecycle.combinePaused(child: MachineLifecycle): MachineLifecycle = CombineMachineLifecycle(
     this,
     child,
     ::pausedIfNotAllActive

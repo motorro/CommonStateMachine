@@ -15,9 +15,6 @@ package com.motorro.statemachine.multi.state
 
 import com.motorro.commonstatemachine.CommonMachineState
 import com.motorro.commonstatemachine.CommonStateMachine
-import com.motorro.commonstatemachine.lifecycle.LifecycleState
-import com.motorro.commonstatemachine.multi.Activated
-import kotlin.properties.Delegates
 
 class MachineMock<G: Any, U: Any>(uiState: U) : CommonStateMachine<G, U> {
     val machineStates = mutableListOf<CommonMachineState<G, U>>()
@@ -45,35 +42,3 @@ class MachineMock<G: Any, U: Any>(uiState: U) : CommonStateMachine<G, U> {
         cleared = true
     }
 }
-
-class MockLifecycleState(startIn: LifecycleState.State) : LifecycleState, Activated {
-    private var lifecycle: LifecycleState.State by Delegates.observable(startIn) { _, old, new ->
-        if (new != old) {
-            observers.forEach { it.onStateChange(new) }
-        }
-    }
-
-    var observers = setOf<LifecycleState.Observer>()
-        private set
-
-    override fun isActive(): Boolean = LifecycleState.State.ACTIVE == lifecycle
-
-    override fun activate() {
-        lifecycle = LifecycleState.State.ACTIVE
-    }
-
-    override fun deactivate() {
-        lifecycle = LifecycleState.State.PAUSED
-    }
-
-    override fun getState(): LifecycleState.State = lifecycle
-
-    override fun addObserver(observer: LifecycleState.Observer) {
-        observers = observers.plus(observer)
-    }
-
-    override fun removeObserver(observer: LifecycleState.Observer) {
-        observers = observers.minus(observer)
-    }
-}
-

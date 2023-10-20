@@ -13,14 +13,14 @@
 
 package com.motorro.commonstatemachine.coroutines.lifecycle
 
-import com.motorro.commonstatemachine.lifecycle.LifecycleState
-import com.motorro.commonstatemachine.lifecycle.LifecycleState.State
+import com.motorro.commonstatemachine.lifecycle.BaseMachineLifecycle
+import com.motorro.commonstatemachine.lifecycle.MachineLifecycle
+import com.motorro.commonstatemachine.lifecycle.MachineLifecycle.State
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import kotlin.properties.Delegates
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -28,27 +28,11 @@ import kotlin.test.assertEquals
 @OptIn(ExperimentalCoroutinesApi::class)
 class LifecycleStateFlowTest {
 
-    private class StateProducer : LifecycleState {
-        val observers = mutableSetOf<LifecycleState.Observer>()
-        var stateValue: State by Delegates.observable(State.PAUSED) { _, o, n ->
-            if (o != n) {
-                observers.forEach { it.onStateChange(n) }
-            }
-        }
-        override fun getState(): State = stateValue
-        override fun addObserver(observer: LifecycleState.Observer) {
-            observers.add(observer)
-        }
-        override fun removeObserver(observer: LifecycleState.Observer) {
-            observers.remove(observer)
-        }
-    }
-
-    private lateinit var producer: StateProducer
+    private lateinit var producer: BaseMachineLifecycle
 
     @BeforeTest
     fun init() {
-        producer = StateProducer()
+        producer = BaseMachineLifecycle(State.PAUSED)
     }
 
     @Test
@@ -58,14 +42,14 @@ class LifecycleStateFlowTest {
             producer.asFlow(this).collect { values.add(it)  }
         }
 
-        producer.stateValue = State.ACTIVE
+        producer.setState(State.ACTIVE)
         this.advanceUntilIdle()
-        producer.stateValue = State.PAUSED
+        producer.setState(State.PAUSED)
         this.advanceUntilIdle()
 
         job.cancel()
 
-        producer.stateValue = State.ACTIVE
+        producer.setState(State.ACTIVE)
 
         assertEquals(
             listOf(State.ACTIVE, State.PAUSED),
@@ -77,11 +61,7 @@ class LifecycleStateFlowTest {
     fun convertsFlowToCallback() = runTest {
         val values = mutableListOf<State>()
         val flow = MutableStateFlow(State.PAUSED)
-        val observer = object : LifecycleState.Observer {
-            override fun onStateChange(state: State) {
-                values.add(state)
-            }
-        }
+        val observer = MachineLifecycle.Observer { state -> values.add(state) }
         val callbacks = flow.asCallback(this)
 
         callbacks.addObserver(observer)
