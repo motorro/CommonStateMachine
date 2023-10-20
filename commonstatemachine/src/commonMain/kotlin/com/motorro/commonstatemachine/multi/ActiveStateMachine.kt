@@ -16,8 +16,8 @@ package com.motorro.commonstatemachine.multi
 import com.motorro.commonstatemachine.CommonMachineState
 import com.motorro.commonstatemachine.CommonStateMachine
 import com.motorro.commonstatemachine.ProxyStateMachine
+import com.motorro.commonstatemachine.lifecycle.ActivatedLifecycleState
 import com.motorro.commonstatemachine.lifecycle.LifecycleState
-import com.motorro.commonstatemachine.lifecycle.LifecycleStateImpl
 
 /**
  * State-machine wrapper that activates and deactivates
@@ -31,7 +31,7 @@ internal class ActiveStateMachine<G: Any, U: Any>(
     /**
      * Machine lifecycle
      */
-    private val lifecycle = LifecycleStateImpl(LifecycleState.State.PAUSED)
+    private val lifecycle = ActivatedLifecycleState(LifecycleState.State.PAUSED)
 
     /**
      * Currently working machine. Dummy while not started,

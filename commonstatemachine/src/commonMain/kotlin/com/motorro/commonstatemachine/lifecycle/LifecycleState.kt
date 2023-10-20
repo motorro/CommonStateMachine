@@ -13,8 +13,7 @@
 
 package com.motorro.commonstatemachine.lifecycle
 
-import com.motorro.commonstatemachine.multi.Activated
-import kotlin.properties.Delegates
+import com.motorro.commonstatemachine.lifecycle.LifecycleState.State
 
 /**
  * Provides some activity state to be able to shut-down
@@ -28,6 +27,11 @@ interface LifecycleState {
      * Activity state
      */
     fun getState(): State
+
+    /**
+     * True if something observes lifecycle
+     */
+    fun hasObservers(): Boolean
 
     /**
      * Adds state observer.
@@ -53,7 +57,7 @@ interface LifecycleState {
         /**
          * UI is resumed
          */
-        ACTIVE
+        ACTIVE;
     }
 
     /**
@@ -68,61 +72,25 @@ interface LifecycleState {
 }
 
 /**
- * A [LifecycleState] basic implementation
+ * Combines parent (receiver) state with [child] to get the combined state with OR on [LifecycleState.State.PAUSED]:
+ * - Parent active, child paused - PAUSED
+ * - Parent paused, child paused - PAUSED
+ * - Parent active, child active - ACTIVE
  */
-internal class LifecycleStateImpl(startIn: LifecycleState.State) : LifecycleState, Activated {
-    /**
-     * Current state
-     */
-    private var lifecycle: LifecycleState.State by Delegates.observable(startIn) { _, old, new ->
-        if (new != old) {
-            observers.forEach { it.onStateChange(new) }
-        }
-    }
+fun LifecycleState.combinePaused(child: LifecycleState): LifecycleState = CombineLifecycleState(
+    this,
+    child,
+    ::pausedIfNotAllActive
+)
 
-    /**
-     * State observers
-     */
-    private var observers = setOf<LifecycleState.Observer>()
-
-    /**
-     * Is active or not
-     */
-    override fun isActive(): Boolean = LifecycleState.State.ACTIVE == lifecycle
-
-    /**
-     * Activates lifecycle
-     */
-    override fun activate() {
-        lifecycle = LifecycleState.State.ACTIVE
-    }
-
-    /**
-     * Deactivates lifecycle
-     */
-    override fun deactivate() {
-        lifecycle = LifecycleState.State.PAUSED
-    }
-
-    /**
-     * Activity state
-     */
-    override fun getState(): LifecycleState.State = lifecycle
-
-    /**
-     * Adds state observer.
-     * @param observer Observer to get state updates
-     */
-    override fun addObserver(observer: LifecycleState.Observer) {
-        observers = observers.plus(observer)
-    }
-
-    /**
-     * Removes state observer
-     * @param observer Observer to get state updates
-     */
-    override fun removeObserver(observer: LifecycleState.Observer) {
-        observers = observers.minus(observer)
-    }
+/**
+ * Combines parent (receiver) state with [child] and [State.ACTIVE] if both are active:
+ * - Parent active, child paused - PAUSED
+ * - Parent paused, child paused - PAUSED
+ * - Parent active, child active - ACTIVE
+ */
+private fun pausedIfNotAllActive(parent: State, child: State): State = when {
+    State.ACTIVE == parent && State.ACTIVE == child -> State.ACTIVE
+    else -> State.PAUSED
 }
 
