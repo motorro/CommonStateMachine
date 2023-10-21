@@ -53,6 +53,7 @@ kotlin {
             dependencies {
                 implementation(project(":commonstatemachine"))
                 implementation(project(":coroutines"))
+                implementation(project(":examples:commoncore"))
                 implementation(libs.kotlin.coroutines.core)
                 implementation(libs.kotlin.datetime)
             }
@@ -92,9 +93,29 @@ android {
     }
 
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
 
     namespace = "com.motorro.statemachine.multi"
+
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
+    }
+
+    dependencies {
+        coreLibraryDesugaring(libs.desugaring)
+
+        implementation(libs.bundles.compose.core)
+        implementation(libs.compose.activity)
+        implementation(libs.compose.viewmodel)
+        implementation(libs.compose.foundation)
+        implementation(libs.compose.foundation.layouts)
+
+        debugImplementation(libs.compose.tooling)
+    }
 }

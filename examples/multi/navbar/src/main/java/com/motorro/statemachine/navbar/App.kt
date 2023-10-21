@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Nikolai Kotchetkov.
+ * Copyright 2022 Nikolai Kotchetkov.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -11,13 +11,18 @@
  * limitations under the License.
  */
 
-package com.motorro.statemachine.multi.data
+package com.motorro.statemachine.navbar
 
-import com.motorro.commonstatemachine.multi.MachineKey
+import android.app.Application
+import timber.log.Timber
 
-/**
- * Key to timer machine
- */
-class TimerKey(tag: String) : MachineKey<TimerGesture, TimerUiState>(tag) {
-    override fun toString(): String = "TimerKey($tag)"
+class App : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        setupLogger()
+    }
+
+    private fun setupLogger() {
+        Timber.plant(Timber.DebugTree())
+    }
 }

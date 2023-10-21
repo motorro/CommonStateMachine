@@ -17,8 +17,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.LaunchedEffect
+import com.motorro.statemachine.androidcore.ui.theme.CommonStateMachineTheme
 import com.motorro.statemachine.lce.ui.LceScreen
-import com.motorro.statemachine.lce.ui.theme.CommonStateMachineTheme
 import timber.log.Timber
 
 class MainActivity : ComponentActivity() {

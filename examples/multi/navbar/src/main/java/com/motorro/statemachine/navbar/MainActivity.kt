@@ -16,33 +16,24 @@ package com.motorro.statemachine.navbar
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.motorro.statemachine.multi.data.TimerGesture
-import com.motorro.statemachine.multi.data.TimerUiState
+import com.motorro.statemachine.androidcore.ui.theme.CommonStateMachineTheme
+import com.motorro.statemachine.multi.ui.TimerScreen
 import com.motorro.statemachine.navbar.model.MainViewModel
 import com.motorro.statemachine.navbar.model.data.NavbarGesture
-import com.motorro.statemachine.navbar.ui.theme.CommonStateMachineTheme
-import kotlin.time.Duration
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,36 +63,15 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 ) { padding ->
-                    // A surface container using the 'background' color from the theme
-                    Surface(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(padding),
-                        color = MaterialTheme.colorScheme.background
+                    TimerScreen(
+                        modifier = Modifier.padding(padding),
+                        title = currentTimer.first.tag,
+                        state = currentTimer.second
                     ) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.SpaceAround) {
-                            Text(style = MaterialTheme.typography.headlineLarge, text = currentTimer.first.tag.orEmpty())
-                            Text(style = MaterialTheme.typography.displayLarge, text = currentTimer.second.time.format())
-                            Button(onClick = { model.update(NavbarGesture.Child(currentTimer.first, TimerGesture.Toggle)) }) {
-                                Text(
-                                    style = MaterialTheme.typography.labelMedium,
-                                    text = when(currentTimer.second) {
-                                        is TimerUiState.Running -> "Stop"
-                                        is TimerUiState.Stopped -> "Start"
-                                    }
-                                )
-                            }
-                        }
+                        model.update(NavbarGesture.Child(currentTimer.first, it))
                     }
                 }
             }
         }
-    }
-}
-
-private fun Duration.format(): String {
-    fun Number.pad(): String = toString().padStart(2, '0')
-    return toComponents{ h, m,s, _ ->
-        "${h.pad()}:${m.pad()}:${s.pad()}"
     }
 }

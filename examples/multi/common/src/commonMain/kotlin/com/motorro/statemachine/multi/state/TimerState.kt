@@ -3,6 +3,7 @@ package com.motorro.statemachine.multi.state
 import com.motorro.commonstatemachine.coroutines.CoroutineState
 import com.motorro.commonstatemachine.coroutines.lifecycle.asFlow
 import com.motorro.commonstatemachine.lifecycle.MachineLifecycle
+import com.motorro.statemachine.commoncore.log.Logger
 import com.motorro.statemachine.multi.data.TimerGesture
 import com.motorro.statemachine.multi.data.TimerUiState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -21,19 +22,23 @@ import kotlin.time.Duration.Companion.seconds
 /**
  * Timer state
  */
-abstract class TimerState : CoroutineState<TimerGesture, TimerUiState>() {
+abstract class TimerState(protected val tag: String) : CoroutineState<TimerGesture, TimerUiState>() {
     companion object {
         /**
          * Creates initial state
          */
-        fun init(lifecycle: MachineLifecycle): TimerState = Running(lifecycle, ZERO)
+        fun init(tag: String, lifecycle: MachineLifecycle): TimerState = Running(tag, lifecycle, ZERO)
+    }
+
+    protected fun log(message: String) {
+        Logger.i("$tag: $message")
     }
 }
 
 /**
  * Running state
  */
-internal class Running(private val lifecycle: MachineLifecycle, private var time: Duration) : TimerState() {
+internal class Running(tag: String, private val lifecycle: MachineLifecycle, private var time: Duration) : TimerState(tag) {
     /**
      * A part of [start] template to initialize state
      */
@@ -47,13 +52,17 @@ internal class Running(private val lifecycle: MachineLifecycle, private var time
      */
     override fun doProcess(gesture: TimerGesture) {
         if (gesture is TimerGesture.Toggle) {
-            setMachineState(Stopped(lifecycle, time))
+            log("Toggled. Stopping...")
+            setMachineState(Stopped(tag, lifecycle, time))
         }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun startTimer() {
         lifecycle.asFlow(stateScope)
+            .onEach {
+                log("Machine lifecycle: $it")
+            }
             .flatMapLatest { state ->
                 when(state) {
                     MachineLifecycle.State.PAUSED -> emptyFlow()
@@ -87,7 +96,7 @@ internal class Running(private val lifecycle: MachineLifecycle, private var time
 /**
  * Stopped time
  */
-internal class Stopped(private val lifecycle: MachineLifecycle, private val time: Duration) : TimerState() {
+internal class Stopped(tag: String, private val lifecycle: MachineLifecycle, private val time: Duration) : TimerState(tag) {
     /**
      * A part of [start] template to initialize state
      */
@@ -100,7 +109,8 @@ internal class Stopped(private val lifecycle: MachineLifecycle, private val time
      */
     override fun doProcess(gesture: TimerGesture) {
         if (gesture is TimerGesture.Toggle) {
-            setMachineState(Running(lifecycle, time))
+            log("Toggled. Starting...")
+            setMachineState(Running(tag, lifecycle, time))
         }
     }
 }

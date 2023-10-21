@@ -31,7 +31,7 @@ class RunningTest {
 
         machine = MachineMock(TimerUiState.Stopped(ZERO))
         lifecycle = ActivatedMachineLifecycle(MachineLifecycle.State.ACTIVE)
-        state = Running(lifecycle, ZERO)
+        state = Running("", lifecycle, ZERO)
     }
 
     @AfterTest

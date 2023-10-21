@@ -38,7 +38,7 @@ interface UiStateProvider {
      * Gets a concrete UI-state
      * @param key Machine key your state is bound to
      */
-    fun <U: Any> get(key: MachineKey<*, U>): U?
+    operator fun <U: Any> get(key: MachineKey<*, U>): U?
 }
 
 /**

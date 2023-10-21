@@ -21,7 +21,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
-import com.motorro.statemachine.lce.ui.theme.CommonStateMachineTheme
+import com.motorro.statemachine.androidcore.ui.theme.CommonStateMachineTheme
 import com.motorro.statemachine.welcome.view.WelcomeScreen
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber

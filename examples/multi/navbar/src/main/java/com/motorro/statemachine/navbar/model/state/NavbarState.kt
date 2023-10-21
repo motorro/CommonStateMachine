@@ -7,6 +7,7 @@ import com.motorro.commonstatemachine.multi.GestureProcessor
 import com.motorro.commonstatemachine.multi.MachineInit
 import com.motorro.commonstatemachine.multi.MultiMachineState
 import com.motorro.commonstatemachine.multi.UiStateProvider
+import com.motorro.statemachine.commoncore.log.Logger
 import com.motorro.statemachine.multi.data.TimerGesture
 import com.motorro.statemachine.multi.data.TimerKey
 import com.motorro.statemachine.multi.data.TimerUiState
@@ -15,6 +16,9 @@ import com.motorro.statemachine.navbar.model.data.NavbarGesture
 import com.motorro.statemachine.navbar.model.data.NavbarUiState
 import kotlin.time.Duration
 
+/**
+ * Machines are lazily created and paused when not active
+ */
 internal class NavbarState : MultiMachineState<NavbarGesture, NavbarUiState>() {
 
     private val keys = listOf(
@@ -24,13 +28,18 @@ internal class NavbarState : MultiMachineState<NavbarGesture, NavbarUiState>() {
         TimerKey("four"),
     )
 
+    /**
+     * Machines are lazily created and paused when not active
+     */
     override val container = ActiveMachineContainer.some(
         keys.map { key ->
             object : MachineInit<TimerGesture, TimerUiState> {
                 override val key: TimerKey = key
                 override val initialUiState: TimerUiState = TimerUiState.Stopped(Duration.ZERO)
                 override val init: (MachineLifecycle) -> CommonMachineState<TimerGesture, TimerUiState> = {
-                    TimerState.init(it)
+                    val tag = requireNotNull(key.tag)
+                    Logger.i("Creating machine for $tag")
+                    TimerState.init(tag, it)
                 }
             }
         }
@@ -43,10 +52,14 @@ internal class NavbarState : MultiMachineState<NavbarGesture, NavbarUiState>() {
      */
     override fun mapGesture(parent: NavbarGesture, processor: GestureProcessor) = when(parent) {
         is NavbarGesture.ActiveSelected -> {
+            Logger.i("Activating: ${parent.key}")
             container.setActive(parent.key)
             updateUi()
         }
-        is NavbarGesture.Child -> processor.process(parent.key, parent.gesture)
+        is NavbarGesture.Child -> {
+            Logger.i("Gesture ${parent.gesture} for key: ${parent.key}")
+            processor.process(parent.key, parent.gesture)
+        }
     }
 
     /**
