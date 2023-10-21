@@ -18,9 +18,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.motorro.statemachine.androidcore.ui.theme.CommonStateMachineTheme
-import com.motorro.statemachine.multi.ui.TimerScreen
 import com.motorro.statemachine.parallel.model.MainViewModel
 import com.motorro.statemachine.parallel.model.data.ParallelGesture
+import com.motorro.statemachine.timer.ui.TimerScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

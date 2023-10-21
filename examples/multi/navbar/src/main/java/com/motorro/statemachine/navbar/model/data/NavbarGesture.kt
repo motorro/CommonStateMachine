@@ -1,7 +1,7 @@
 package com.motorro.statemachine.navbar.model.data
 
-import com.motorro.statemachine.multi.data.TimerGesture
-import com.motorro.statemachine.multi.data.TimerKey
+import com.motorro.statemachine.timer.data.TimerGesture
+import com.motorro.statemachine.timer.data.TimerKey
 
 /**
  * Application gestures

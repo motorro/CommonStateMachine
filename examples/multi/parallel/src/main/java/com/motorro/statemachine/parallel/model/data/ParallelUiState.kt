@@ -1,7 +1,7 @@
 package com.motorro.statemachine.parallel.model.data
 
 import androidx.compose.runtime.Immutable
-import com.motorro.statemachine.multi.data.TimerUiState
+import com.motorro.statemachine.timer.data.TimerUiState
 
 /**
  * Common state for both active machines

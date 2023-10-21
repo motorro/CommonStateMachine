@@ -8,12 +8,12 @@ import com.motorro.commonstatemachine.multi.MultiMachineState
 import com.motorro.commonstatemachine.multi.ProxyMachineContainer
 import com.motorro.commonstatemachine.multi.UiStateProvider
 import com.motorro.statemachine.commoncore.log.Logger
-import com.motorro.statemachine.multi.data.TimerGesture
-import com.motorro.statemachine.multi.data.TimerKey
-import com.motorro.statemachine.multi.data.TimerUiState
-import com.motorro.statemachine.multi.state.TimerState
 import com.motorro.statemachine.parallel.model.data.ParallelGesture
 import com.motorro.statemachine.parallel.model.data.ParallelUiState
+import com.motorro.statemachine.timer.data.TimerGesture
+import com.motorro.statemachine.timer.data.TimerKey
+import com.motorro.statemachine.timer.data.TimerUiState
+import com.motorro.statemachine.timer.state.TimerState
 import kotlin.time.Duration
 
 /**

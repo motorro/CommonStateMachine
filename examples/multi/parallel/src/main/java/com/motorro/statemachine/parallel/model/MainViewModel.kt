@@ -2,10 +2,10 @@ package com.motorro.statemachine.parallel.model
 
 import androidx.lifecycle.ViewModel
 import com.motorro.commonstatemachine.coroutines.FlowStateMachine
-import com.motorro.statemachine.multi.data.TimerUiState
 import com.motorro.statemachine.parallel.model.data.ParallelGesture
 import com.motorro.statemachine.parallel.model.data.ParallelUiState
 import com.motorro.statemachine.parallel.model.state.ParallelState
+import com.motorro.statemachine.timer.data.TimerUiState
 import kotlinx.coroutines.flow.StateFlow
 import kotlin.time.Duration
 

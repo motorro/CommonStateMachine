@@ -75,7 +75,7 @@ dependencies {
     implementation(project(":coroutines"))
     implementation(project(":examples:commoncore"))
     implementation(project(":examples:androidcore"))
-    implementation(project(":examples:multi:common"))
+    implementation(project(":examples:timer"))
 
     coreLibraryDesugaring(libs.desugaring)
 

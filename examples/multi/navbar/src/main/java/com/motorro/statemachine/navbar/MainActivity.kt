@@ -31,9 +31,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.motorro.statemachine.androidcore.ui.theme.CommonStateMachineTheme
-import com.motorro.statemachine.multi.ui.TimerScreen
 import com.motorro.statemachine.navbar.model.MainViewModel
 import com.motorro.statemachine.navbar.model.data.NavbarGesture
+import com.motorro.statemachine.timer.ui.TimerScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

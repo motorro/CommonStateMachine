@@ -2,8 +2,8 @@ package com.motorro.statemachine.navbar.model.data
 
 import androidx.compose.runtime.Immutable
 import com.motorro.commonstatemachine.multi.MachineKey
-import com.motorro.statemachine.multi.data.TimerKey
-import com.motorro.statemachine.multi.data.TimerUiState
+import com.motorro.statemachine.timer.data.TimerKey
+import com.motorro.statemachine.timer.data.TimerUiState
 
 /**
  * Common state for all active machines

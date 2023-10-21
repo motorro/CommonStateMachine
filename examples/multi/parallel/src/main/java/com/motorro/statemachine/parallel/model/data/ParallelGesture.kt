@@ -1,6 +1,6 @@
 package com.motorro.statemachine.parallel.model.data
 
-import com.motorro.statemachine.multi.data.TimerGesture
+import com.motorro.statemachine.timer.data.TimerGesture
 
 /**
  * Application gestures

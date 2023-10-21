@@ -18,9 +18,9 @@
             <option value="$PROJECT_DIR$/examples/commoncore" />
             <option value="$PROJECT_DIR$/examples/lce" />
             <option value="$PROJECT_DIR$/examples/multi" />
-            <option value="$PROJECT_DIR$/examples/multi/common" />
             <option value="$PROJECT_DIR$/examples/multi/navbar" />
             <option value="$PROJECT_DIR$/examples/multi/parallel" />
+            <option value="$PROJECT_DIR$/examples/timer" />
             <option value="$PROJECT_DIR$/examples/welcome" />
             <option value="$PROJECT_DIR$/examples/welcome/commonapi" />
             <option value="$PROJECT_DIR$/examples/welcome/commonregister" />
