@@ -2,7 +2,7 @@ package com.motorro.commonstatemachine.lifecycle
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.testing.TestLifecycleOwner
-import com.motorro.commonstatemachine.lifecycle.UiMachineLifecycle.Companion.getObserver
+import com.motorro.commonstatemachine.lifecycle.UiMachineLifecycle.Companion.bindLifecycle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -38,7 +38,7 @@ class UiMachineLifecycleTest {
     fun updatesLifecycleWithObserver() {
         val uls = TestLifecycleOwner(Lifecycle.State.RESUMED)
 
-        ls.getObserver(uls.lifecycle)
+        ls.bindLifecycle(uls.lifecycle)
         assertEquals(MachineLifecycle.State.ACTIVE, ls.getState())
     }
 
@@ -47,7 +47,7 @@ class UiMachineLifecycleTest {
         var updated = false
         val uls = TestLifecycleOwner(Lifecycle.State.RESUMED)
 
-        ls.getObserver(uls.lifecycle)
+        ls.bindLifecycle(uls.lifecycle)
         assertEquals(MachineLifecycle.State.ACTIVE, ls.getState())
 
         ls.addObserver {
