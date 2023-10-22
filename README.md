@@ -123,8 +123,8 @@ val commonMain by getting {
 
 ## Examples
 
-- [LCE](lce) - basic example of Load-Content-Error application
-- [Welcome](welcome) - multi-module example of user on-boarding flow
+- [LCE](examples/lce) - basic example of Load-Content-Error application
+- [Welcome](examples/welcome/welcome) - multi-module example of user on-boarding flow
 
 ## The basic task - Load-Content-Error
 
@@ -278,7 +278,7 @@ concerns. Will talk about it later.
 
 #### Item list state
 
-[ItemListState](lce/src/main/java/com/motorro/statemachine/lce/model/state/ItemListState.kt) is a 
+[ItemListState](examples/lce/src/main/java/com/motorro/statemachine/lce/model/state/ItemListState.kt) is a 
 starting state for our application. It displays the list of items to load. The list is hardcoded for
 this example so we just emit a complete view-state when started:
 
@@ -314,7 +314,7 @@ private fun onBack() {
 
 #### Item loading state
 
-[LoadingState](lce/src/main/java/com/motorro/statemachine/lce/model/state/LoadingState.kt) emulates 
+[LoadingState](examples/lce/src/main/java/com/motorro/statemachine/lce/model/state/LoadingState.kt) emulates 
 an asynchronous operation:
 
 ```kotlin
@@ -349,7 +349,7 @@ private fun toError() {
 
 #### Item contents state
 
-[ContentState](lce/src/main/java/com/motorro/statemachine/lce/model/state/ContentState.kt) is very
+[ContentState](examples/lce/src/main/java/com/motorro/statemachine/lce/model/state/ContentState.kt) is very
 simple. It just sets the UI state to display data passed to the constructor and handles a `Back` 
 gesture to return to the item list:
 
@@ -369,7 +369,7 @@ private fun onBack() {
 ```
 
 #### Error state
-The [ErrorState](lce/src/main/java/com/motorro/statemachine/lce/model/state/ErrorState.kt) gives a
+The [ErrorState](examples/lce/src/main/java/com/motorro/statemachine/lce/model/state/ErrorState.kt) gives a
 user the ability to retry item load or to exit the app. Also it handles `Back` gesture to return to
 the item list. Handling all user interactions through your state machine gives you a precise control
 on what happens next. The item ID passed in the constructor as an inter-state data makes it possible
@@ -411,7 +411,7 @@ class ErrorState(private val failed: ItemId, private val error: Throwable) : Lce
 #### Wiring with the application
 
 Now that we have all states in place let's connect them together with a state machine. We need some
-place to retain a machine through the application flow so let's wrap it to the [Jetpack ViewModel](lce/src/main/java/com/motorro/statemachine/lce/model/LceViewModel.kt) 
+place to retain a machine through the application flow so let's wrap it to the [Jetpack ViewModel](examples/lce/src/main/java/com/motorro/statemachine/lce/model/LceViewModel.kt) 
 which is common now:
 
 ```kotlin
@@ -454,7 +454,7 @@ All we need to do here is:
 - to figure out the initial state that machine will start from
 - to wire ui-state and gesture processing with the outside world
 
-And here is an abstract of the [view](lce/src/main/java/com/motorro/statemachine/lce/ui/LceScreen.kt) 
+And here is an abstract of the [view](examples/lce/src/main/java/com/motorro/statemachine/lce/ui/LceScreen.kt) 
 that interacts with the model:
 
 ```kotlin
@@ -495,7 +495,7 @@ recycler view architecture as well.
 
 As you can see the state-machine pattern may be a good choice in implementing your MVI architecture.
 It produces a clean and easy to grasp step-by-step logic with well-separated concerns and easy and
-[thorough](lce/src/test/java/com/motorro/statemachine/lce/model/state) testing. The pattern also 
+[thorough](examples/lce/src/test/java/com/motorro/statemachine/lce/model/state) testing. The pattern also 
 attempts to be as non-opinionated as possible. Each state is a black-box with a defined contract and
 developers may choose the most suitable tools to implement each one without affecting the other. The
 example above is a very basic one. However you could do things a bit more clean by using some of the 
@@ -518,7 +518,7 @@ By use-case I assume any business logic external to your view logic implemented 
 some network operation or some other "use-case" - provide it to your state and use them as you like.
 There is nothing new here - I'm sure you already use the approach in your flavour of 
 Clean Architecture or similar. Example of using an external use-case could be found in 
-[welcome example](login/src/main/java/com/motorro/statemachine/login/model/state/CredentialsCheckState.kt):
+[examples/welcome/welcome example](examples/welcome/login/src/main/java/com/motorro/statemachine/login/model/state/CredentialsCheckState.kt):
 
 ```kotlin
 class CredentialsCheckState(private val checkCredentials: CheckCredentials) {
@@ -547,9 +547,9 @@ with complex interface. Moving a coupling to the view-state and data structures 
 might be a good idea. Testing the exact view-state creation would be much easier if you make it 
 as more or less a clean function. Also your logic states may share the same rendering logic so 
 externalizing it would play greatly in terms of code reuse. For example the same view-state 
-rendering is used by [PasswordEntryState](login/src/main/java/com/motorro/statemachine/login/model/state/PasswordEntryState.kt)
-and [ErrorState](login/src/main/java/com/motorro/statemachine/login/model/state/ErrorState.kt) of 
-welcome example. You could inject your renderer in a state factory or get it from common context
+rendering is used by [PasswordEntryState](examples/welcome/login/src/main/java/com/motorro/statemachine/login/model/state/PasswordEntryState.kt)
+and [ErrorState](examples/welcome/login/src/main/java/com/motorro/statemachine/login/model/state/ErrorState.kt) of 
+examples/welcome/welcome example. You could inject your renderer in a state factory or get it from common context
 (see below).
 
 ### State factories and dependency provision
@@ -622,7 +622,7 @@ class CredentialsCheckState(
 Common dependencies may include renderers, state factories, common external interfaces and anything
 else that is required by all states that make up the state-machine. For convenience and to save the
 number of constructor params I suggest to bind them to some common interface and provide it as a 
-whole. Let's name it a common [Context](login/src/main/java/com/motorro/statemachine/login/model/state/LoginContext.kt):
+whole. Let's name it a common [Context](examples/welcome/login/src/main/java/com/motorro/statemachine/login/model/state/LoginContext.kt):
 
 ```kotlin
 interface LoginContext {
@@ -644,7 +644,7 @@ interface LoginContext {
 ```
 
 Then you could provide it to your state through the constructor parameters. To make things even
-easier let's make some [base state](login/src/main/java/com/motorro/statemachine/login/model/state/LoginState.kt)
+easier let's make some [base state](examples/welcome/login/src/main/java/com/motorro/statemachine/login/model/state/LoginState.kt)
 for the state-machine assembly and use a delegation to provide each context dependency:
 
 ```kotlin
@@ -695,7 +695,7 @@ class CredentialsCheckState(
 As I've already mentioned, creating new states explicitly to pass them to the state-machine later 
 (like in the basic example) is not a good idea in terms of coupling and dependency provision.
 
-Let's move it away from our machine states by introducing a common [factory interface](login/src/main/java/com/motorro/statemachine/login/model/state/LoginStateFactory.kt)
+Let's move it away from our machine states by introducing a common [factory interface](examples/welcome/login/src/main/java/com/motorro/statemachine/login/model/state/LoginStateFactory.kt)
 that will take the responsibility to provide dependencies and abstract our state creation logic:
 
 ```kotlin
@@ -721,7 +721,7 @@ interface LoginStateFactory {
 
 Each factory method here will accept **only** the inter-state data providing both context and 
 state-specific dependencies implicitly. This will decouple state logic from the concrete 
-implementations and increase our [testability](login/src/test/java/com/motorro/statemachine/login/model/state/BaseStateTest.kt)
+implementations and increase our [testability](examples/welcome/login/src/test/java/com/motorro/statemachine/login/model/state/BaseStateTest.kt)
 greatly. 
 
 The exact factory implementation that binds together all data and dependencies will look like that:
@@ -868,7 +868,7 @@ class WithIdleViewModel : ViewModel() {
 
 ## Multi-module applications
 
-Let's take a more complicated example with a multi-screen flow like the [customer on-boarding](welcome).
+Let's take a more complicated example with a multi-screen flow like the [customer on-boarding](examples/welcome/welcome).
 ![Welcome flow](doc/screenshots/welcome/flow.png)
 The user is required to accept terms and conditions and to enter his email. Then the logic checks if 
 he is already registered or a new customer and runs the appropriate flow to login or to register 
@@ -878,7 +878,7 @@ the work between teams. The state diagram would be the following:
 
 The project uses the following modules:
 
-* **welcome** - common flow: preloading, email entry, customer check, complete
+* **examples/welcome/welcome** - common flow: preloading, email entry, customer check, complete
 * **commoncore** - common abstractions to build application: dispatchers, resources, etc. 
 * **commonapi** - common multi-platform module to connect the main app with modules
 * **login** - login flow
@@ -895,7 +895,7 @@ password entry screen though a bit different. Each module flow returns to the ma
 - when flow completes succefully - transfers to `Complete`
 - when user hits `Back` - transfers back to email entry
 
-Let's define the main flow interaction [API](commonapi/src/commonMain/kotlin/com/motorro/statemachine/commonapi/welcome/model/state/WelcomeFeatureHost.kt)
+Let's define the main flow interaction [API](examples/welcome/commonapi/src/commonMain/kotlin/com/motorro/statemachine/commonapi/welcome/model/state/WelcomeFeatureHost.kt)
 then:
 ```kotlin
 interface WelcomeFeatureHost {
@@ -960,7 +960,7 @@ To adopt feature-module gestures there are at least two solutions:
    passing them to concrete implementation. Thus we don't loose compiler support and type-safety.
    Let's follow this route
 
-Gesture [adapter](welcome/src/main/java/com/motorro/statemachine/welcome/data/WelcomeGesture.kt):
+Gesture [adapter](examples/welcome/welcome/src/main/java/com/motorro/statemachine/welcome/data/WelcomeGesture.kt):
 ```kotlin
 sealed class WelcomeGesture {
     // Native gestures...
@@ -979,7 +979,7 @@ sealed class WelcomeGesture {
 }
 ```
 
-UI-state [adapter](welcome/src/main/java/com/motorro/statemachine/welcome/data/WelcomeUiState.kt):
+UI-state [adapter](examples/welcome/welcome/src/main/java/com/motorro/statemachine/welcome/data/WelcomeUiState.kt):
 ```kotlin
 sealed class WelcomeUiState {
     /**
@@ -1000,7 +1000,7 @@ sealed class WelcomeUiState {
 
 Now let's build feature and host composables to take advantage of our adapters. 
 
-Feature [master-view](login/src/main/java/com/motorro/statemachine/login/view/LoginScreen.kt):
+Feature [master-view](examples/welcome/login/src/main/java/com/motorro/statemachine/login/view/LoginScreen.kt):
 ```kotlin
 @Composable
 fun LoginScreen(state: LoginUiState, onGesture: (LoginGesture) -> Unit) {
@@ -1013,7 +1013,7 @@ fun RegistrationScreen(state: RegisterUiState, onGesture: (RegisterGesture) -> U
 }
 ```
 
-Application [master-view](welcome/src/main/java/com/motorro/statemachine/welcome/view/WelcomeScreen.kt):
+Application [master-view](examples/welcome/welcome/src/main/java/com/motorro/statemachine/welcome/view/WelcomeScreen.kt):
 ```kotlin
 fun WelcomeScreen(onTerminate: @Composable () -> Unit) {
     val model = hiltViewModel<WelcomeViewModel>()
@@ -1076,7 +1076,7 @@ by running a _child_ state-machine inside the host state!
 Whenever a `ProxyMachineState` is started it launches it's internal instance of a state-machine 
 bound to the feature gesture and view system. It also bridges two incompatible gesture/view systems
 by wrapping/unwrapping and adopting one system to another. Let's see the example of a login flow
-[proxy](welcome/src/main/java/com/motorro/statemachine/welcome/model/state/LoginFlowState.kt) 
+[proxy](examples/welcome/welcome/src/main/java/com/motorro/statemachine/welcome/model/state/LoginFlowState.kt) 
 to make things clear:
 
 ```kotlin
@@ -1149,7 +1149,7 @@ class LoginFlowState(
 
 To create a proxy you need to implement three core methods:
 
-- `init()` - creates a starting state for a proxy state-machine. We fetch a [FlowStarter](commonapi/src/commonMain/kotlin/com/motorro/statemachine/commonapi/welcome/model/state/FlowStarter.kt)
+- `init()` - creates a starting state for a proxy state-machine. We fetch a [FlowStarter](examples/welcome/commonapi/src/commonMain/kotlin/com/motorro/statemachine/commonapi/welcome/model/state/FlowStarter.kt)
   interface (which is just a feature state factory segregation) to create a starting state.
 - `mapGesture(parent: PG)` - maps a gesture from the parent system to the child system. You may 
   unwrap the gesture we have implemented in the previous state, adopt one system to another as with
