@@ -64,6 +64,26 @@ interface ActiveMachineContainer : ProxyMachineContainer {
      */
     fun setActive(vararg key: MachineKey<*, *>) = setActive(key.toSet())
 
+    /**
+     * Disposes machines. All machines by [keys] are deactivated disposed and dereferenced.
+     * When activating again - a new machine is created using the same init.
+     * Use to cleanup memory for example on low memory alert from system
+     */
+    fun dispose(keys: Set<MachineKey<*, *>>)
+
+    /**
+     * Disposes machines. All machines by [key] are deactivated disposed and dereferenced.
+     * When activating again - a new machine is created using the same init.
+     * Use to cleanup memory for example on low memory alert from system
+     */
+    fun dispose(vararg key: MachineKey<*, *>) = dispose(key.toSet())
+
+    /**
+     * Disposes all inactive machines
+     * @see dispose
+     */
+    fun disposeInactive()
+
     companion object {
         /**
          * Creates a container where machines may be activated and deactivated
@@ -103,10 +123,20 @@ internal class AllTogetherMachineContainer(private val init: Collection<MachineI
     }
 
     /**
+     * Creates a proxy machine given [MachineInit] structure
+     * @param onUiChanged UI-state change handler
+     */
+    private fun <G: Any, U: Any> MachineInit<G, U>.machine(onUiChanged: (key: MachineKey<*, *>, uiState: Any) -> Unit) = ProxyStateMachine(
+        initialUiState,
+        { init(lifecycle) },
+        { onUiChanged(key, it) }
+    )
+
+    /**
      * Starts machines
      */
     override fun start(onUiChanged: (key: MachineKey<*, *>, uiState: Any) -> Unit) {
-        machines = init.associate { i -> i.key to i.machine(lifecycle, onUiChanged) }
+        machines = init.associate { i -> i.key to i.machine(onUiChanged) }
         machines.forEach { it.value.start() }
     }
 
@@ -180,5 +210,26 @@ internal class SomeActiveMachineContainer(
         toActivate.forEach {
             machines[it]?.activate()
         }
+    }
+
+    /**
+     * Disposes machines. All machines by [keys] are deactivated disposed and dereferenced.
+     * When activating again - a new machine is created using the same init.
+     * Use to cleanup memory for example on low memory alert from system
+     */
+    override fun dispose(keys: Set<MachineKey<*, *>>) {
+        machines.forEach { (key, machine) ->
+            if (keys.contains(key)) {
+                machine.dispose()
+            }
+        }
+    }
+
+    /**
+     * Disposes all inactive machines
+     * @see dispose
+     */
+    override fun disposeInactive() {
+        dispose(machines.keys - getActive())
     }
 }

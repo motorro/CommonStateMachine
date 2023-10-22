@@ -15,12 +15,14 @@ package com.motorro.commonstatemachine.multi
 
 import com.motorro.commonstatemachine.CommonMachineState
 import com.motorro.commonstatemachine.CommonStateMachine
+import com.motorro.commonstatemachine.ProxyMachineState
 import com.motorro.commonstatemachine.ProxyStateMachine
 import com.motorro.commonstatemachine.lifecycle.ActivatedMachineLifecycle
 import com.motorro.commonstatemachine.lifecycle.MachineLifecycle
 
 /**
  * State-machine wrapper that activates and deactivates
+ * When disposed, stands-by but able to re-create the machine again
  * @param init Machine init
  * @param onUiChanged UI-state change handler
  */
@@ -33,40 +35,98 @@ internal class ActiveStateMachine<G: Any, U: Any>(
      */
     private val lifecycle = ActivatedMachineLifecycle(MachineLifecycle.State.PAUSED)
 
-    /**
-     * Currently working machine. Dummy while not started,
-     */
-    private var machine: ProxyStateMachine<G, U> = init.machine(lifecycle, onUiChanged)
+    private var machine = ProxyStateMachine(
+        ActiveMachineUiState(init.initialUiState),
+        { StandingBy(init, lifecycle) },
+        { onUiChanged(init.key, it.child) }
+    )
 
-    /**
-     * Is active or not
-     */
-    override fun isActive(): Boolean = lifecycle.isActive()
-
-    /**
-     * Activates machine
-     */
-    override fun activate() {
-        lifecycle.activate()
+    init {
         machine.start()
     }
 
-    /**
-     * Deactivates machine
-     */
+    override fun isActive(): Boolean = lifecycle.isActive()
+
+    override fun activate() {
+        lifecycle.activate()
+        machine.process(ActiveMachineGesture.Created)
+    }
+
     override fun deactivate() {
         lifecycle.deactivate()
     }
 
-    override fun process(gesture: G) = machine.process(gesture)
-    override fun clear() {
-        if (machine.isStarted()) {
-            machine.clear()
+    /**
+     * Disposes current machine
+     */
+    fun dispose() {
+        deactivate()
+        machine.process(ActiveMachineGesture.Disposed)
+    }
+
+    override fun process(gesture: G) = machine.process(ActiveMachineGesture.Child(gesture))
+    override fun clear() = machine.clear()
+    override fun isStarted(): Boolean = machine.isStarted()
+    override fun getUiState(): U = machine.getUiState().child
+    override fun setUiState(uiState: U) {
+        throw UnsupportedOperationException("Setting UI state externally is not supported")
+    }
+    override fun setMachineState(machineState: CommonMachineState<G, U>) {
+        throw UnsupportedOperationException("Setting Machine state externally is not supported")
+    }
+}
+
+/**
+ * Gesture for machine proxy
+ */
+private sealed class ActiveMachineGesture<out G : Any> {
+    data object Created : ActiveMachineGesture<Nothing>()
+    data object Disposed : ActiveMachineGesture<Nothing>()
+    data class Child<G : Any>(val gesture: G): ActiveMachineGesture<G>()
+}
+
+/**
+ * UI-state for machine proxy
+ */
+private data class ActiveMachineUiState<U : Any>(val child: U)
+
+/**
+ * Proxy machine is running
+ */
+private class Running<CG: Any, CU: Any>(
+    private val init: MachineInit<CG, CU>,
+    private val ls: ActivatedMachineLifecycle
+) : ProxyMachineState<ActiveMachineGesture<CG>, ActiveMachineUiState<CU>, CG, CU>(init.initialUiState) {
+
+    override fun init(): CommonMachineState<CG, CU> = init.init(ls)
+    override fun mapUiState(child: CU): ActiveMachineUiState<CU> = ActiveMachineUiState(child)
+
+    override fun doProcess(gesture: ActiveMachineGesture<CG>) = when(gesture) {
+        ActiveMachineGesture.Disposed -> {
+            setMachineState(StandingBy(init, ls))
+        }
+        is ActiveMachineGesture.Child -> super.doProcess(gesture)
+        else -> Unit
+    }
+
+    override fun mapGesture(parent: ActiveMachineGesture<CG>): CG? = when(parent) {
+        is ActiveMachineGesture.Child -> parent.gesture
+        else -> null
+    }
+}
+
+/**
+ * No proxy machine, but ready to create one when activated
+ */
+private class StandingBy<CG: Any, CU: Any>(
+    private val init: MachineInit<CG, CU>,
+    private val ls: ActivatedMachineLifecycle
+) : CommonMachineState<ActiveMachineGesture<CG>, ActiveMachineUiState<CU>>() {
+
+    override fun doProcess(gesture: ActiveMachineGesture<CG>) {
+        if(gesture is ActiveMachineGesture.Created) {
+            setMachineState(Running(init, ls))
         }
     }
-    override fun isStarted(): Boolean = machine.isStarted()
-    override fun getUiState(): U = machine.getUiState()
-    override fun setUiState(uiState: U) = machine.setUiState(uiState)
-    override fun setMachineState(machineState: CommonMachineState<G, U>) = machine.setMachineState(machineState)
 }
 

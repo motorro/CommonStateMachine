@@ -13,6 +13,11 @@ sealed class NavbarGesture {
     data class ActiveSelected(val key: TimerKey) : NavbarGesture()
 
     /**
+     * Dispose requested
+     */
+    data object Disposed : NavbarGesture()
+
+    /**
      * Timer gesture
      */
     data class Child(val key: TimerKey, val gesture: TimerGesture) : NavbarGesture()

@@ -129,4 +129,29 @@ class SomeActiveMachineContainerTest {
         assertTrue { stringState.started }
         assertEquals(listOf(MachineLifecycle.State.PAUSED), intLs)
     }
+
+    @Test
+    fun disposesMachines() {
+        container.start { _, _ ->  }
+        container.setActive(intKey, stringKey)
+        assertTrue { stringState.started }
+        assertTrue { intState.started }
+        container.dispose(intKey, stringKey)
+        assertTrue { stringState.cleared }
+        assertTrue { intState.cleared }
+    }
+
+    @Test
+    fun disposesInactive() {
+        container.start { _, _ ->  }
+        container.setActive(intKey, stringKey)
+        assertTrue { stringState.started }
+        assertTrue { intState.started }
+        container.setActive(intKey)
+        assertFalse { stringState.cleared }
+        container.disposeInactive()
+
+        assertTrue { stringState.cleared }
+        assertFalse { intState.cleared }
+    }
 }

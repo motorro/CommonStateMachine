@@ -14,7 +14,6 @@
 package com.motorro.commonstatemachine.multi
 
 import com.motorro.commonstatemachine.CommonMachineState
-import com.motorro.commonstatemachine.ProxyStateMachine
 import com.motorro.commonstatemachine.lifecycle.MachineLifecycle
 
 /**
@@ -45,17 +44,4 @@ interface MachineInit<G: Any, U: Any> {
     val init: (MachineLifecycle) -> CommonMachineState<G, U>
 }
 
-/**
- * Creates a proxy machine given [MachineInit] structure
- * @param lifeCycle Machine lifecycle within [ProxyMachineContainer]
- * @param onUiChanged UI-state change handler
- */
-internal fun <G: Any, U: Any> MachineInit<G, U>.machine(
-    lifeCycle: MachineLifecycle,
-    onUiChanged: (key: MachineKey<*, *>, uiState: Any) -> Unit
-): ProxyStateMachine<G, U> = ProxyStateMachine(
-    initialUiState,
-    { init(lifeCycle) },
-    { onUiChanged(key, it) }
-)
 

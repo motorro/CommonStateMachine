@@ -56,6 +56,10 @@ internal class NavbarState : MultiMachineState<NavbarGesture, NavbarUiState>() {
             container.setActive(parent.key)
             updateUi()
         }
+        NavbarGesture.Disposed -> {
+            Logger.i("Disposing inactive...")
+            container.disposeInactive()
+        }
         is NavbarGesture.Child -> {
             Logger.i("Gesture ${parent.gesture} for key: ${parent.key}")
             processor.process(parent.key, parent.gesture)

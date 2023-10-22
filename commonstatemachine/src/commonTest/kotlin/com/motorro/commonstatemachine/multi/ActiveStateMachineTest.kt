@@ -50,11 +50,6 @@ class ActiveStateMachineTest {
     }
 
     @Test
-    fun notActiveMachineIsNotStarted() {
-        assertFalse { machine.isStarted() }
-    }
-
-    @Test
     fun hasInitialUiStateWhenNotStartedAndInactive() {
         assertEquals("Initial", machine.getUiState())
     }
@@ -104,8 +99,11 @@ class ActiveStateMachineTest {
     }
 
     @Test
-    fun doesNotClearNotStartedMachineOnClear() {
-        machine.clear()
-        assertFalse { state.cleared }
+    fun disposesMachineOnDispose() {
+        machine.activate()
+        machine.dispose()
+        assertFalse { machine.isActive() }
+        assertTrue { state.cleared }
+        assertEquals(MachineLifecycle.State.PAUSED, status.last())
     }
 }
