@@ -39,7 +39,12 @@ class MultiMachineStateTest {
         }
     }
 
-    private open class TestState : MultiMachineState<Int, String>() {
+    private sealed class MultiGesture {
+        data class IntGesture(val data: Int) : MultiGesture()
+        data class StringGesture(val data: String) : MultiGesture()
+    }
+
+    private open class TestState : MultiMachineState<MultiGesture, String>() {
         override val container: ProxyMachineContainer = AllTogetherMachineContainer(
             listOf(
                 object : MachineInit<Int, Int> {
@@ -59,9 +64,13 @@ class MultiMachineStateTest {
             )
         )
 
-        override fun mapGesture(parent: Int, processor: GestureProcessor) {
-            processor.process(IntKey, parent)
-            processor.process(StringKey, parent.toString())
+        override fun mapGesture(parent: MultiGesture, processor: GestureProcessor) = when(parent) {
+            is MultiGesture.IntGesture -> {
+                processor.process(IntKey, parent.data)
+            }
+            is MultiGesture.StringGesture -> {
+                processor.process(StringKey, parent.data)
+            }
         }
 
         override fun mapUiState(provider: UiStateProvider, changedKey: MachineKey<*, *>?): String {
@@ -74,7 +83,7 @@ class MultiMachineStateTest {
     @Test
     fun startsContainer() {
         val state = TestState()
-        val machine = MachineMock<Int, String>("INIT")
+        val machine = MachineMock<MultiGesture, String>("INIT")
         state.start(machine)
 
         assertEquals(
@@ -86,13 +95,13 @@ class MultiMachineStateTest {
     @Test
     fun updatesMachines() {
         val state = TestState()
-        val machine = MachineMock<Int, String>("INIT")
+        val machine = MachineMock<MultiGesture, String>("INIT")
         state.start(machine)
-        state.process(1)
-        state.process(2)
+        state.process(MultiGesture.IntGesture(1))
+        state.process(MultiGesture.StringGesture("2"))
 
         assertEquals(
-            listOf("INIT", "0 - X", "0 - X", "1 - X", "1 - 1", "2 - 1", "2 - 2"),
+            listOf("INIT", "0 - X", "0 - X", "1 - X", "1 - 2"),
             machine.uiStates
         )
     }
@@ -111,7 +120,7 @@ class MultiMachineStateTest {
             }
         }
 
-        val machine = MachineMock<Int, String>("INIT")
+        val machine = MachineMock<MultiGesture, String>("INIT")
         state.start(machine)
         assertTrue { tested }
     }
