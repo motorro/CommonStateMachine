@@ -40,6 +40,12 @@ Please checkout the Medium article on pattern/library usage.
     + [Gestures and view-states](#gestures-and-view-states)
     + [View implementation](#view-implementation)
     + [Adopting foreign state-flow](#adopting-foreign-state-flow)
+- [Running state-machines in parallel (composition)](#running-state-machines-in-parallel-composition)
+  * [MultiMachineState](#multimachinestate)
+  * [ProxyMachineContainer](#proxymachinecontainer)
+  * [Mapping UI states](#mapping-ui-states)
+  * [Dispatching gestures](#dispatching-gestures)
+  * [MachineLifecle bonus](#machinelifecle-bonus)
 - [Conclusion](#conclusion)
 - [Note on multiplatform](#note-on-multiplatform)
 
@@ -125,6 +131,9 @@ val commonMain by getting {
 
 - [LCE](examples/lce) - basic example of Load-Content-Error application
 - [Welcome](examples/welcome/welcome) - multi-module example of user on-boarding flow
+- [Parallel](examples/multi/parallel) - two machines running in parallel in one proxy state
+- [Navbar](examples/multi/navbar) - several machines running in proxy state, one of them active at a time
+- [Lifecycle](examples/lifecycle) - track your Android app lifecycle to pause pending operations when the app is suspended
 
 ## The basic task - Load-Content-Error
 
@@ -1162,6 +1171,206 @@ For our example project we provide the `WelcomeFeatureHost` interface to return 
 or to advance to `Complete` state as described in [Common Api](#common-api). The proxy implements 
 this interface by switching host machine to email or complete states in corresponding 
 `backToEmailEntry` and `complete` functions.
+
+## Running state-machines in parallel (composition)
+
+In case you want several state-machines to run in parallel producing a single combined UI state or you
+want to persist several machines on a single screen (like a page with a bottom navigation) there is an 
+option to do it with the [MultiMachineState](commonstatemachine/src/commonMain/kotlin/com/motorro/commonstatemachine/multi/MultiMachineState.kt)
+and [ProxyMachineContainer](commonstatemachine/src/commonMain/kotlin/com/motorro/commonstatemachine/multi/ProxyMachineContainer.kt)
+
+### MultiMachineState
+
+This state is a proxy that holds several machines at once. It is in charge for combining the UI state 
+whenever the running machine updates and for dispatching gestures from a single parent gesture to 
+proxied machines inside the composition. To distinguish machines and to ensure type-safety each machine in
+composition is identified with the [MachineKey](commonstatemachine/src/commonMain/kotlin/com/motorro/commonstatemachine/multi/MachineKey.kt)
+The state has three things to override:
+
+- [container](commonstatemachine/src/commonMain/kotlin/com/motorro/commonstatemachine/multi/MultiMachineState.kt#L28):
+  manages machines lifecycle. More on this follows.
+- [mapUiState](commonstatemachine/src/commonMain/kotlin/com/motorro/commonstatemachine/multi/MultiMachineState.kt#L97):
+  called each time your proxied machine updates UI state or explicitly when calling [updateUi](commonstatemachine/src/commonMain/kotlin/com/motorro/commonstatemachine/multi/MultiMachineState.kt#L69).
+  Here you take a decision on changes and build a common resulting UI state. See the dedicated section below.
+- [mapGesture](commonstatemachine/src/commonMain/kotlin/com/motorro/commonstatemachine/multi/MultiMachineState.kt#L91):
+  called when state gesture is processed. Here you can map the gesture and update your proxied machine.
+
+Now let's see how the things work a bit closer.
+
+### ProxyMachineContainer
+
+Container is in charge for creating and managing the lifecycle of the state machines. So far the
+interface has two companion functions:
+
+- [allTogether](commonstatemachine/src/commonMain/kotlin/com/motorro/commonstatemachine/multi/ProxyMachineContainer.kt#L44): 
+  runs all machines in parallel with common lifecycle - startup and cleanup. [Example](examples/multi/parallel) - running two 
+  timers simultaneously:
+
+  ![parallel](doc/screenshots/parallel.png)
+
+- [some](commonstatemachine/src/commonMain/kotlin/com/motorro/commonstatemachine/multi/ProxyMachineContainer.kt#L55):
+  runs machines with additional [MachineLifecycle](commonstatemachine/src/commonMain/kotlin/com/motorro/commonstatemachine/lifecycle/MachineLifecycle.kt)
+  management. You could make some machines active and dormant with [ActiveMachineContainer](commonstatemachine/src/commonMain/kotlin/com/motorro/commonstatemachine/multi/ProxyMachineContainer.kt#L65)
+  methods.
+
+  ![navbar](doc/screenshots/navbar.png)
+
+Container is initialized with a collection of [MachineInit](commonstatemachine/src/commonMain/kotlin/com/motorro/commonstatemachine/multi/MachineInit.kt) 
+structures:
+
+```kotlin
+/**
+ * Proxy machine initialization record
+ */
+interface MachineInit<G: Any, U: Any> {
+    /**
+     * Machine key to find a machine among the others
+     */
+    val key: MachineKey<G, U>
+
+    /**
+     * Initial UI state for the machine
+     */
+    val initialUiState: U
+
+    /**
+     * Creates initial child state
+     * [MachineLifecycle] passed to the factory determines the activity of
+     * the machine within the machine group. For example, for a paging screen
+     * you may want to stop some pending operations when active machine is not
+     * active anymore
+     */
+    val init: (MachineLifecycle) -> CommonMachineState<G, U>
+}
+```
+
+The `init` function is called each time the container needs to create a new machine. The [MachineLifecycle](commonstatemachine/src/commonMain/kotlin/com/motorro/commonstatemachine/lifecycle/MachineLifecycle.kt)
+interface passed to initialization may be used by your states to determine if the machine is suspended
+or active. If you use coroutines you could use [asFlow](coroutines/src/commonMain/kotlin/com/motorro/commonstatemachine/coroutines/lifecycle/lifecycleStateFlow.kt)
+function to convert it to `Flow`. See [example](examples/timer/src/commonMain/kotlin/com/motorro/statemachine/timer/state/TimerState.kt) on how to start/stop
+your pending operations that are not needed when your machine is inactive: gps tracking, server messaging, etc.
+For example:
+
+```kotlin
+
+private sealed class MultiGesture {
+  data class IntGesture(val data: Int) : MultiGesture()
+  data class StringGesture(val data: String) : MultiGesture()
+}
+
+private open class TestState : MultiMachineState<MultiGesture, String>() {
+
+  private data object IntKey : MachineKey<Int, Int>(null) // Int for gesture and state
+  private data object StringKey : MachineKey<String, String>(null) // String for gesture and state
+
+  override val container: ProxyMachineContainer = AllTogetherMachineContainer(
+    listOf(
+      object : MachineInit<Int, Int> {
+        override val key: MachineKey<Int, Int> = IntKey
+        override val initialUiState: Int = 0
+        override val init: (MachineLifecycle) -> CommonMachineState<Int, Int> = {
+          TestChildState(0)
+        }
+      },
+      object : MachineInit<String, String> {
+        override val key: MachineKey<String, String> = StringKey
+        override val initialUiState: String = "X"
+        override val init: (MachineLifecycle) -> CommonMachineState<String, String> = {
+          TestChildState("X")
+        }
+      }
+    )
+  )
+}
+```
+
+Check example states for each case:
+
+- [Parallel](examples/multi/parallel/src/main/java/com/motorro/statemachine/parallel/model/state/ParallelState.kt) - two machines running in parallel in one proxy state
+- [Navbar](examples/multi/navbar/src/main/java/com/motorro/statemachine/navbar/model/state/NavbarState.kt) - several machines running in proxy state, one of them active at a time
+
+### Mapping UI states
+
+The gesture/ui type systems for each machine in composition are different, so we need some kind of 
+type casting to be on a safe side. Binding machines with keys in `MachineInit` makes sure the machine type
+corresponds to the key and is used to map key to correct UI-state in [mapUiState](commonstatemachine/src/commonMain/kotlin/com/motorro/commonstatemachine/multi/MultiMachineState.kt#L97)
+method of `MultiMachineState`. To be able to do it, take the [UiStateProvider](commonstatemachine/src/commonMain/kotlin/com/motorro/commonstatemachine/multi/MachineAccess.kt#L21)
+provided to the method to get the correct ui-state type:
+
+```kotlin
+
+private sealed class MultiGesture {
+  data class IntGesture(val data: Int) : MultiGesture()
+  data class StringGesture(val data: String) : MultiGesture()
+}
+
+private open class TestState : MultiMachineState<MultiGesture, String>() {
+
+  private data object IntKey : MachineKey<Int, Int>(null) // Int for gesture and state
+  private data object StringKey : MachineKey<String, String>(null) // String for gesture and state
+
+  // ... machine init omitted
+  
+  override fun mapUiState(provider: UiStateProvider, changedKey: MachineKey<*, *>?): String {
+    val i: Int = provider.getValue(IntKey)       // Cast to Int
+    val s: String = provider.getValue(StringKey) // Cast to String
+    return "$i - $s" // Combined state of any kind you like
+  }
+}
+```
+
+Check example states for use cases:
+
+- [Parallel](examples/multi/parallel/src/main/java/com/motorro/statemachine/parallel/model/state/ParallelState.kt) - two machines running in parallel in one proxy state
+- [Navbar](examples/multi/navbar/src/main/java/com/motorro/statemachine/navbar/model/state/NavbarState.kt) - several machines running in proxy state, one of them active at a time
+
+### Dispatching gestures
+
+As with UI-state mapping, binding machines with keys in `MachineInit` makes sure the machine type
+corresponds to the key and is used to map key to correct gesture processor. Whenever the proxy receives 
+a gesture it calls [mapGesture](commonstatemachine/src/commonMain/kotlin/com/motorro/commonstatemachine/multi/MultiMachineState.kt#L91).
+Using the provided [GestureProcessor](commonstatemachine/src/commonMain/kotlin/com/motorro/commonstatemachine/multi/MachineAccess.kt#L48) 
+and a key you can get access to the proxied machine instance to map and process your gesture:
+
+```kotlin
+
+private sealed class MultiGesture {
+  data class IntGesture(val data: Int) : MultiGesture()
+  data class StringGesture(val data: String) : MultiGesture()
+}
+
+private open class TestState : MultiMachineState<MultiGesture, String>() {
+
+  private data object IntKey : MachineKey<Int, Int>(null) // Int for gesture and state
+  private data object StringKey : MachineKey<String, String>(null) // String for gesture and state
+
+  // ... machine init omitted
+
+  // Our parent gesture is 
+  override fun mapGesture(parent: MultiGesture, processor: GestureProcessor) = when(parent) {
+    is MultiGesture.IntGesture -> {
+      processor.process(IntKey, parent.data) // Int expected
+    }
+    is MultiGesture.StringGesture -> {
+      processor.process(StringKey, parent.data) // String expected
+    }
+  }
+}
+```
+
+Check example states and test class for use cases:
+
+- [Parallel](examples/multi/parallel/src/main/java/com/motorro/statemachine/parallel/model/state/ParallelState.kt) - two machines running in parallel in one proxy state
+- [Navbar](examples/multi/navbar/src/main/java/com/motorro/statemachine/navbar/model/state/NavbarState.kt) - several machines running in proxy state, one of them active at a time
+- [MultiMachineStateTest](commonstatemachine/src/commonTest/kotlin/com/motorro/commonstatemachine/multi/MultiMachineStateTest.kt) - unit test
+
+### MachineLifecyle bonus
+
+The interface used to pass the machine activity to proxied state machine could also be used as an 
+view lifecycle monitor for your app. Pass [UiMachineLifecycle](commonstatemachine/src/androidMain/kotlin/com/motorro/commonstatemachine/lifecycle/UiMachineLifecycle.kt)
+to your model initialization to by able to suspend your machines when app is not in use.
+Similar to [state collection methods](https://medium.com/androiddevelopers/a-safer-way-to-collect-flows-from-android-uis-23080b1f8bda) optimized with lificycle.
+Check the [example](examples/lifecycle) to get the details.
 
 ## Conclusion
 
