@@ -1,33 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="17">
-      <module name="CommonStateMachine.commonapi.commonMain" target="1.8" />
-      <module name="CommonStateMachine.commonapi.commonTest" target="1.8" />
-      <module name="CommonStateMachine.commonapi.jvmMain" target="1.8" />
-      <module name="CommonStateMachine.commonapi.jvmTest" target="1.8" />
-      <module name="CommonStateMachine.commoncore.commonMain" target="1.8" />
-      <module name="CommonStateMachine.commoncore.commonTest" target="1.8" />
-      <module name="CommonStateMachine.commoncore.jvmMain" target="1.8" />
-      <module name="CommonStateMachine.commoncore.jvmTest" target="1.8" />
-      <module name="CommonStateMachine.commonregister.commonMain" target="1.8" />
-      <module name="CommonStateMachine.commonregister.commonTest" target="1.8" />
-      <module name="CommonStateMachine.commonregister.jvmMain" target="1.8" />
-      <module name="CommonStateMachine.commonregister.jvmTest" target="1.8" />
-      <module name="CommonStateMachine.commonregistration.commonMain" target="1.8" />
-      <module name="CommonStateMachine.commonregistration.commonTest" target="1.8" />
-      <module name="CommonStateMachine.commonregistration.jvmMain" target="1.8" />
-      <module name="CommonStateMachine.commonregistration.jvmTest" target="1.8" />
-      <module name="CommonStateMachine.commonstatemachine.commonMain" target="1.8" />
-      <module name="CommonStateMachine.commonstatemachine.commonTest" target="1.8" />
-      <module name="CommonStateMachine.commonstatemachine.jvmMain" target="1.8" />
-      <module name="CommonStateMachine.commonstatemachine.jvmTest" target="1.8" />
-      <module name="CommonStateMachine.commonstatemachine.main" target="11" />
-      <module name="CommonStateMachine.commonstatemachine.test" target="11" />
-      <module name="CommonStateMachine.coroutines.commonMain" target="1.8" />
-      <module name="CommonStateMachine.coroutines.commonTest" target="1.8" />
-      <module name="CommonStateMachine.coroutines.jvmMain" target="1.8" />
-      <module name="CommonStateMachine.coroutines.jvmTest" target="1.8" />
-    </bytecodeTargetLevel>
+    <bytecodeTargetLevel target="17" />
   </component>
 </project>

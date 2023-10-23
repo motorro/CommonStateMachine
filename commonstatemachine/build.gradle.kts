@@ -77,7 +77,11 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting
+        val commonMain by getting {
+            dependencies {
+                api(project(":tmap"))
+            }
+        }
         val commonTest by getting {
             dependencies {
                 implementation(libs.test.kotlin)
@@ -87,9 +91,17 @@ kotlin {
         val jvmTest by getting
         val androidMain by getting {
             dependsOn(jvmMain)
+            dependencies {
+                api(libs.androidx.lifecycle.common)
+            }
         }
         val androidUnitTest by getting {
             dependsOn(commonTest)
+            dependencies {
+                implementation(libs.kotlin.coroutines.core)
+                implementation(libs.test.kotlin.coroutines)
+                implementation(libs.test.androidx.lifecycle)
+            }
         }
         val jsMain by getting
         val jsTest by getting

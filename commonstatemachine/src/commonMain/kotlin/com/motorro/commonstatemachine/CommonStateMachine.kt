@@ -106,7 +106,7 @@ interface CommonStateMachine<G: Any, U: Any> : MachineInput<G>, MachineOutput<G,
         /**
          * Starts machine
          */
-        protected fun start() {
+        fun start() {
             if (started.not()) {
                 activeState = init()
                 startMachineState()
