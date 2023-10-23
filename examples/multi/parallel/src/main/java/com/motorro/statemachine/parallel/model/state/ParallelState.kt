@@ -4,6 +4,7 @@ import com.motorro.commonstatemachine.CommonMachineState
 import com.motorro.commonstatemachine.lifecycle.MachineLifecycle
 import com.motorro.commonstatemachine.multi.GestureProcessor
 import com.motorro.commonstatemachine.multi.MachineInit
+import com.motorro.commonstatemachine.multi.MachineKey
 import com.motorro.commonstatemachine.multi.MultiMachineState
 import com.motorro.commonstatemachine.multi.ProxyMachineContainer
 import com.motorro.commonstatemachine.multi.UiStateProvider
@@ -68,8 +69,10 @@ internal class ParallelState : MultiMachineState<ParallelGesture, ParallelUiStat
     /**
      * Maps combined child UI state to parent
      * @param provider Provides child UI states
+     * @param changedKey Key of machine that changed the UI state. Null if called explicitly via [updateUi]
+     * @see updateUi
      */
-    override fun mapUiState(provider: UiStateProvider): ParallelUiState = ParallelUiState(
+    override fun mapUiState(provider: UiStateProvider, changedKey: MachineKey<*, *>?): ParallelUiState = ParallelUiState(
         top = provider.getValue(topKey),
         bottom = provider.getValue(bottomKey)
     )

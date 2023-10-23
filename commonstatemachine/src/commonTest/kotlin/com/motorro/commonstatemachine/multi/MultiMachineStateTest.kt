@@ -64,7 +64,7 @@ class MultiMachineStateTest {
             processor.process(StringKey, parent.toString())
         }
 
-        override fun mapUiState(provider: UiStateProvider): String {
+        override fun mapUiState(provider: UiStateProvider, changedKey: MachineKey<*, *>?): String {
             val i: Int = provider.getValue(IntKey)
             val s: String = provider.getValue(StringKey)
             return "$i - $s"
@@ -101,13 +101,13 @@ class MultiMachineStateTest {
     fun providesActiveMachinesKeys() {
         var tested = false
         val state = object : TestState() {
-            override fun mapUiState(provider: UiStateProvider): String {
+            override fun mapUiState(provider: UiStateProvider, changedKey: MachineKey<*, *>?): String {
                 assertEquals(
                     setOf(IntKey, StringKey),
                     provider.getMachineKeys()
                 )
                 tested = true
-                return super.mapUiState(provider)
+                return super.mapUiState(provider, changedKey)
             }
         }
 

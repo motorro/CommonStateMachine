@@ -46,13 +46,13 @@ abstract class MultiMachineState<PG: Any, PU: Any> : CommonMachineState<PG, PU>(
      */
     @Suppress("UNUSED_PARAMETER")
     private fun onUiStateChange(key: MachineKey<*, *>, uiState: Any) {
-        updateUi()
+        setUiState(buildUiState(key))
     }
 
     /**
      * Builds common UI state
      */
-    private fun buildUiState(): PU {
+    private fun buildUiState(changedKey: MachineKey<*, *>?): PU {
         val machineMap = container.getMachines()
         val uiStateProvider = object : UiStateProvider {
             override fun getMachineKeys(): Set<MachineKey<*, *>> = machineMap.keys
@@ -60,14 +60,14 @@ abstract class MultiMachineState<PG: Any, PU: Any> : CommonMachineState<PG, PU>(
                 return withMachine(key, machineMap) { getUiState() }
             }
         }
-        return mapUiState(uiStateProvider)
+        return mapUiState(uiStateProvider, changedKey)
     }
 
     /**
      * Updates hosting machine with composed UI state
      */
     protected fun updateUi() {
-        setUiState(buildUiState())
+        setUiState(buildUiState(null))
     }
 
     /**
@@ -93,6 +93,8 @@ abstract class MultiMachineState<PG: Any, PU: Any> : CommonMachineState<PG, PU>(
     /**
      * Maps combined child UI state to parent
      * @param provider Provides child UI states
+     * @param changedKey Key of machine that changed the UI state. Null if called explicitly via [updateUi]
+     * @see updateUi
      */
-    protected abstract fun mapUiState(provider: UiStateProvider): PU
+    protected abstract fun mapUiState(provider: UiStateProvider, changedKey: MachineKey<*, *>?): PU
 }

@@ -5,6 +5,7 @@ import com.motorro.commonstatemachine.lifecycle.MachineLifecycle
 import com.motorro.commonstatemachine.multi.ActiveMachineContainer
 import com.motorro.commonstatemachine.multi.GestureProcessor
 import com.motorro.commonstatemachine.multi.MachineInit
+import com.motorro.commonstatemachine.multi.MachineKey
 import com.motorro.commonstatemachine.multi.MultiMachineState
 import com.motorro.commonstatemachine.multi.UiStateProvider
 import com.motorro.statemachine.commoncore.log.Logger
@@ -69,8 +70,10 @@ internal class NavbarState : MultiMachineState<NavbarGesture, NavbarUiState>() {
     /**
      * Maps combined child UI state to parent
      * @param provider Provides child UI states
+     * @param changedKey Key of machine that changed the UI state. Null if called explicitly via [updateUi]
+     * @see updateUi
      */
-    override fun mapUiState(provider: UiStateProvider): NavbarUiState {
+    override fun mapUiState(provider: UiStateProvider, changedKey: MachineKey<*, *>?): NavbarUiState {
         return NavbarUiState(
             keys.map { key ->
                 key to provider.getValue(key)
