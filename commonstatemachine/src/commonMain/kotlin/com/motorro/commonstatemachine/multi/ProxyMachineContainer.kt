@@ -42,6 +42,20 @@ interface ProxyMachineContainer {
          * @param init Machine init
          */
         fun allTogether(init: Collection<MachineInit<*, *>>): ProxyMachineContainer = AllTogetherMachineContainer(init)
+
+        /**
+         * Creates a container where machines may be activated and deactivated
+         * Check their [MachineLifecycle] passed to init to guess if machine is active or paused
+         * That may come handy when implementing some view-paging or nav-bar views
+         * when you want to preserve machine states on several pages but want to pause
+         * some resource-intensive pending operations when machine is not "in focus"
+         * @param init Machine init
+         * @param initiallyActive Machines that are initially active. Defaults to first machine in [init]
+         */
+        fun some(
+            init: Collection<MachineInit<*, *>>,
+            initiallyActive: Set<MachineKey<*, *>> = setOf(init.first().key)
+        ): ActiveMachineContainer = SomeActiveMachineContainer(init, initiallyActive)
     }
 }
 
@@ -83,22 +97,6 @@ interface ActiveMachineContainer : ProxyMachineContainer {
      * @see dispose
      */
     fun disposeInactive()
-
-    companion object {
-        /**
-         * Creates a container where machines may be activated and deactivated
-         * Check their [MachineLifecycle] passed to init to guess if machine is active or paused
-         * That may come handy when implementing some view-paging or nav-bar views
-         * when you want to preserve machine states on several pages but want to pause
-         * some resource-intensive pending operations when machine is not "in focus"
-         * @param init Machine init
-         * @param initiallyActive Machines that are initially active. Defaults to first machine in [init]
-         */
-        fun some(
-            init: Collection<MachineInit<*, *>>,
-            initiallyActive: Set<MachineKey<*, *>> = setOf(init.first().key)
-        ): ActiveMachineContainer = SomeActiveMachineContainer(init, initiallyActive)
-    }
 }
 
 /**

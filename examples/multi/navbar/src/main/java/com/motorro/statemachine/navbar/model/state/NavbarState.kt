@@ -7,6 +7,7 @@ import com.motorro.commonstatemachine.multi.GestureProcessor
 import com.motorro.commonstatemachine.multi.MachineInit
 import com.motorro.commonstatemachine.multi.MachineKey
 import com.motorro.commonstatemachine.multi.MultiMachineState
+import com.motorro.commonstatemachine.multi.ProxyMachineContainer
 import com.motorro.commonstatemachine.multi.UiStateProvider
 import com.motorro.statemachine.commoncore.log.Logger
 import com.motorro.statemachine.navbar.model.data.NavbarGesture
@@ -32,7 +33,7 @@ internal class NavbarState : MultiMachineState<NavbarGesture, NavbarUiState>() {
     /**
      * Machines are lazily created and paused when not active
      */
-    override val container = ActiveMachineContainer.some(
+    override val container: ActiveMachineContainer = ProxyMachineContainer.some(
         keys.map { key ->
             object : MachineInit<TimerGesture, TimerUiState> {
                 override val key: TimerKey = key

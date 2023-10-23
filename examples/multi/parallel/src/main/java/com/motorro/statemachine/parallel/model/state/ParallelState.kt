@@ -27,7 +27,7 @@ internal class ParallelState : MultiMachineState<ParallelGesture, ParallelUiStat
     /**
      * Machines run in parallel and always active
      */
-    override val container = ProxyMachineContainer.allTogether(
+    override val container: ProxyMachineContainer = ProxyMachineContainer.allTogether(
         listOf(
             object : MachineInit<TimerGesture, TimerUiState> {
                 override val key: TimerKey = topKey
