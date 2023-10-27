@@ -17,7 +17,7 @@ package com.motorro.commonstatemachine
  * Common state machine input - from the outside world to the current state
  * @param G UI gesture
  */
-interface MachineInput<G: Any> {
+interface MachineInput<in G: Any> {
     /**
      * Updates state with UI gesture
      * @param gesture UI gesture to proceed
@@ -51,7 +51,7 @@ interface MachineOutput<G: Any, U: Any> {
 /**
  * Current public machine status
  */
-interface MachineStatus<U : Any> {
+interface MachineStatus<out U : Any> {
     /**
      * Checks if machine is started
      */
@@ -137,4 +137,3 @@ interface CommonStateMachine<G: Any, U: Any> : MachineInput<G>, MachineOutput<G,
         }
     }
 }
-

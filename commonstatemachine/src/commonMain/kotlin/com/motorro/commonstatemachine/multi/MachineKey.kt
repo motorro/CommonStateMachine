@@ -20,7 +20,7 @@ package com.motorro.commonstatemachine.multi
  * @param U UI-state type
  * @param tag An extra string to distinguish one key from the other
  */
-abstract class MachineKey<G: Any, U: Any>(val tag: String? = null) {
+abstract class MachineKey<in G: Any, out U: Any>(val tag: String? = null) {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
