@@ -44,8 +44,8 @@ class MultiMachineStateTest {
         data class StringGesture(val data: String) : MultiGesture()
     }
 
-    private open class TestState : MultiMachineState<MultiGesture, String>() {
-        override val container: ProxyMachineContainer = AllTogetherMachineContainer(
+    private open class TestState : MultiMachineState<MultiGesture, String, Any, Any>() {
+        override val container: ProxyMachineContainer<Any, Any> = AllTogetherMachineContainer(
             listOf(
                 object : MachineInit<Int, Int> {
                     override val key: MachineKey<Int, Int> = IntKey
@@ -64,7 +64,7 @@ class MultiMachineStateTest {
             )
         )
 
-        override fun mapGesture(parent: MultiGesture, processor: GestureProcessor) = when(parent) {
+        override fun mapGesture(parent: MultiGesture, processor: GestureProcessor<Any, Any>) = when(parent) {
             is MultiGesture.IntGesture -> {
                 processor.process(IntKey, parent.data)
             }
@@ -73,7 +73,7 @@ class MultiMachineStateTest {
             }
         }
 
-        override fun mapUiState(provider: UiStateProvider, changedKey: MachineKey<*, *>?): String {
+        override fun mapUiState(provider: UiStateProvider<Any, Any>, changedKey: MachineKey<*, *>?): String {
             val i: Int = provider.getValue(IntKey)
             val s: String = provider.getValue(StringKey)
             return "$i - $s"
@@ -110,7 +110,7 @@ class MultiMachineStateTest {
     fun providesActiveMachinesKeys() {
         var tested = false
         val state = object : TestState() {
-            override fun mapUiState(provider: UiStateProvider, changedKey: MachineKey<*, *>?): String {
+            override fun mapUiState(provider: UiStateProvider<Any, Any>, changedKey: MachineKey<*, *>?): String {
                 assertEquals(
                     setOf(IntKey, StringKey),
                     provider.getMachineKeys()

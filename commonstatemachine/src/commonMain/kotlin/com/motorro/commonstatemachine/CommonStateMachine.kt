@@ -72,6 +72,11 @@ interface MachineStatus<out U : Any> {
 interface CommonStateMachine<G: Any, U: Any> : MachineInput<G>, MachineOutput<G, U>, MachineStatus<U> {
 
     /**
+     * Starts the machine
+     */
+    fun start()
+
+    /**
      * Base state-machine implementation
      * @param G UI gesture
      * @param U UI state
@@ -104,9 +109,9 @@ interface CommonStateMachine<G: Any, U: Any> : MachineInput<G>, MachineOutput<G,
         }
 
         /**
-         * Starts machine
+         * Starts the machine
          */
-        fun start() {
+        override fun start() {
             if (started.not()) {
                 activeState = init()
                 startMachineState()

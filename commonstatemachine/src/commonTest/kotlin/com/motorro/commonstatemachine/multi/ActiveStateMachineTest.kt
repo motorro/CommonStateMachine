@@ -47,6 +47,7 @@ class ActiveStateMachineTest {
             }
         }
         machine = ActiveStateMachine(init) { _, u -> uiState.add(u) }
+        machine.start()
     }
 
     @Test

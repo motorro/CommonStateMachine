@@ -21,7 +21,7 @@ import kotlin.time.Duration
 /**
  * Machines are lazily created and paused when not active
  */
-internal class NavbarState : MultiMachineState<NavbarGesture, NavbarUiState>() {
+internal class NavbarState : MultiMachineState<NavbarGesture, NavbarUiState, TimerGesture, TimerUiState>() {
 
     private val keys = listOf(
         TimerKey("one"),
@@ -33,7 +33,7 @@ internal class NavbarState : MultiMachineState<NavbarGesture, NavbarUiState>() {
     /**
      * Machines are lazily created and paused when not active
      */
-    override val container: ActiveMachineContainer = ProxyMachineContainer.some(
+    override val container: ActiveMachineContainer<TimerGesture, TimerUiState> = ProxyMachineContainer.some(
         keys.map { key ->
             object : MachineInit<TimerGesture, TimerUiState> {
                 override val key: TimerKey = key
@@ -52,7 +52,7 @@ internal class NavbarState : MultiMachineState<NavbarGesture, NavbarUiState>() {
      * @param parent Parent gesture
      * @param processor Use it to send child gesture to the relevant child machine
      */
-    override fun mapGesture(parent: NavbarGesture, processor: GestureProcessor) = when(parent) {
+    override fun mapGesture(parent: NavbarGesture, processor: GestureProcessor<TimerGesture, TimerUiState>) = when(parent) {
         is NavbarGesture.ActiveSelected -> {
             Logger.i("Activating: ${parent.key}")
             container.setActive(parent.key)
@@ -74,7 +74,7 @@ internal class NavbarState : MultiMachineState<NavbarGesture, NavbarUiState>() {
      * @param changedKey Key of machine that changed the UI state. Null if called explicitly via [updateUi]
      * @see updateUi
      */
-    override fun mapUiState(provider: UiStateProvider, changedKey: MachineKey<*, *>?): NavbarUiState {
+    override fun mapUiState(provider: UiStateProvider<TimerGesture, TimerUiState>, changedKey: MachineKey<out TimerGesture, out TimerUiState>?): NavbarUiState {
         return NavbarUiState(
             keys.map { key ->
                 key to provider.getValue(key)

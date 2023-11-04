@@ -20,14 +20,14 @@ import kotlin.time.Duration
 /**
  * Machines run in parallel. All machines are active
  */
-internal class ParallelState : MultiMachineState<ParallelGesture, ParallelUiState>() {
+internal class ParallelState : MultiMachineState<ParallelGesture, ParallelUiState, TimerGesture, TimerUiState>() {
     private val topKey = TimerKey("top")
     private val bottomKey = TimerKey("bottom")
 
     /**
      * Machines run in parallel and always active
      */
-    override val container: ProxyMachineContainer = ProxyMachineContainer.allTogether(
+    override val container: ProxyMachineContainer<TimerGesture, TimerUiState> = ProxyMachineContainer.allTogether(
         listOf(
             object : MachineInit<TimerGesture, TimerUiState> {
                 override val key: TimerKey = topKey
@@ -55,7 +55,7 @@ internal class ParallelState : MultiMachineState<ParallelGesture, ParallelUiStat
      * @param parent Parent gesture
      * @param processor Use it to send child gesture to the relevant child machine
      */
-    override fun mapGesture(parent: ParallelGesture, processor: GestureProcessor) = when(parent) {
+    override fun mapGesture(parent: ParallelGesture, processor: GestureProcessor<TimerGesture, TimerUiState>) = when(parent) {
         is ParallelGesture.Top -> {
             Logger.i("Top gesture: $parent")
             processor.process(topKey, parent.gesture)
@@ -72,7 +72,10 @@ internal class ParallelState : MultiMachineState<ParallelGesture, ParallelUiStat
      * @param changedKey Key of machine that changed the UI state. Null if called explicitly via [updateUi]
      * @see updateUi
      */
-    override fun mapUiState(provider: UiStateProvider, changedKey: MachineKey<*, *>?): ParallelUiState = ParallelUiState(
+    override fun mapUiState(
+        provider: UiStateProvider<TimerGesture, TimerUiState>,
+        changedKey: MachineKey<out TimerGesture, out TimerUiState>?
+    ): ParallelUiState = ParallelUiState(
         top = provider.getValue(topKey),
         bottom = provider.getValue(bottomKey)
     )

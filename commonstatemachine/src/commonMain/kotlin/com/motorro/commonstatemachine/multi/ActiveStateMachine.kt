@@ -28,7 +28,7 @@ import com.motorro.commonstatemachine.lifecycle.MachineLifecycle
  */
 internal class ActiveStateMachine<G: Any, U: Any>(
     init: MachineInit<G, U>,
-    onUiChanged: (MachineKey<*, *>, Any) -> Unit
+    onUiChanged: (MachineKey<G, U>, U) -> Unit
 ) : CommonStateMachine<G, U>, Activated {
     /**
      * Machine lifecycle
@@ -41,7 +41,10 @@ internal class ActiveStateMachine<G: Any, U: Any>(
         { onUiChanged(init.key, it.child) }
     )
 
-    init {
+    /**
+     * Starts the machine
+     */
+    override fun start() {
         machine.start()
     }
 
