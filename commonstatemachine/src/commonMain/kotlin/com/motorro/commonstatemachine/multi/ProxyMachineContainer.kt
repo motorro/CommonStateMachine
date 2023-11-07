@@ -35,7 +35,7 @@ interface ProxyMachineContainer<CG: Any, CU: Any> {
      * Starts machines in the container
      * @param onUiChanged UI change handler from hosting state
      */
-    fun start(onUiChanged: (key: MachineKey<out CG, out CU>, uiState: CU) -> Unit)
+    fun start(onUiChanged: (key: MachineKey<*, out CU>, uiState: CU) -> Unit)
 
     /**
      * Clears contained machines
@@ -78,7 +78,7 @@ interface ProxyMachineContainer<CG: Any, CU: Any> {
      * @param init Initialisation structures to create machines
      */
     abstract class Base<CG: Any, CU: Any, M: CommonStateMachine<*, out CU>>(
-        private val init: Collection<MachineInit<out CG, out CU>>
+        private val init: Collection<MachineInit<*, out CU>>
     ) : ProxyMachineContainer<CG, CU> {
         /**
          * Creates a specific machine for this container
@@ -86,14 +86,14 @@ interface ProxyMachineContainer<CG: Any, CU: Any> {
          * @param onUiChanged UI change handler from hosting state
          */
         abstract fun create(
-            init: MachineInit<out CG, out CU>,
-            onUiChanged: (key: MachineKey<out CG, out CU>, uiState: CU) -> Unit
+            init: MachineInit<*, out CU>,
+            onUiChanged: (key: MachineKey<*, out CU>, uiState: CU) -> Unit
         ): M
 
         /**
          * Machines bound with keys
          */
-        protected var machines: Map<MachineKey<out CG, out CU>, M> = emptyMap()
+        protected var machines: Map<MachineKey<*, out CU>, M> = emptyMap()
 
         /**
          * Machine access
@@ -102,7 +102,7 @@ interface ProxyMachineContainer<CG: Any, CU: Any> {
             /**
              * Keys collection
              */
-            override val keys: Set<MachineKey<out CG, out CU>> get() = machines.keys
+            override val keys: Set<MachineKey<*, out CU>> get() = machines.keys
 
             /**
              * Processes machine gesture.
@@ -123,7 +123,7 @@ interface ProxyMachineContainer<CG: Any, CU: Any> {
              * @param key Machine key
              */
             @Suppress("UNCHECKED_CAST")
-            override fun <U : CU> getState(key: MachineKey<out CG, U>): U? {
+            override fun <U : CU> getState(key: MachineKey<*, U>): U? {
                 return machines[key]?.getUiState() as? U
             }
         }
@@ -132,7 +132,7 @@ interface ProxyMachineContainer<CG: Any, CU: Any> {
          * Starts machines in the container
          * @param onUiChanged UI change handler from hosting state
          */
-        override fun start(onUiChanged: (key: MachineKey<out CG, out CU>, uiState: CU) -> Unit) {
+        override fun start(onUiChanged: (key: MachineKey<*, out CU>, uiState: CU) -> Unit) {
             machines = init.associate { i -> i.key to create(i, onUiChanged) }
             machines.forEach { (_, machine) -> machine.start() }
             doStart()
@@ -160,31 +160,31 @@ interface ActiveMachineContainer<CG : Any, CU : Any> : ProxyMachineContainer<CG,
     /**
      * Retrieves currently active machine key
      */
-    fun getActive(): Set<MachineKey<out CG, out CU>>
+    fun getActive(): Set<MachineKey<*, out CU>>
 
     /**
      * Sets active machine given the keys
      */
-    fun setActive(keys: Set<MachineKey<out CG, out CU>>)
+    fun setActive(keys: Set<MachineKey<*, out CU>>)
 
     /**
      * Sets active machine given the key
      */
-    fun setActive(vararg key: MachineKey<out CG, out CU>) = setActive(key.toSet())
+    fun setActive(vararg key: MachineKey<*, out CU>) = setActive(key.toSet())
 
     /**
      * Disposes machines. All machines by [keys] are deactivated disposed and dereferenced.
      * When activating again - a new machine is created using the same init.
      * Use to cleanup memory for example on low memory alert from system
      */
-    fun dispose(keys: Set<MachineKey<out CG, out CU>>)
+    fun dispose(keys: Set<MachineKey<*, out CU>>)
 
     /**
      * Disposes machines. All machines by [key] are deactivated disposed and dereferenced.
      * When activating again - a new machine is created using the same init.
      * Use to cleanup memory for example on low memory alert from system
      */
-    fun dispose(vararg key: MachineKey<out CG, out CU>) = dispose(key.toSet())
+    fun dispose(vararg key: MachineKey<*, out CU>) = dispose(key.toSet())
 
     /**
      * Disposes all inactive machines
@@ -199,7 +199,7 @@ interface ActiveMachineContainer<CG : Any, CU : Any> : ProxyMachineContainer<CG,
  */
 internal class AllTogetherMachineContainer<CG: Any, CU: Any>(
     init: Collection<MachineInit<out CG, out CU>>
-) : ProxyMachineContainer.Base<CG, CU, CommonStateMachine<out CG, out CU>>(init) {
+) : ProxyMachineContainer.Base<CG, CU, CommonStateMachine<*, out CU>>(init) {
     /**
      * Machine lifecycle that is always started
      */
@@ -213,7 +213,7 @@ internal class AllTogetherMachineContainer<CG: Any, CU: Any>(
     /**
      * Creates a proxy
      */
-    private fun <G: Any, U: Any> MachineInit<G, U>.machine(onUiChanged: (MachineKey<G, U>, U) -> Unit) = ProxyStateMachine(
+    private fun <U: Any> MachineInit<*, U>.machine(onUiChanged: (MachineKey<*, U>, U) -> Unit) = ProxyStateMachine(
         initialUiState,
         { init(lifecycle) },
         { onUiChanged(key, it) }
@@ -225,9 +225,9 @@ internal class AllTogetherMachineContainer<CG: Any, CU: Any>(
      * @param onUiChanged UI change handler from hosting state
      */
     override fun create(
-        init: MachineInit<out CG, out CU>,
-        onUiChanged: (key: MachineKey<out CG, out CU>, uiState: CU) -> Unit
-    ): CommonStateMachine<out CG, out CU> = init.machine(onUiChanged)
+        init: MachineInit<*, out CU>,
+        onUiChanged: (key: MachineKey<*, out CU>, uiState: CU) -> Unit
+    ): CommonStateMachine<*, out CU> = init.machine(onUiChanged)
 }
 
 /**
@@ -239,16 +239,16 @@ internal class AllTogetherMachineContainer<CG: Any, CU: Any>(
 internal class SomeActiveMachineContainer<CG: Any, CU: Any>(
     private val init: Collection<MachineInit<out CG, out CU>>,
     private val initiallyActive: Set<MachineKey<out CG, out CU>>
-) : ProxyMachineContainer.Base<CG, CU, ActiveStateMachine<out CG, out CU>>(init), ActiveMachineContainer<CG, CU> {
+) : ProxyMachineContainer.Base<CG, CU, ActiveStateMachine<*, out CU>>(init), ActiveMachineContainer<CG, CU> {
     /**
      * Creates a specific machine for this container
      * @param init Initialization structure
      * @param onUiChanged UI change handler from hosting state
      */
     override fun create(
-        init: MachineInit<out CG, out CU>,
-        onUiChanged: (key: MachineKey<out CG, out CU>, uiState: CU) -> Unit
-    ): ActiveStateMachine<out CG, out CU> = ActiveStateMachine(init, onUiChanged)
+        init: MachineInit<*, out CU>,
+        onUiChanged: (key: MachineKey<*, out CU>, uiState: CU) -> Unit
+    ): ActiveStateMachine<*, out CU> = ActiveStateMachine(init, onUiChanged)
 
     /**
      * A part of [start] template called after initial startup
@@ -261,14 +261,14 @@ internal class SomeActiveMachineContainer<CG: Any, CU: Any>(
     /**
      * Retrieves currently active machine key
      */
-    override fun getActive(): Set<MachineKey<out CG, out CU>> = machines.entries
+    override fun getActive(): Set<MachineKey<*, out CU>> = machines.entries
         .filter { (_, machine) -> machine.isActive() }
         .map { it.key }.toSet()
 
     /**
      * Sets active machine given the key
      */
-    override fun setActive(keys: Set<MachineKey<out CG, out CU>>) {
+    override fun setActive(keys: Set<MachineKey<*, out CU>>) {
         val active = getActive()
         val toDeactivate = active.minus(keys)
         val toActivate = keys.minus(active)
@@ -286,7 +286,7 @@ internal class SomeActiveMachineContainer<CG: Any, CU: Any>(
      * When activating again - a new machine is created using the same init.
      * Use to cleanup memory for example on low memory alert from system
      */
-    override fun dispose(keys: Set<MachineKey<out CG, out CU>>) {
+    override fun dispose(keys: Set<MachineKey<*, out CU>>) {
         machines.forEach { (key, machine) ->
             if (keys.contains(key)) {
                 machine.dispose()

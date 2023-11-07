@@ -74,7 +74,7 @@ internal class NavbarState : MultiMachineState<NavbarGesture, NavbarUiState, Tim
      * @param changedKey Key of machine that changed the UI state. Null if called explicitly via [updateUi]
      * @see updateUi
      */
-    override fun mapUiState(provider: UiStateProvider<TimerGesture, TimerUiState>, changedKey: MachineKey<out TimerGesture, out TimerUiState>?): NavbarUiState {
+    override fun mapUiState(provider: UiStateProvider<TimerUiState>, changedKey: MachineKey<*, out TimerUiState>?): NavbarUiState {
         return NavbarUiState(
             keys.map { key ->
                 key to provider.getValue(key)

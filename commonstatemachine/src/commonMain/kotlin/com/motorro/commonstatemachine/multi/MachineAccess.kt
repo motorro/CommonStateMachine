@@ -18,11 +18,11 @@ package com.motorro.commonstatemachine.multi
  * @param CG Child gesture system
  * @param CU Child UI-state system
  */
-interface   MachineAccess<CG: Any, CU: Any> {
+interface MachineAccess<CG: Any, CU: Any> {
     /**
      * Keys collection
      */
-    val keys: Set<MachineKey<out CG, out CU>>
+    val keys: Set<MachineKey<*, out CU>>
 
     /**
      * Retrieves UI state.
@@ -30,7 +30,7 @@ interface   MachineAccess<CG: Any, CU: Any> {
      * @param U Concrete UI state bound with the [key], subtype of CU
      * @param key Machine key
      */
-    fun <U: CU> getState(key: MachineKey<out CG, U>): U?
+    fun <U: CU> getState(key: MachineKey<*, U>): U?
 
     /**
      * Processes machine gesture.
@@ -45,19 +45,19 @@ interface   MachineAccess<CG: Any, CU: Any> {
 /**
  * Retrieves a ui-state given the [MachineKey]
  */
-interface UiStateProvider<CG: Any, CU: Any> {
+interface UiStateProvider<CU: Any> {
 
     /**
      * Retrieves all running machine keys
      */
-    fun getMachineKeys(): Set<MachineKey<out CG, out CU>>
+    fun getMachineKeys(): Set<MachineKey<*, out CU>>
 
     /**
      * Gets a concrete UI-state
      * @param key Machine key your state is bound to
      * @throws IllegalStateException if state is not found in common state
      */
-    fun <U: CU> getValue(key: MachineKey<out CG, out U>): U = checkNotNull(get(key)) {
+    fun <U: CU> getValue(key: MachineKey<*, out U>): U = checkNotNull(get(key)) {
         "Key $key not found in machine map"
     }
 
@@ -65,7 +65,7 @@ interface UiStateProvider<CG: Any, CU: Any> {
      * Gets a concrete UI-state
      * @param key Machine key your state is bound to
      */
-    operator fun <U: CU> get(key: MachineKey<out CG, U>): U?
+    operator fun <U: CU> get(key: MachineKey<*, U>): U?
 }
 
 /**

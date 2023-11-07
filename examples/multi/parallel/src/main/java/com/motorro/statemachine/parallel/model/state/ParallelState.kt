@@ -73,8 +73,8 @@ internal class ParallelState : MultiMachineState<ParallelGesture, ParallelUiStat
      * @see updateUi
      */
     override fun mapUiState(
-        provider: UiStateProvider<TimerGesture, TimerUiState>,
-        changedKey: MachineKey<out TimerGesture, out TimerUiState>?
+        provider: UiStateProvider<TimerUiState>,
+        changedKey: MachineKey<*, out TimerUiState>?
     ): ParallelUiState = ParallelUiState(
         top = provider.getValue(topKey),
         bottom = provider.getValue(bottomKey)

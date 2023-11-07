@@ -45,18 +45,18 @@ abstract class MultiMachineState<PG: Any, PU: Any, CG: Any, CU: Any> : CommonMac
      * Updates machine view-state
      */
     @Suppress("UNUSED_PARAMETER")
-    private fun onUiStateChange(key: MachineKey<out CG, out CU>, uiState: CU) {
+    private fun onUiStateChange(key: MachineKey<*, out CU>, uiState: CU) {
         setUiState(buildUiState(key))
     }
 
     /**
      * Builds common UI state
      */
-    private fun buildUiState(changedKey: MachineKey<out CG, out CU>?): PU {
+    private fun buildUiState(changedKey: MachineKey<*, out CU>?): PU {
         val access = container.machineAccess
-        val uiStateProvider = object : UiStateProvider<CG, CU> {
-            override fun getMachineKeys(): Set<MachineKey<out CG, out CU>> = access.keys
-            override fun <U : CU> get(key: MachineKey<out CG, U>): U? = access.getState(key)
+        val uiStateProvider = object : UiStateProvider<CU> {
+            override fun getMachineKeys(): Set<MachineKey<*, out CU>> = access.keys
+            override fun <U : CU> get(key: MachineKey<*, U>): U? = access.getState(key)
         }
         return mapUiState(uiStateProvider, changedKey)
     }
@@ -94,5 +94,5 @@ abstract class MultiMachineState<PG: Any, PU: Any, CG: Any, CU: Any> : CommonMac
      * @param changedKey Key of machine that changed the UI state. Null if called explicitly via [updateUi]
      * @see updateUi
      */
-    protected abstract fun mapUiState(provider: UiStateProvider<CG, CU>, changedKey: MachineKey<out CG, out CU>?): PU
+    protected abstract fun mapUiState(provider: UiStateProvider<CU>, changedKey: MachineKey<*, out CU>?): PU
 }
