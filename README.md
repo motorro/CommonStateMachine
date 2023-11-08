@@ -133,6 +133,7 @@ val commonMain by getting {
 - [Welcome](examples/welcome/welcome) - multi-module example of user on-boarding flow
 - [Parallel](examples/multi/parallel) - two machines running in parallel in one proxy state
 - [Navbar](examples/multi/navbar) - several machines running in proxy state, one of them active at a time
+- [Mixed](examples/multi/mixed) - two machines of different gesture/UI system mixed in one state
 - [Lifecycle](examples/lifecycle) - track your Android app lifecycle to pause pending operations when the app is suspended
 
 ## The basic task - Load-Content-Error
@@ -1258,12 +1259,12 @@ private sealed class MultiGesture {
   data class StringGesture(val data: String) : MultiGesture()
 }
 
-private open class TestState : MultiMachineState<MultiGesture, String>() {
+private open class TestState : MultiMachineState<MultiGesture, String, Any, Any>() {
 
   private data object IntKey : MachineKey<Int, Int>(null) // Int for gesture and state
   private data object StringKey : MachineKey<String, String>(null) // String for gesture and state
 
-  override val container: ProxyMachineContainer = AllTogetherMachineContainer(
+  override val container: ProxyMachineContainer<Any, Any> = AllTogetherMachineContainer(
     listOf(
       object : MachineInit<Int, Int> {
         override val key: MachineKey<Int, Int> = IntKey
@@ -1310,8 +1311,8 @@ private open class TestState : MultiMachineState<MultiGesture, String>() {
   private data object StringKey : MachineKey<String, String>(null) // String for gesture and state
 
   // ... machine init omitted
-  
-  override fun mapUiState(provider: UiStateProvider, changedKey: MachineKey<*, *>?): String {
+
+  override fun mapUiState(provider: UiStateProvider<Any>, changedKey: MachineKey<*, out Any>?): String {
     val i: Int = provider.getValue(IntKey)       // Cast to Int
     val s: String = provider.getValue(StringKey) // Cast to String
     return "$i - $s" // Combined state of any kind you like
@@ -1347,7 +1348,7 @@ private open class TestState : MultiMachineState<MultiGesture, String>() {
   // ... machine init omitted
 
   // Our parent gesture is 
-  override fun mapGesture(parent: MultiGesture, processor: GestureProcessor) = when(parent) {
+  override fun mapGesture(parent: MultiGesture, processor: GestureProcessor<Any, Any>) = when(parent) {
     is MultiGesture.IntGesture -> {
       processor.process(IntKey, parent.data) // Int expected
     }
