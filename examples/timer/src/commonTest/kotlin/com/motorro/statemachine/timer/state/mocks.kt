@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Nikolai Kotchetkov.
+ * Copyright 2023 Nikolai Kotchetkov.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,8 +21,13 @@ class MachineMock<G: Any, U: Any>(uiState: U) : CommonStateMachine<G, U> {
     val processed = mutableListOf<G>()
     val uiStates = mutableListOf(uiState)
     var cleared = false
+    var started = false
 
-    override fun isStarted(): Boolean = true
+    override fun start() {
+        started = true
+    }
+
+    override fun isStarted(): Boolean = started
 
     override fun getUiState(): U = uiStates.last()
 

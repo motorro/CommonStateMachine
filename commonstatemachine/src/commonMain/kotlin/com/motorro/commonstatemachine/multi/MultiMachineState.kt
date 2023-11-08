@@ -21,11 +21,11 @@ import com.motorro.commonstatemachine.CommonMachineState
  * - Override [mapUiState] to build a combined UI state af all the machines
  * - Override [container] with a [ProxyMachineContainer] of your choice
  */
-abstract class MultiMachineState<PG: Any, PU: Any> : CommonMachineState<PG, PU>() {
+abstract class MultiMachineState<PG: Any, PU: Any, CG: Any, CU: Any> : CommonMachineState<PG, PU>() {
     /**
      * Proxy machines container
      */
-    protected abstract val container: ProxyMachineContainer
+    protected abstract val container: ProxyMachineContainer<CG, CU>
 
     /**
      * A part of [start] template to initialize state
@@ -45,20 +45,18 @@ abstract class MultiMachineState<PG: Any, PU: Any> : CommonMachineState<PG, PU>(
      * Updates machine view-state
      */
     @Suppress("UNUSED_PARAMETER")
-    private fun onUiStateChange(key: MachineKey<*, *>, uiState: Any) {
+    private fun onUiStateChange(key: MachineKey<*, out CU>, uiState: CU) {
         setUiState(buildUiState(key))
     }
 
     /**
      * Builds common UI state
      */
-    private fun buildUiState(changedKey: MachineKey<*, *>?): PU {
-        val machineMap = container.getMachines()
-        val uiStateProvider = object : UiStateProvider {
-            override fun getMachineKeys(): Set<MachineKey<*, *>> = machineMap.keys
-            override fun <U : Any> get(key: MachineKey<*, U>): U? {
-                return withMachine(key, machineMap) { getUiState() }
-            }
+    private fun buildUiState(changedKey: MachineKey<*, out CU>?): PU {
+        val access = container.machineAccess
+        val uiStateProvider = object : UiStateProvider<CU> {
+            override fun getMachineKeys(): Set<MachineKey<*, out CU>> = access.keys
+            override fun <U : CU> get(key: MachineKey<*, U>): U? = access.getState(key)
         }
         return mapUiState(uiStateProvider, changedKey)
     }
@@ -74,10 +72,10 @@ abstract class MultiMachineState<PG: Any, PU: Any> : CommonMachineState<PG, PU>(
      * A part of [process] template to process UI gesture
      */
     override fun doProcess(gesture: PG) {
-        val machineMap = container.getMachines()
-        val processor = object : GestureProcessor {
-            override fun <G : Any> process(key: MachineKey<G, *>, gesture: G) {
-                withMachine(key, machineMap) { process(gesture) }
+        val access = container.machineAccess
+        val processor = object : GestureProcessor<CG, CU> {
+            override fun <G : CG> process(key: MachineKey<G, out CU>, gesture: G) {
+                access.process(key, gesture)
             }
         }
         mapGesture(gesture, processor)
@@ -88,7 +86,7 @@ abstract class MultiMachineState<PG: Any, PU: Any> : CommonMachineState<PG, PU>(
      * @param parent Parent gesture
      * @param processor Use it to send child gesture to the relevant child machine
      */
-    protected abstract fun mapGesture(parent: PG, processor: GestureProcessor)
+    protected abstract fun mapGesture(parent: PG, processor: GestureProcessor<CG, CU>)
 
     /**
      * Maps combined child UI state to parent
@@ -96,5 +94,5 @@ abstract class MultiMachineState<PG: Any, PU: Any> : CommonMachineState<PG, PU>(
      * @param changedKey Key of machine that changed the UI state. Null if called explicitly via [updateUi]
      * @see updateUi
      */
-    protected abstract fun mapUiState(provider: UiStateProvider, changedKey: MachineKey<*, *>?): PU
+    protected abstract fun mapUiState(provider: UiStateProvider<CU>, changedKey: MachineKey<*, out CU>?): PU
 }

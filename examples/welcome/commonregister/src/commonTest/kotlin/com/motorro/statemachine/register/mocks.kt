@@ -53,6 +53,11 @@ class MachineMock : CommonStateMachine<RegisterGesture, RegisterUiState> {
     val processed = mutableListOf<RegisterGesture>()
     val uiStates = mutableListOf<RegisterUiState>()
     var cleared = false
+    var started = false
+
+    override fun start() {
+        started = true
+    }
 
     override fun isStarted(): Boolean = true
 

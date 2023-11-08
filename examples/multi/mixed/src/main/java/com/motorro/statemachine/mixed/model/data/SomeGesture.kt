@@ -11,11 +11,14 @@
  * limitations under the License.
  */
 
-package com.motorro.commonstatemachine.multi
-
-import com.motorro.commonstatemachine.CommonStateMachine
+package com.motorro.statemachine.mixed.model.data
 
 /**
- * A map of state machines
+ * Some gesture
  */
-internal typealias MachineMap = Map<MachineKey<*, *>, CommonStateMachine<*, *>>
+sealed class SomeGesture {
+    /**
+     * State toggled
+     */
+    data object StateToggled : SomeGesture()
+}

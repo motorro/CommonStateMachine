@@ -43,8 +43,13 @@ class MachineMock<G: Any, U: Any>(uiState: U) : CommonStateMachine<G, U> {
     val processed = mutableListOf<G>()
     val uiStates = mutableListOf(uiState)
     var cleared = false
+    var started = false
 
-    override fun isStarted(): Boolean = true
+    override fun start() {
+        started = true
+    }
+
+    override fun isStarted(): Boolean = started
 
     override fun getUiState(): U = uiStates.last()
 

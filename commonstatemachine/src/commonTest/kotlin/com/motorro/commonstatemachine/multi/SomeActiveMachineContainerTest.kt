@@ -26,7 +26,7 @@ class SomeActiveMachineContainerTest {
 
     private lateinit var intState: StateMock<Int, Int>
     private lateinit var stringState: StateMock<String, String>
-    private lateinit var container: SomeActiveMachineContainer
+    private lateinit var container: SomeActiveMachineContainer<Any, Any>
 
     private val intKey = object : MachineKey<Int, Int>() { }
     private val stringKey = object : MachineKey<String, String>() { }

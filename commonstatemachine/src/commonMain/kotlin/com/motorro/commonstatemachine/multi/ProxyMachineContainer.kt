@@ -13,25 +13,32 @@
 
 package com.motorro.commonstatemachine.multi
 
+import com.motorro.commonstatemachine.CommonStateMachine
 import com.motorro.commonstatemachine.ProxyStateMachine
 import com.motorro.commonstatemachine.lifecycle.MachineLifecycle
 
 /**
- * Holds proxy-machines
+ * A machine container. Holds proxied machines.
+ * The [CG] and [CU] type binding are done via explicit cast to be able
+ * to host heterogeneous machines
+ * [MachineInit] binds the key with correct machine type
+ * @param CG Child gesture system
+ * @param CU Child UI-state system
  */
-interface ProxyMachineContainer {
+interface ProxyMachineContainer<CG: Any, CU: Any> {
     /**
-     * Starts machines
+     * Machine access
      */
-    fun start(onUiChanged: (key: MachineKey<*, *>, uiState: Any) -> Unit)
+    val machineAccess: MachineAccess<CG, CU>
 
     /**
-     * Returns a map of proxy machines
+     * Starts machines in the container
+     * @param onUiChanged UI change handler from hosting state
      */
-    fun getMachines(): MachineMap
+    fun start(onUiChanged: (key: MachineKey<*, out CU>, uiState: CU) -> Unit)
 
     /**
-     * Clears machines
+     * Clears contained machines
      */
     fun clear()
 
@@ -41,7 +48,9 @@ interface ProxyMachineContainer {
          * always [MachineLifecycle.State.ACTIVE]
          * @param init Machine init
          */
-        fun allTogether(init: Collection<MachineInit<*, *>>): ProxyMachineContainer = AllTogetherMachineContainer(init)
+        fun <CG: Any, CU: Any> allTogether(
+            init: Collection<MachineInit<out CG, out CU>>
+        ): ProxyMachineContainer<CG, CU> = AllTogetherMachineContainer(init)
 
         /**
          * Creates a container where machines may be activated and deactivated
@@ -52,45 +61,130 @@ interface ProxyMachineContainer {
          * @param init Machine init
          * @param initiallyActive Machines that are initially active. Defaults to first machine in [init]
          */
-        fun some(
-            init: Collection<MachineInit<*, *>>,
-            initiallyActive: Set<MachineKey<*, *>> = setOf(init.first().key)
-        ): ActiveMachineContainer = SomeActiveMachineContainer(init, initiallyActive)
+        fun <CG: Any, CU: Any> some(
+            init: Collection<MachineInit<out CG, out CU>>,
+            initiallyActive: Set<MachineKey<out CG, out CU>> = setOf(init.first().key)
+        ): ActiveMachineContainer<CG, CU> = SomeActiveMachineContainer(init, initiallyActive)
+    }
+
+    /**
+     * Base machine container that binds gesture/ui type system with machines
+     * The [CG] and [CU] type binding are done via explicit cast to be able
+     * to host heterogeneous machines
+     * [MachineInit] binds the key with correct machine type
+     * @param CG Common gesture type
+     * @param CU Common UI type
+     * @param M Concrete machine type
+     * @param init Initialisation structures to create machines
+     */
+    abstract class Base<CG: Any, CU: Any, M: CommonStateMachine<*, out CU>>(
+        private val init: Collection<MachineInit<*, out CU>>
+    ) : ProxyMachineContainer<CG, CU> {
+        /**
+         * Creates a specific machine for this container
+         * @param init Initialization structure
+         * @param onUiChanged UI change handler from hosting state
+         */
+        abstract fun create(
+            init: MachineInit<*, out CU>,
+            onUiChanged: (key: MachineKey<*, out CU>, uiState: CU) -> Unit
+        ): M
+
+        /**
+         * Machines bound with keys
+         */
+        protected var machines: Map<MachineKey<*, out CU>, M> = emptyMap()
+
+        /**
+         * Machine access
+         */
+        override val machineAccess: MachineAccess<CG, CU> = object : MachineAccess<CG, CU> {
+            /**
+             * Keys collection
+             */
+            override val keys: Set<MachineKey<*, out CU>> get() = machines.keys
+
+            /**
+             * Processes machine gesture.
+             * [MachineInit] and [key] bind types securely.
+             * @param G Concrete gesture, subtype of th [CG]
+             * @param key Machine key
+             * @param gesture Gesture to process
+             */
+            @Suppress("UNCHECKED_CAST")
+            override fun <G : CG> process(key: MachineKey<G, out CU>, gesture: G) {
+                (machines[key] as? CommonStateMachine<G, *>)?.process(gesture)
+            }
+
+            /**
+             * Retrieves UI state.
+             * [MachineInit] and [key] bind types securely.
+             * @param U Concrete UI state bound with the [key], subtype of CU
+             * @param key Machine key
+             */
+            @Suppress("UNCHECKED_CAST")
+            override fun <U : CU> getState(key: MachineKey<*, U>): U? {
+                return machines[key]?.getUiState() as? U
+            }
+        }
+
+        /**
+         * Starts machines in the container
+         * @param onUiChanged UI change handler from hosting state
+         */
+        override fun start(onUiChanged: (key: MachineKey<*, out CU>, uiState: CU) -> Unit) {
+            machines = init.associate { i -> i.key to create(i, onUiChanged) }
+            machines.forEach { (_, machine) -> machine.start() }
+            doStart()
+        }
+
+        /**
+         * A part of [start] template called after initial startup
+         * Machines are created at this point
+         */
+        open fun doStart() = Unit
+
+        /**
+         * Clears contained machines
+         */
+        override fun clear() {
+            machines.forEach { (_, machine) -> machine.clear() }
+        }
     }
 }
 
 /**
  * Container that activates machine
  */
-interface ActiveMachineContainer : ProxyMachineContainer {
+interface ActiveMachineContainer<CG : Any, CU : Any> : ProxyMachineContainer<CG, CU> {
     /**
      * Retrieves currently active machine key
      */
-    fun getActive(): Set<MachineKey<*, *>>
+    fun getActive(): Set<MachineKey<*, out CU>>
 
     /**
      * Sets active machine given the keys
      */
-    fun setActive(keys: Set<MachineKey<*, *>>)
+    fun setActive(keys: Set<MachineKey<*, out CU>>)
 
     /**
      * Sets active machine given the key
      */
-    fun setActive(vararg key: MachineKey<*, *>) = setActive(key.toSet())
+    fun setActive(vararg key: MachineKey<*, out CU>) = setActive(key.toSet())
 
     /**
      * Disposes machines. All machines by [keys] are deactivated disposed and dereferenced.
      * When activating again - a new machine is created using the same init.
      * Use to cleanup memory for example on low memory alert from system
      */
-    fun dispose(keys: Set<MachineKey<*, *>>)
+    fun dispose(keys: Set<MachineKey<*, out CU>>)
 
     /**
      * Disposes machines. All machines by [key] are deactivated disposed and dereferenced.
      * When activating again - a new machine is created using the same init.
      * Use to cleanup memory for example on low memory alert from system
      */
-    fun dispose(vararg key: MachineKey<*, *>) = dispose(key.toSet())
+    fun dispose(vararg key: MachineKey<*, out CU>) = dispose(key.toSet())
 
     /**
      * Disposes all inactive machines
@@ -103,13 +197,9 @@ interface ActiveMachineContainer : ProxyMachineContainer {
  * All machines run in parallel without any lifecycle management
  * @param init Machine init
  */
-internal class AllTogetherMachineContainer(private val init: Collection<MachineInit<*, *>>) : ProxyMachineContainer {
-
-    /**
-     * Proxy machines
-     */
-    private var machines: Map<MachineKey<*, *>, ProxyStateMachine<*, *>> = emptyMap()
-
+internal class AllTogetherMachineContainer<CG: Any, CU: Any>(
+    init: Collection<MachineInit<out CG, out CU>>
+) : ProxyMachineContainer.Base<CG, CU, CommonStateMachine<*, out CU>>(init) {
     /**
      * Machine lifecycle that is always started
      */
@@ -121,34 +211,23 @@ internal class AllTogetherMachineContainer(private val init: Collection<MachineI
     }
 
     /**
-     * Creates a proxy machine given [MachineInit] structure
-     * @param onUiChanged UI-state change handler
+     * Creates a proxy
      */
-    private fun <G: Any, U: Any> MachineInit<G, U>.machine(onUiChanged: (key: MachineKey<*, *>, uiState: Any) -> Unit) = ProxyStateMachine(
+    private fun <U: Any> MachineInit<*, U>.machine(onUiChanged: (MachineKey<*, U>, U) -> Unit) = ProxyStateMachine(
         initialUiState,
         { init(lifecycle) },
         { onUiChanged(key, it) }
     )
 
     /**
-     * Starts machines
+     * Creates a specific machine for this container
+     * @param init Initialization structure
+     * @param onUiChanged UI change handler from hosting state
      */
-    override fun start(onUiChanged: (key: MachineKey<*, *>, uiState: Any) -> Unit) {
-        machines = init.associate { i -> i.key to i.machine(onUiChanged) }
-        machines.forEach { it.value.start() }
-    }
-
-    /**
-     * Returns a map of proxy machines
-     */
-    override fun getMachines(): MachineMap = machines
-
-    /**
-     * Clears machines
-     */
-    override fun clear() {
-        machines.forEach { it.value.clear() }
-    }
+    override fun create(
+        init: MachineInit<*, out CU>,
+        onUiChanged: (key: MachineKey<*, out CU>, uiState: CU) -> Unit
+    ): CommonStateMachine<*, out CU> = init.machine(onUiChanged)
 }
 
 /**
@@ -157,47 +236,39 @@ internal class AllTogetherMachineContainer(private val init: Collection<MachineI
  * @param init Machine init
  * @param initiallyActive Machines that are initially active.
  */
-internal class SomeActiveMachineContainer(
-    private val init: Collection<MachineInit<*, *>>,
-    private val initiallyActive: Set<MachineKey<*, *>>
-) : ActiveMachineContainer {
+internal class SomeActiveMachineContainer<CG: Any, CU: Any>(
+    private val init: Collection<MachineInit<out CG, out CU>>,
+    private val initiallyActive: Set<MachineKey<out CG, out CU>>
+) : ProxyMachineContainer.Base<CG, CU, ActiveStateMachine<*, out CU>>(init), ActiveMachineContainer<CG, CU> {
+    /**
+     * Creates a specific machine for this container
+     * @param init Initialization structure
+     * @param onUiChanged UI change handler from hosting state
+     */
+    override fun create(
+        init: MachineInit<*, out CU>,
+        onUiChanged: (key: MachineKey<*, out CU>, uiState: CU) -> Unit
+    ): ActiveStateMachine<*, out CU> = ActiveStateMachine(init, onUiChanged)
 
     /**
-     * Proxy machines
+     * A part of [start] template called after initial startup
+     * Machines are created at this point
      */
-    private var machines: Map<MachineKey<*, *>, ActiveStateMachine<*, *>> = emptyMap()
-
-    /**
-     * Starts machines
-     */
-    override fun start(onUiChanged: (key: MachineKey<*, *>, uiState: Any) -> Unit) {
-        machines = init.associate { i -> i.key to ActiveStateMachine(i, onUiChanged) }
+    override fun doStart() {
         setActive(initiallyActive)
-    }
-
-    /**
-     * Returns a map of proxy machines
-     */
-    override fun getMachines(): MachineMap = machines
-
-    /**
-     * Clears machines
-     */
-    override fun clear() {
-        machines.forEach { it.value.clear() }
     }
 
     /**
      * Retrieves currently active machine key
      */
-    override fun getActive(): Set<MachineKey<*, *>> {
-        return machines.entries.filter { (_, machine) -> machine.isActive() }.map { it.key }.toSet()
-    }
+    override fun getActive(): Set<MachineKey<*, out CU>> = machines.entries
+        .filter { (_, machine) -> machine.isActive() }
+        .map { it.key }.toSet()
 
     /**
      * Sets active machine given the key
      */
-    override fun setActive(keys: Set<MachineKey<*, *>>) {
+    override fun setActive(keys: Set<MachineKey<*, out CU>>) {
         val active = getActive()
         val toDeactivate = active.minus(keys)
         val toActivate = keys.minus(active)
@@ -215,7 +286,7 @@ internal class SomeActiveMachineContainer(
      * When activating again - a new machine is created using the same init.
      * Use to cleanup memory for example on low memory alert from system
      */
-    override fun dispose(keys: Set<MachineKey<*, *>>) {
+    override fun dispose(keys: Set<MachineKey<*, out CU>>) {
         machines.forEach { (key, machine) ->
             if (keys.contains(key)) {
                 machine.dispose()
