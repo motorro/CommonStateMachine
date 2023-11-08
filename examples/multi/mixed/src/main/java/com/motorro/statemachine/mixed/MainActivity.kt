@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package com.motorro.statemachine.parallel
+package com.motorro.statemachine.mixed
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -23,16 +23,22 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.motorro.statemachine.androidcore.ui.theme.CommonStateMachineTheme
-import com.motorro.statemachine.parallel.model.MainViewModel
-import com.motorro.statemachine.parallel.model.data.ParallelGesture
+import com.motorro.statemachine.mixed.model.MainViewModel
+import com.motorro.statemachine.mixed.model.data.MixedGesture
+import com.motorro.statemachine.mixed.model.data.SomeGesture
+import com.motorro.statemachine.mixed.model.data.SomeUiState
 import com.motorro.statemachine.timer.ui.TimerScreen
 
 class MainActivity : ComponentActivity() {
@@ -55,14 +61,24 @@ class MainActivity : ComponentActivity() {
                                 .fillMaxWidth()
                                 .weight(1f)
                                 .padding(8.dp)
-                                .border(1.dp, Color.Black)
+                                .border(1.dp, Color.Black),
+                            contentAlignment = Alignment.Center
                         ) {
-                            TimerScreen(
-                                modifier = Modifier.padding(padding),
-                                title = "Top",
-                                state = state.top
+                            Button(
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = when(state.some) {
+                                        SomeUiState.Off -> Color.Red
+                                        SomeUiState.On -> Color.Green
+                                    }
+                                ),
+                                onClick = { model.update(MixedGesture.Some(SomeGesture.StateToggled)) }
                             ) {
-                                model.update(ParallelGesture.Top(it))
+                                Text(
+                                    text = when(state.some) {
+                                        SomeUiState.Off -> "Off"
+                                        SomeUiState.On -> "On"
+                                    }
+                                )
                             }
                         }
                         Box(
@@ -75,9 +91,9 @@ class MainActivity : ComponentActivity() {
                             TimerScreen(
                                 modifier = Modifier.padding(padding),
                                 title = "Bottom",
-                                state = state.bottom
+                                state = state.timer
                             ) {
-                                model.update(ParallelGesture.Bottom(it))
+                                model.update(MixedGesture.Timer(it))
                             }
                         }
                     }

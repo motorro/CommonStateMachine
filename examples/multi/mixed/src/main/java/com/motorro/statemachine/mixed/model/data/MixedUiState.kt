@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package com.motorro.statemachine.parallel.model.data
+package com.motorro.statemachine.mixed.model.data
 
 import androidx.compose.runtime.Immutable
 import com.motorro.statemachine.timer.data.TimerUiState
@@ -20,7 +20,7 @@ import com.motorro.statemachine.timer.data.TimerUiState
  * Common state for both active machines
  */
 @Immutable
-data class ParallelUiState(
-    val top: TimerUiState,
-    val bottom: TimerUiState
+data class MixedUiState(
+    val some: SomeUiState,
+    val timer: TimerUiState
 )

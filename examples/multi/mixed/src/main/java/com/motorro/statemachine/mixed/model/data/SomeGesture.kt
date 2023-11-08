@@ -11,16 +11,14 @@
  * limitations under the License.
  */
 
-package com.motorro.statemachine.parallel.model.data
-
-import androidx.compose.runtime.Immutable
-import com.motorro.statemachine.timer.data.TimerUiState
+package com.motorro.statemachine.mixed.model.data
 
 /**
- * Common state for both active machines
+ * Some gesture
  */
-@Immutable
-data class ParallelUiState(
-    val top: TimerUiState,
-    val bottom: TimerUiState
-)
+sealed class SomeGesture {
+    /**
+     * State toggled
+     */
+    data object StateToggled : SomeGesture()
+}

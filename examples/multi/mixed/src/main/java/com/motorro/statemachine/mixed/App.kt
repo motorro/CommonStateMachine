@@ -11,16 +11,18 @@
  * limitations under the License.
  */
 
-package com.motorro.statemachine.parallel.model.data
+package com.motorro.statemachine.mixed
 
-import androidx.compose.runtime.Immutable
-import com.motorro.statemachine.timer.data.TimerUiState
+import android.app.Application
+import timber.log.Timber
 
-/**
- * Common state for both active machines
- */
-@Immutable
-data class ParallelUiState(
-    val top: TimerUiState,
-    val bottom: TimerUiState
-)
+class App : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        setupLogger()
+    }
+
+    private fun setupLogger() {
+        Timber.plant(Timber.DebugTree())
+    }
+}

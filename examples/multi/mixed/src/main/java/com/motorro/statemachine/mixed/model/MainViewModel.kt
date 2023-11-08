@@ -11,23 +11,26 @@
  * limitations under the License.
  */
 
-package com.motorro.statemachine.navbar.model
+package com.motorro.statemachine.mixed.model
 
 import androidx.lifecycle.ViewModel
 import com.motorro.commonstatemachine.coroutines.FlowStateMachine
-import com.motorro.statemachine.navbar.model.data.NavbarGesture
-import com.motorro.statemachine.navbar.model.data.NavbarUiState
-import com.motorro.statemachine.navbar.model.state.NavbarState
+import com.motorro.statemachine.mixed.model.data.MixedGesture
+import com.motorro.statemachine.mixed.model.data.MixedUiState
+import com.motorro.statemachine.mixed.model.data.SomeUiState
+import com.motorro.statemachine.mixed.model.state.MixedState
+import com.motorro.statemachine.timer.data.TimerUiState
 import kotlinx.coroutines.flow.StateFlow
+import kotlin.time.Duration
 
 class MainViewModel : ViewModel() {
-    private val machine = FlowStateMachine(NavbarUiState(emptyList(), null)) {
-        NavbarState()
+    private val machine = FlowStateMachine(MixedUiState(SomeUiState.Off, TimerUiState.Stopped(Duration.ZERO))) {
+        MixedState()
     }
 
-    val uiState: StateFlow<NavbarUiState> get() = machine.uiState
+    val uiState: StateFlow<MixedUiState> get() = machine.uiState
 
-    fun update(gesture: NavbarGesture) = machine.process(gesture)
+    fun update(gesture: MixedGesture) = machine.process(gesture)
 
     override fun onCleared() {
         machine.clear()
