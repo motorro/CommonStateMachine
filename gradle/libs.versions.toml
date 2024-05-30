@@ -1,13 +1,13 @@
 [versions]
-kotlin = "1.9.10"
+kotlin = "2.0.0"
 dokka = "1.9.10"
-coroutines = "1.7.3"
-compose = "1.5.4"
-compose_compiler = "1.5.3"
-lifecycle = "2.6.2"
-hilt = "2.47"
+coroutines = "1.8.1"
+compose = "2024.05.00"
+lifecycle = "2.8.1"
+hilt = "2.51.1"
 
 [plugins]
+compose = { id = "org.jetbrains.kotlin.plugin.compose", version = "2.0.0" }
 android_app = { id = "com.android.application", version = "8.1.1" }
 android_lib = { id = "com.android.library", version = "8.1.1" }
 kotlin_jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
@@ -25,28 +25,29 @@ kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-co
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlin-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version = "0.4.1" }
 
-desugaring = { module = "com.android.tools:desugar_jdk_libs", version = "2.0.3" }
+desugaring = { module = "com.android.tools:desugar_jdk_libs", version = "2.0.4" }
 
-androidx-core = { module = "androidx.core:core-ktx", version = "1.12.0" }
+androidx-core = { module = "androidx.core:core-ktx", version = "1.13.1" }
 androidx-lifecycle-common = { module = "androidx.lifecycle:lifecycle-common", version.ref = "lifecycle" }
 androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 androidx-lifecycle-livedata = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycle" }
 androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
 
-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
-compose-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
-compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
-compose-material = { module = "androidx.compose.material3:material3", version = "1.1.2" }
-compose-test-junit = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" }
-compose-activity = { module = "androidx.activity:activity-compose", version = "1.8.0" }
-compose-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version = "2.6.2" }
-compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
-compose-foundation-layouts = { module = "androidx.compose.foundation:foundation-layout", version.ref = "compose" }
+compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose"}
+compose-ui = { module = "androidx.compose.ui:ui" }
+compose-tooling = { module = "androidx.compose.ui:ui-tooling" }
+compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+compose-material = { module = "androidx.compose.material3:material3" }
+compose-test-junit = { module = "androidx.compose.ui:ui-test-junit4" }
+compose-activity = { module = "androidx.activity:activity-compose", version = "1.9.0" }
+compose-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version = "2.8.1" }
+compose-foundation = { module = "androidx.compose.foundation:foundation" }
+compose-foundation-layouts = { module = "androidx.compose.foundation:foundation-layout" }
 
 hilt_android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt_compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
-hilt_compiler_androidx = { module = "androidx.hilt:hilt-compiler", version = "1.0.0" }
-hilt_compose = { module = "androidx.hilt:hilt-navigation-compose", version = "1.0.0" }
+hilt_compiler_androidx = { module = "androidx.hilt:hilt-compiler", version = "1.2.0" }
+hilt_compose = { module = "androidx.hilt:hilt-navigation-compose", version = "1.2.0" }
 
 timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
 
@@ -63,7 +64,7 @@ test-androidx-ext-junit = { module = "androidx.test.ext:junit", version = "1.1.5
 test-androidx-espresso = { module = "androidx.test.espresso:espresso-core", version = "3.5.1" }
 test-compose-ui = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" }
 test-compose-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose" }
-test-mockk = { module = "io.mockk:mockk", version = "1.13.7" }
+test-mockk = { module = "io.mockk:mockk", version = "1.13.11" }
 test-mockk-common = { module = "io.mockk:mockk-common", version = "1.13.5" }
 test-kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 

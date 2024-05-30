@@ -15,6 +15,7 @@
 plugins {
     alias(libs.plugins.android.app)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.compose)
 }
 
 val versionCode: String by project.extra
@@ -60,14 +61,18 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-    }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+}
+
+composeCompiler {
+    enableStrongSkippingMode.set(true)
+
+    reportsDestination.set(layout.buildDirectory.dir("compose_compiler"))
+    stabilityConfigurationFile.set(rootProject.layout.projectDirectory.file("stability_config.conf"))
 }
 
 dependencies {
@@ -86,6 +91,10 @@ dependencies {
 
     implementation(libs.kotlin.coroutines.core)
     implementation(libs.kotlin.coroutines.android)
+
+    val composeBom = platform(libs.compose.bom)
+    implementation(composeBom)
+    androidTestImplementation(composeBom)
 
     implementation(libs.bundles.compose.core)
     implementation(libs.compose.activity)

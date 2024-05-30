@@ -16,6 +16,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id "org.jetbrains.kotlin.kapt"
     id "com.google.dagger.hilt.android"
+    id "org.jetbrains.kotlin.plugin.compose"
 }
 
 android {
@@ -46,10 +47,14 @@ android {
     buildFeatures {
         compose true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion libs.versions.compose.compiler.get()
-    }
     namespace 'com.motorro.statemachine.login'
+}
+
+composeCompiler {
+    enableStrongSkippingMode = true
+
+    reportsDestination = layout.buildDirectory.dir("compose_compiler")
+    stabilityConfigurationFile = rootProject.layout.projectDirectory.file("stability_config.conf")
 }
 
 dependencies {
@@ -63,6 +68,10 @@ dependencies {
 
     implementation libs.kotlin.coroutines.core
     implementation libs.kotlin.coroutines.android
+
+    def composeBom = platform(libs.compose.bom)
+    implementation composeBom
+    androidTestImplementation composeBom
 
     implementation libs.bundles.compose.core
     implementation libs.compose.activity

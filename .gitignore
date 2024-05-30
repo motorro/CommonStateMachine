@@ -8,8 +8,11 @@
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
+/.idea/copilot
+/.idea/*.xd
 .DS_Store
 /build
+/.kotlin
 build
 /captures
 .externalNativeBuild

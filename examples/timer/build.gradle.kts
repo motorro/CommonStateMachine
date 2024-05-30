@@ -16,6 +16,7 @@
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
     id("com.android.library")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 val versionName: String by project.extra
@@ -29,23 +30,6 @@ version = versionName
 kotlin {
     androidTarget {
         publishLibraryVariants("release", "debug")
-    }
-
-    js(IR) {
-        compilations.all {
-            kotlinOptions.freeCompilerArgs += listOf(
-                "-Xopt-in=kotlin.js.ExperimentalJsExport"
-            )
-        }
-        binaries.library()
-        useCommonJs()
-        browser {
-            testTask(Action {
-                useMocha {
-                    timeout = "10s"
-                }
-            })
-        }
     }
 
     sourceSets {
@@ -71,8 +55,6 @@ kotlin {
             }
         }
         val androidUnitTest by getting
-        val jsMain by getting
-        val jsTest by getting
     }
     targets.all {
         compilations.all {
@@ -83,6 +65,13 @@ kotlin {
             }
         }
     }
+}
+
+composeCompiler {
+    enableStrongSkippingMode.set(true)
+
+    reportsDestination.set(layout.buildDirectory.dir("compose_compiler"))
+    stabilityConfigurationFile.set(rootProject.layout.projectDirectory.file("stability_config.conf"))
 }
 
 android {
@@ -103,12 +92,13 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-    }
 
     dependencies {
         coreLibraryDesugaring(libs.desugaring)
+
+        val composeBom = platform(libs.compose.bom)
+        implementation(composeBom)
+        androidTestImplementation(composeBom)
 
         implementation(libs.bundles.compose.core)
         implementation(libs.compose.activity)
