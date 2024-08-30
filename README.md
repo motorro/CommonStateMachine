@@ -135,6 +135,7 @@ val commonMain by getting {
 - [Navbar](examples/multi/navbar) - several machines running in proxy state, one of them active at a time
 - [Mixed](examples/multi/mixed) - two machines of different gesture/UI system mixed in one state
 - [Lifecycle](examples/lifecycle) - track your Android app lifecycle to pause pending operations when the app is suspended
+- [Contacts](https://github.com/Android-Developer-Basic/Contacts) - more or less real world KMP/CMP application with network and database
 
 ## The basic task - Load-Content-Error
 
