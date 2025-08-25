@@ -105,12 +105,12 @@ tasks.register("runLceUnitTests") {
 }
 
 tasks.register("runWelcomeUnitTests") {
-    dependsOn(":examples::welcome:testDebugUnitTest") // Note: double colon might be a typo, usually ':examples:welcome:testDebugUnitTest'
+    dependsOn(":examples:welcome:welcome:testDebugUnitTest") // Note: double colon might be a typo, usually ':examples:welcome:testDebugUnitTest'
     description = "Run unit tests for welcome app."
 }
 
 tasks.register("runTimerUnitTests") {
-    dependsOn(":examples:timer:allTests")
+    dependsOn(":examples:timer:testDebugUnitTest")
     description = "Run unit tests for welcome app." // Description seems to be a copy-paste from runWelcomeUnitTests
 }
 

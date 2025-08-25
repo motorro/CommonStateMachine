@@ -11,8 +11,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("DSL_SCOPE_VIOLATION", "unused")
-
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
     id("com.android.library")
