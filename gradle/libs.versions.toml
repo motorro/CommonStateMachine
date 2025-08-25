@@ -17,7 +17,7 @@ kotlin_multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref 
 kotlin_dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
-git = { id = "org.ajoberstar.grgit", version = "5.0.0" }
+git = { id = "org.ajoberstar.grgit", version = "5.3.2" }
 nexus_publish = { id = "io.github.gradle-nexus.publish-plugin", version = "2.0.0" }
 
 [libraries]

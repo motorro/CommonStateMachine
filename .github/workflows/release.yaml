@@ -31,7 +31,7 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Release build
-        run: ./gradlew displayVersion publishToSonatype closeAndReleaseSonatypeStagingRepository --max-workers 1 --no-daemon
+        run: ./gradlew displayVersion publishToSonatype closeAndReleaseSonatypeStagingRepository --max-workers 1 --no-daemon --no-configuration-cache
         env:
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
