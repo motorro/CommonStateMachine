@@ -117,9 +117,6 @@ tasks.register("runTimerUnitTests") {
 tasks.register("displayVersion") {
     description = "Display application version name"
     doLast {
-        // Ensure 'versionName' is accessible here.
-        // If it's from ext block in allprojects, it might need to be accessed via project.versionName or project.extra["versionName"]
-        // Or re-fetch from buildVersionName() if that's more direct
         println("Application version: ${buildVersionName()}")
     }
 }
@@ -138,16 +135,16 @@ tasks.register("runUnitTests") {
     description = "Run unit tests for all modules."
 }
 
-val ossrhUsernameProp: String? by extra
-val ossrhPasswordProp: String? by extra
+val ossrhUsername: String? by extra
+val ossrhPassword: String? by extra
 
 nexusPublishing {
     repositories {
         sonatype {
             nexusUrl.set(uri("https://ossrh-staging-api.central.sonatype.com/service/local/"))
             snapshotRepositoryUrl.set(uri("https://central.sonatype.com/repository/maven-snapshots/"))
-            username.set(ossrhUsernameProp)
-            password.set(ossrhPasswordProp)
+            username.set(ossrhUsername)
+            password.set(ossrhPassword)
         }
     }
 }
