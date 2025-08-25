@@ -14,7 +14,6 @@
 @file:Suppress("DSL_SCOPE_VIOLATION")
 
 import org.jetbrains.dokka.gradle.DokkaTask
-import java.net.URI
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -151,16 +150,6 @@ val signingKey: String? by rootProject.extra
 val signingPassword: String? by rootProject.extra
 
 publishing {
-    repositories {
-        maven {
-            name = "sonatype"
-            url = URI("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-            credentials {
-                username = ossrhUsername
-                password = ossrhPassword
-            }
-        }
-    }
     publications.withType<MavenPublication> {
         artifact(javadocJar)
         pom {
