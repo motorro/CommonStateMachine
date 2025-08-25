@@ -26,7 +26,9 @@ abstract class CoroutineState<G: Any, U: Any>: CommonMachineState<G, U>() {
     /**
      * Internal coroutine context bound to state lifecycle
      */
-    protected val stateScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+    protected val stateScope by lazy {
+        CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+    }
 
     /**
      * A part of [clear] template to clean-up state

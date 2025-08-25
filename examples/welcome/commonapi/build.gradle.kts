@@ -11,8 +11,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("DSL_SCOPE_VIOLATION")
-
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
     id("com.android.library")
@@ -32,11 +30,6 @@ kotlin {
     }
 
     js(IR) {
-        compilations.all {
-            kotlinOptions.freeCompilerArgs += listOf(
-                "-Xopt-in=kotlin.js.ExperimentalJsExport"
-            )
-        }
         binaries.library()
         useCommonJs()
         browser {
@@ -65,15 +58,6 @@ kotlin {
         val androidUnitTest by getting
         val jsMain by getting
         val jsTest by getting
-    }
-    targets.all {
-        compilations.all {
-            kotlinOptions {
-                freeCompilerArgs = freeCompilerArgs + listOf(
-                    "-opt-in=kotlin.RequiresOptIn"
-                )
-            }
-        }
     }
 }
 

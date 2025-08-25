@@ -11,7 +11,13 @@
  * limitations under the License.
  */
 
+@file:Suppress("unused")
+@file:OptIn(ExperimentalWasmDsl::class)
+
 import org.jetbrains.dokka.gradle.DokkaTask
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -33,25 +39,29 @@ println("== Project version: $versionName ==")
 
 kotlin {
 
-    jvm {
-        compilations.all {
-            kotlinOptions.jvmTarget = "17"
-        }
-        testRuns["test"].executionTask.configure {
-            useJUnitPlatform()
-        }
-    }
+    jvm()
 
     androidTarget {
+        @OptIn(ExperimentalKotlinGradlePluginApi::class)
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
         publishLibraryVariants("release", "debug")
     }
 
     js(IR) {
-        compilations.all {
-            kotlinOptions.freeCompilerArgs += listOf(
-                "-Xopt-in=kotlin.js.ExperimentalJsExport"
-            )
+        binaries.library()
+        useCommonJs()
+        browser {
+            testTask(Action {
+                useMocha {
+                    timeout = "10s"
+                }
+            })
         }
+    }
+
+    wasmJs {
         binaries.library()
         useCommonJs()
         browser {
@@ -70,6 +80,7 @@ kotlin {
     ).forEach {
         it.binaries.framework {
             baseName = "commonstatemachine"
+            isStatic = true
         }
     }
 
@@ -109,15 +120,6 @@ kotlin {
         val iosSimulatorArm64Test by getting
         val iosTest by creating
     }
-    targets.all {
-        compilations.all {
-            kotlinOptions {
-                freeCompilerArgs = freeCompilerArgs + listOf(
-                    "-opt-in=kotlin.RequiresOptIn"
-                )
-            }
-        }
-    }
 }
 
 android {
@@ -141,7 +143,7 @@ android {
 }
 val dokkaHtml by tasks.getting(DokkaTask::class)
 
-val javadocJar by tasks.creating(Jar::class) {
+val javadocJar by tasks.registering(Jar::class) {
     dependsOn(dokkaHtml)
     group = "documentation"
     archiveClassifier.set("javadoc")

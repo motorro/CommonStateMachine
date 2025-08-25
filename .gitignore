@@ -19,3 +19,4 @@ build
 .cxx
 local.properties
 /kotlin-js-store/yarn.lock
+/kotlin-js-store/wasm/yarn.lock
