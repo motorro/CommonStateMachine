@@ -58,13 +58,6 @@ kotlin {
     }
 }
 
-composeCompiler {
-    enableStrongSkippingMode.set(true)
-
-    reportsDestination.set(layout.buildDirectory.dir("compose_compiler"))
-    stabilityConfigurationFile.set(rootProject.layout.projectDirectory.file("stability_config.conf"))
-}
-
 android {
     compileSdk = androidCompileSdkVersion
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")

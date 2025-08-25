@@ -16,7 +16,6 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 * limitations under the License.
 */
 
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.android.app)
     alias(libs.plugins.kotlin.android)
@@ -73,13 +72,6 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-}
-
-composeCompiler {
-    enableStrongSkippingMode.set(true)
-
-    reportsDestination.set(layout.buildDirectory.dir("compose_compiler"))
-    stabilityConfigurationFile.set(rootProject.layout.projectDirectory.file("stability_config.conf"))
 }
 
 dependencies {

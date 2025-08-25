@@ -1,9 +1,7 @@
-@file:Suppress("unused")
-
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 /*
- * Copyright 2023 Nikolai Kotchetkov.
+ * Copyright 2022 Nikolai Kotchetkov.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,47 +14,37 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
  */
 
 plugins {
-    alias(libs.plugins.android.app)
+    alias(libs.plugins.android.lib)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose)
 }
 
-val versionCode: String by project.extra
-val versionName: String by project.extra
 val androidMinSdkVersion: Int by project.extra
-val androidTargetSdkVersion: Int by project.extra
 val androidCompileSdkVersion: Int by project.extra
 
 android {
-    namespace = "com.motorro.statemachine.multi.navbar"
     compileSdk = androidCompileSdkVersion
 
     defaultConfig {
-        applicationId = "com.motorro.statemachine.multi.navbar"
         minSdk = androidMinSdkVersion
-        targetSdk = androidTargetSdkVersion
-        versionCode = versionCode
-        versionName = versionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                    getDefaultProguardFile("proguard-android-optimize.txt"),
+                    "proguard-rules.pro"
             )
         }
     }
     compileOptions {
-        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+        isCoreLibraryDesugaringEnabled = true
     }
     kotlin {
         compilerOptions {
@@ -66,43 +54,26 @@ android {
     buildFeatures {
         compose = true
     }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
+    namespace = "com.motorro.statemachine.androidcore"
 }
 
 dependencies {
-    implementation(project(":commonstatemachine"))
-    implementation(project(":coroutines"))
-    implementation(project(":examples:commoncore"))
-    implementation(project(":examples:androidcore"))
-    implementation(project(":examples:timer"))
+    api(libs.timber)
 
     coreLibraryDesugaring(libs.desugaring)
 
-    implementation(libs.androidx.core)
-    implementation(libs.androidx.lifecycle.runtime)
-    implementation(libs.androidx.lifecycle.livedata)
-    implementation(libs.androidx.lifecycle.viewmodel)
-
     implementation(libs.kotlin.coroutines.core)
-    implementation(libs.kotlin.coroutines.android)
 
-    val composeBom = platform(libs.compose.bom)
-    implementation(composeBom)
-    androidTestImplementation(composeBom)
+    implementation(platform(libs.compose.bom))
 
     implementation(libs.bundles.compose.core)
     implementation(libs.compose.activity)
-    implementation(libs.compose.viewmodel)
     implementation(libs.compose.foundation)
     implementation(libs.compose.foundation.layouts)
 
     debugImplementation(libs.compose.tooling)
 
     testImplementation(libs.bundles.test.core)
-    testImplementation(libs.test.androidx.arch)
+    testImplementation(libs.test.androidx.core)
     testImplementation(libs.test.kotlin.coroutines)
 }

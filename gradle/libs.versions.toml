@@ -4,6 +4,7 @@ dokka = "2.0.0"
 coroutines = "1.10.2"
 compose = "2025.08.00"
 lifecycle = "2.9.2"
+ksp = "2.2.10-2.0.2"
 hilt = "2.57.1"
 
 [plugins]
@@ -12,9 +13,9 @@ android_app = { id = "com.android.application", version = "8.11.1" }
 android_lib = { id = "com.android.library", version = "8.11.1" }
 kotlin_jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin_android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-kotlin_kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 kotlin_multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin_dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+google-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 git = { id = "org.ajoberstar.grgit", version = "5.3.2" }
 nexus_publish = { id = "io.github.gradle-nexus.publish-plugin", version = "2.0.0" }

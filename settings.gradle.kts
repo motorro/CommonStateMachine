@@ -27,25 +27,27 @@ dependencyResolutionManagement {
     }
     versionCatalogs {
         // declares an additional catalog
-        androidx {
-            from(files('gradle/libs.versions.toml'))
+        create("androidx") { // Changed from "androidx {" to "create("androidx") {"
+            from(files("gradle/libs.versions.toml"))
         }
     }
 }
 rootProject.name = "CommonStateMachine"
-include ':commonstatemachine'
-include ':coroutines'
-include ':tmap'
-include ':examples:commoncore'
-include ':examples:androidcore'
-include ':examples:welcome:welcome'
-include ':examples:welcome:login'
-include ':examples:welcome:commonregister'
-include ':examples:welcome:commonapi'
-include ':examples:welcome:register'
-include ':examples:lce'
-include ':examples:timer'
-include ':examples:multi:mixed'
-include ':examples:multi:navbar'
-include ':examples:multi:parallel'
-include ':examples:lifecycle'
+include(
+        ":commonstatemachine",
+        ":coroutines",
+        ":tmap",
+        ":examples:commoncore",
+        ":examples:androidcore",
+        ":examples:welcome:welcome",
+        ":examples:welcome:login",
+        ":examples:welcome:commonregister",
+        ":examples:welcome:commonapi",
+        ":examples:welcome:register",
+        ":examples:lce",
+        ":examples:timer",
+        ":examples:multi:mixed",
+        ":examples:multi:navbar",
+        ":examples:multi:parallel",
+        ":examples:lifecycle"
+)
