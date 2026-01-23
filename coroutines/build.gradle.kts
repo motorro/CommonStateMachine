@@ -13,15 +13,13 @@
 
 @file:Suppress("unused")
 
-import org.jetbrains.dokka.gradle.DokkaTask
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    id("org.jetbrains.kotlin.multiplatform")
-    id("com.android.library")
-    id("org.jetbrains.dokka")
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.android.kotlin.multiplatform.library)
+    alias(libs.plugins.kotlin.dokka)
     id("maven-publish")
     id("signing")
 }
@@ -37,16 +35,22 @@ version = rootProject.version
 println("== Project version: $versionName ==")
 
 kotlin {
-    jvm()
+    jvmToolchain(17)
 
-    androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    jvm()
+    android {
+        namespace = "com.motorro.commonstatemachine.coroutines"
+        compileSdk = androidCompileSdkVersion
+        minSdk = androidMinSdkVersion
+
+        withHostTest {
+            isIncludeAndroidResources = true
+        }
+
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
         }
-        publishLibraryVariants("release", "debug")
     }
-
     js(IR) {
         binaries.library()
         useCommonJs()
@@ -84,61 +88,22 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                api(project(":commonstatemachine"))
-                api(libs.kotlin.coroutines.core)
-            }
+        commonMain.dependencies {
+            api(project(":commonstatemachine"))
+            api(libs.kotlin.coroutines.core)
         }
-        val commonTest by getting {
-            dependencies {
-                implementation(libs.test.kotlin)
-                implementation(libs.test.kotlin.coroutines)
-            }
-        }
-        val jvmMain by getting
-        val jvmTest by getting
-        val androidMain by getting
-        val androidUnitTest by getting
-        val jsMain by getting
-        val jsTest by getting
-        val iosX64Main by getting
-        val iosArm64Main by getting
-        val iosSimulatorArm64Main by getting
-        val iosMain by creating
-        val iosX64Test by getting
-        val iosArm64Test by getting
-        val iosSimulatorArm64Test by getting
-        val iosTest by creating
-    }
-}
-
-android {
-    compileSdk = androidCompileSdkVersion
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    defaultConfig {
-        minSdk = androidMinSdkVersion
-    }
-    namespace = "com.motorro.commonstatemachine.coroutines"
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    publishing {
-        singleVariant("release") {
-            withSourcesJar()
+        commonTest.dependencies {
+            implementation(libs.test.kotlin)
+            implementation(libs.test.kotlin.coroutines)
         }
     }
 }
-val dokkaHtml by tasks.getting(DokkaTask::class)
 
 val javadocJar by tasks.registering(Jar::class) {
-    dependsOn(dokkaHtml)
+    dependsOn(tasks.dokkaGenerate)
     group = "documentation"
     archiveClassifier.set("javadoc")
-    from(tasks.dokkaHtml)
+    from(tasks.dokkaGenerate)
 }
 
 val libId = "coroutines"

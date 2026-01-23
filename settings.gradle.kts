@@ -34,9 +34,9 @@ dependencyResolutionManagement {
 }
 rootProject.name = "CommonStateMachine"
 include(
+    ":tmap",
         ":commonstatemachine",
         ":coroutines",
-        ":tmap",
         ":examples:commoncore",
         ":examples:androidcore",
         ":examples:welcome:welcome",

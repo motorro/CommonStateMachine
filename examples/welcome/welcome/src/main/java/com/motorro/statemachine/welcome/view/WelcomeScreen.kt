@@ -16,7 +16,7 @@ package com.motorro.statemachine.welcome.view
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.motorro.statemachine.androidcore.compose.Loading
 import com.motorro.statemachine.login.view.LoginScreen
 import com.motorro.statemachine.register.view.RegistrationScreen

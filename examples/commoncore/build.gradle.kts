@@ -10,10 +10,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    id("org.jetbrains.kotlin.multiplatform")
-    id("com.android.library")
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.android.kotlin.multiplatform.library)
 }
 
 val versionName: String by project.extra
@@ -25,8 +26,16 @@ group = "com.motorro"
 version = versionName
 
 kotlin {
-    androidTarget {
-        publishLibraryVariants("release", "debug")
+    jvmToolchain(17)
+
+    android {
+        namespace = "com.motorro.statemachine.commoncore"
+        compileSdk = androidCompileSdkVersion
+        minSdk = androidMinSdkVersion
+
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
     }
 
     js(IR) {
@@ -42,39 +51,15 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                implementation(libs.kotlin.coroutines.core)
-            }
+        commonMain.dependencies {
+            implementation(libs.kotlin.coroutines.core)
         }
-        val commonTest by getting {
-            dependencies {
-                implementation(libs.test.kotlin)
-                implementation(libs.test.kotlin.coroutines)
-            }
+        commonTest.dependencies {
+            implementation(libs.test.kotlin)
+            implementation(libs.test.kotlin.coroutines)
         }
-        val androidMain by getting {
-            dependencies {
-                implementation(libs.timber)
-            }
+        androidMain.dependencies {
+            implementation(libs.timber)
         }
-        val androidUnitTest by getting
-        val jsMain by getting
-        val jsTest by getting
     }
-}
-
-android {
-    compileSdk = androidCompileSdkVersion
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    defaultConfig {
-        minSdk = androidMinSdkVersion
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    namespace = "com.motorro.statemachine.commoncore"
 }

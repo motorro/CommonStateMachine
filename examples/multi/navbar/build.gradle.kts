@@ -17,7 +17,6 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.app)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose)
 }
 
@@ -99,6 +98,8 @@ dependencies {
     implementation(libs.compose.viewmodel)
     implementation(libs.compose.foundation)
     implementation(libs.compose.foundation.layouts)
+    implementation(libs.compose.material)
+    implementation(libs.compose.material.icons)
 
     debugImplementation(libs.compose.tooling)
 

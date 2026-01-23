@@ -12,11 +12,12 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    id("org.jetbrains.kotlin.multiplatform")
-    id("com.android.library")
-    id("org.jetbrains.kotlin.plugin.compose")
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.android.kotlin.multiplatform.library)
+    alias(libs.plugins.compose)
 }
 
 val versionName: String by project.extra
@@ -28,68 +29,46 @@ group = "com.motorro"
 version = versionName
 
 kotlin {
-    androidTarget {
-        publishLibraryVariants("release", "debug")
+    jvmToolchain(17)
+
+    android {
+        namespace = "com.motorro.statemachine.timer"
+        compileSdk = androidCompileSdkVersion
+        minSdk = androidMinSdkVersion
+
+        withHostTest {
+            isIncludeAndroidResources = true
+        }
+
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
     }
 
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                implementation(project(":commonstatemachine"))
-                implementation(project(":coroutines"))
-                implementation(project(":examples:commoncore"))
-                implementation(libs.kotlin.coroutines.core)
-                implementation(libs.kotlin.datetime)
-            }
+        commonMain.dependencies {
+            implementation(project(":commonstatemachine"))
+            implementation(project(":coroutines"))
+            implementation(project(":examples:commoncore"))
+            implementation(libs.kotlin.coroutines.core)
+            implementation(libs.kotlin.datetime)
         }
-        val commonTest by getting {
-            dependencies {
-                implementation(libs.test.kotlin)
-                implementation(libs.test.kotlin.coroutines)
-            }
+        commonTest.dependencies {
+            implementation(libs.test.kotlin)
+            implementation(libs.test.kotlin.coroutines)
         }
-        val androidMain by getting {
-            dependencies {
-                implementation(libs.timber)
-                implementation(libs.kotlin.coroutines.android)
-            }
+        androidMain.dependencies {
+            implementation(libs.timber)
+            implementation(libs.kotlin.coroutines.android)
+
+            implementation(project.dependencies.platform(libs.compose.bom))
+
+            implementation(libs.bundles.compose.core)
+            implementation(libs.compose.activity)
+            implementation(libs.compose.viewmodel)
+            implementation(libs.compose.foundation)
+            implementation(libs.compose.foundation.layouts)
         }
-        val androidUnitTest by getting
     }
 }
 
-android {
-    compileSdk = androidCompileSdkVersion
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    defaultConfig {
-        minSdk = androidMinSdkVersion
-    }
-
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    namespace = "com.motorro.statemachine.timer"
-
-    buildFeatures {
-        compose = true
-    }
-
-    dependencies {
-        coreLibraryDesugaring(libs.desugaring)
-
-        val composeBom = platform(libs.compose.bom)
-        implementation(composeBom)
-        androidTestImplementation(composeBom)
-
-        implementation(libs.bundles.compose.core)
-        implementation(libs.compose.activity)
-        implementation(libs.compose.viewmodel)
-        implementation(libs.compose.foundation)
-        implementation(libs.compose.foundation.layouts)
-
-        debugImplementation(libs.compose.tooling)
-    }
-}

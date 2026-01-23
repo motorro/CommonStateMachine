@@ -15,11 +15,13 @@
 
 import groovy.lang.Closure
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     alias(libs.plugins.android.app) apply false
     alias(libs.plugins.android.lib) apply false
     alias(libs.plugins.kotlin.multiplatform) apply false
+    alias(libs.plugins.android.kotlin.multiplatform.library) apply false
     alias(libs.plugins.kotlin.jvm) apply false
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.google.ksp) apply false
@@ -58,6 +60,15 @@ allprojects {
 
     val projectScm by extra("https://github.com/motorro/CommonStateMachine.git")
     val projectUrl by extra("https://github.com/motorro/CommonStateMachine")
+
+    tasks.withType<KotlinCompile>().configureEach {
+        compilerOptions {
+            freeCompilerArgs.addAll(listOf(
+                "-opt-in=kotlin.RequiresOptIn",
+                "-Xexpect-actual-classes"
+            ))
+        }
+    }
 
     tasks.withType<Test>().configureEach {
         forkEvery = 100

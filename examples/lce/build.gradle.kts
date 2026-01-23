@@ -17,7 +17,6 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id("com.android.application")
-    id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
 }
 
@@ -94,7 +93,9 @@ dependencies {
     implementation(libs.compose.activity)
     implementation(libs.compose.viewmodel)
     implementation(libs.compose.foundation)
-    implementation(libs.compose.foundation.layouts) // In Groovy this was foundation.layouts, ensure this is correct for your setup or adjust if needed
+    implementation(libs.compose.foundation.layouts)
+    debugImplementation(libs.compose.material)
+    debugImplementation(libs.compose.material.icons)
 
     debugImplementation(libs.compose.tooling)
 

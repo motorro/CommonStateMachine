@@ -19,8 +19,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.*
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -29,7 +34,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.motorro.statemachine.androidcore.compose.Loading
 import com.motorro.statemachine.lce.R
-import com.motorro.statemachine.lce.data.LceGesture.*
+import com.motorro.statemachine.lce.data.LceGesture.Back
+import com.motorro.statemachine.lce.data.LceGesture.Exit
+import com.motorro.statemachine.lce.data.LceGesture.ItemClicked
+import com.motorro.statemachine.lce.data.LceGesture.Retry
 import com.motorro.statemachine.lce.data.LceUiState
 import com.motorro.statemachine.lce.model.LceViewModel
 
@@ -50,7 +58,7 @@ fun LceScreen(onExit: @Composable () -> Unit) {
                 navigationIcon = {
                     IconButton(onClick = { model.process(Back) }) {
                         Icon(
-                            imageVector = Icons.Filled.ArrowBack,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back",
                             tint = Color.Black
                         )

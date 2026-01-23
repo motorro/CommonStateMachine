@@ -22,7 +22,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.motorro.statemachine.androidcore.ui.theme.CommonStateMachineTheme
 import com.motorro.statemachine.lifecycle.model.MainViewModel
