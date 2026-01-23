@@ -121,7 +121,7 @@ tasks.register("runWelcomeUnitTests") {
 }
 
 tasks.register("runTimerUnitTests") {
-    dependsOn(":examples:timer:testDebugUnitTest")
+    dependsOn(":examples:timer:testAndroidHostTest")
     description = "Run unit tests for welcome app." // Description seems to be a copy-paste from runWelcomeUnitTests
 }
 
