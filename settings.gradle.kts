@@ -49,5 +49,9 @@ include(
         ":examples:multi:mixed",
         ":examples:multi:navbar",
         ":examples:multi:parallel",
-        ":examples:lifecycle"
+        ":examples:lifecycle",
+        ":examples:di:api",
+        ":examples:di:login",
+        ":examples:di:social",
+        ":examples:di:app"
 )

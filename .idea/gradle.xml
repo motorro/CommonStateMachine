@@ -15,6 +15,11 @@
             <option value="$PROJECT_DIR$/examples" />
             <option value="$PROJECT_DIR$/examples/androidcore" />
             <option value="$PROJECT_DIR$/examples/commoncore" />
+            <option value="$PROJECT_DIR$/examples/di" />
+            <option value="$PROJECT_DIR$/examples/di/api" />
+            <option value="$PROJECT_DIR$/examples/di/app" />
+            <option value="$PROJECT_DIR$/examples/di/login" />
+            <option value="$PROJECT_DIR$/examples/di/social" />
             <option value="$PROJECT_DIR$/examples/lce" />
             <option value="$PROJECT_DIR$/examples/lifecycle" />
             <option value="$PROJECT_DIR$/examples/multi" />
