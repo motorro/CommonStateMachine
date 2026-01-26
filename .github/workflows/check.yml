@@ -33,7 +33,7 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Check with gradle
-      run: ./gradlew runUnitTests :examples:lce:assembleDebug :examples:welcome:welcome:assembleDebug :examples:multi:navbar:assembleDebug :examples:multi:parallel:assembleDebug :examples:lifecycle:assembleDebug --no-daemon --no-configuration-cache
+      run: ./gradlew runUnitTests :examples:lce:assembleDebug :examples:welcome:welcome:assembleDebug :examples:multi:navbar:assembleDebug :examples:multi:parallel:assembleDebug :examples:lifecycle:assembleDebug :examples:di:app:assembleDebug --no-daemon --no-configuration-cache
     - name: Upload problems report
       uses: actions/upload-artifact@v4
       if: failure()

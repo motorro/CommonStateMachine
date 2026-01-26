@@ -37,6 +37,7 @@ include(
     ":tmap",
         ":commonstatemachine",
         ":coroutines",
+        ":commonflow",
         ":examples:commoncore",
         ":examples:androidcore",
         ":examples:welcome:welcome",
