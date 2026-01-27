@@ -20,6 +20,8 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.android.kotlin.multiplatform.library)
+    alias(libs.plugins.compose)
+    alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.kotlin.dokka)
     id("maven-publish")
     id("signing")
@@ -40,7 +42,7 @@ kotlin {
 
     jvm()
     android {
-        namespace = "com.motorro.commonstatemachine.commonflow"
+        namespace = "com.motorro.commonstatemachine.commonflow.compose"
         compileSdk = androidCompileSdkVersion
         minSdk = androidMinSdkVersion
 
@@ -83,7 +85,7 @@ kotlin {
         iosSimulatorArm64()
     ).forEach {
         it.binaries.framework {
-            baseName = "commonflow"
+            baseName = "commonflow-compose"
             isStatic = true
         }
     }
@@ -91,6 +93,9 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(project(":commonstatemachine"))
+            api(project(":commonflow:data"))
+            api(libs.composeMultiplatform.runtime)
+            api(libs.composeMultiplatform.foundation)
         }
     }
 }
@@ -101,9 +106,9 @@ val javadocJar by tasks.registering(Jar::class) {
     from(tasks.dokkaGenerate)
 }
 
-val libId = "commonflow"
-val libName = "commonflow"
-val libDesc = "Common flow for modularized state machines"
+val libId = "commonflow-compose"
+val libName = "commonflow-compose"
+val libDesc = "Common compose flow for modularized state machines"
 val projectUrl: String by project.extra
 val projectScm: String by project.extra
 val ossrhUsername: String? by rootProject.extra

@@ -11,12 +11,18 @@
  * limitations under the License.
  */
 
-package com.motorro.statemachine.di.api
-
-import com.motorro.commonstatemachine.flow.data.CommonFlowHost
-import com.motorro.statemachine.di.api.data.Session
+package com.motorro.commonstatemachine.flow.data
 
 /**
- * Handles authentication
+ * Common flow host.
+ * Used as a common interface between master and child flow using proxy.
+ * @param R - result type
+ * @see com.motorro.commonstatemachine.ProxyMachineState
+ * @see CommonFlowDataApi
  */
-interface AuthFlowHost : CommonFlowHost<Session.Active>
+interface CommonFlowHost<in R> {
+    /**
+     * Completes common flow
+     */
+    fun onComplete(result: R? = null)
+}

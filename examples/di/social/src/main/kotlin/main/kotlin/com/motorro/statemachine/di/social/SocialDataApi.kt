@@ -51,7 +51,7 @@ internal class SocialDataApi @Inject constructor(private val createFactory: Soci
  */
 internal class SocialUiApi @Inject constructor() : AuthUiApi {
     @Composable
-    override fun AuthenticationScreen(
+    override fun Screen(
         state: AuthUiState,
         onGesture: (AuthGesture) -> Unit,
         modifier: Modifier

@@ -3,6 +3,7 @@ androidGradlePlugin = "9.0.0"
 androidxCore = "1.17.0"
 androidxHilt = "1.3.0"
 compose = "2026.01.00"
+composeMultiplatform = "1.10.0"
 composeActivity = "1.12.2"
 composeViewmodel = "2.10.0"
 coroutines = "1.10.2"
@@ -26,6 +27,7 @@ testMockkCommon = "1.13.5"
 
 [plugins]
 compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
 android_app = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android_lib = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 kotlin_jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
@@ -63,6 +65,9 @@ compose-activity = { module = "androidx.activity:activity-compose", version.ref 
 compose-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "composeViewmodel" }
 compose-foundation = { module = "androidx.compose.foundation:foundation" }
 compose-foundation-layouts = { module = "androidx.compose.foundation:foundation-layout" }
+
+composeMultiplatform-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "composeMultiplatform" }
+composeMultiplatform-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "composeMultiplatform" }
 
 hilt_android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt_compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }

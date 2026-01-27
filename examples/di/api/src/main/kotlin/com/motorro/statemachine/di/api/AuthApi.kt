@@ -13,10 +13,9 @@
 
 package com.motorro.statemachine.di.api
 
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.Modifier
-import com.motorro.commonstatemachine.flow.CommonFlowDataApi
+import com.motorro.commonstatemachine.flow.compose.CommonFlowUiApi
+import com.motorro.commonstatemachine.flow.data.CommonFlowDataApi
 import com.motorro.statemachine.di.api.data.Session
 
 /**
@@ -37,17 +36,7 @@ interface AuthDataApi : CommonFlowDataApi<AuthGesture, AuthUiState, Unit, Sessio
 /**
  * Auth flow ui API
  */
-interface AuthUiApi {
-    /**
-     * Provides composition
-     */
-    @Composable
-    fun AuthenticationScreen(
-        state: AuthUiState,
-        onGesture: (AuthGesture) -> Unit,
-        modifier: Modifier = Modifier
-    )
-}
+interface AuthUiApi : CommonFlowUiApi<AuthGesture, AuthUiState>
 
 /**
  * Local Authentication

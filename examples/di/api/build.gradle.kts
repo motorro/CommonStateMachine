@@ -60,7 +60,8 @@ dependencies {
     api(libs.timber)
 
     api(project(":commonstatemachine"))
-    api(project(":commonflow"))
+    api(project(":commonflow:data"))
+    api(project(":commonflow:compose"))
 
     coreLibraryDesugaring(libs.desugaring)
 

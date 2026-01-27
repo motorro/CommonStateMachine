@@ -68,7 +68,7 @@ internal fun MainScreen(state: MainUiState, onGesture: (MainGesture) -> Unit, on
 
             when(state) {
                 // Take injected screen implementation
-                is MainUiState.Auth -> LocalAuth.current.AuthenticationScreen(
+                is MainUiState.Auth -> LocalAuth.current.Screen(
                     state = state.child,
                     onGesture = { onGesture(MainGesture.Auth(it)) },
                     modifier = padding

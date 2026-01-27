@@ -1179,13 +1179,26 @@ this interface by switching host machine to email or complete states in correspo
 #### Common child flow API
 
 For your convenience there are couple of ready-made interfaces to adopt child flow.
-They are: 
+The interfaces are located in a separate libraries:
 
--   [CommonFlowHost](commonstatemachine/src/commonMain/kotlin/com/motorro/commonstatemachine/flow/CommonFlowHost.kt) - 
+```groovy
+dependencies {
+    // If you use it for state machines only
+    implementation "com.motorro.commonstatemachine:commonflow-data:x.x.x" 
+    // If you go with compose
+    implementation "com.motorro.commonstatemachine:commonflow-compose:x.x.x"
+}
+```
+
+The libraries include the following interfaces: 
+
+-   [CommonFlowHost](commonflow/data/src/commonMain/kotlin/com/motorro/commonstatemachine/flow/data/CommonFlowHost.kt) - 
     the interface the proxy should provide to the child flow. Child uses this flow to terminate but could 
     also include any other callbacks
--   [CommonFlowDataApi](commonstatemachine/src/commonMain/kotlin/com/motorro/commonstatemachine/flow/CommonFlowApi.kt) -
+-   [CommonFlowDataApi](commonflow/data/src/commonMain/kotlin/com/motorro/commonstatemachine/flow/data/CommonFlowApi.kt) -
     contains methods to initiate the flow and to adapt it to the hosting flow.
+-   [CommonFlowUiApi](commonflow/compose/src/commonMain/kotlin/com/motorro/commonstatemachine/flow/compose/CommonFlowUiApi.kt) -
+    An interface with the single `Screen` method to inject and put to the composition
 
 Check the [example](examples/di) that shows the use of this flow:
 
