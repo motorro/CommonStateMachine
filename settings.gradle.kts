@@ -39,6 +39,7 @@ include(
         ":coroutines",
         ":commonflow:data",
         ":commonflow:compose",
+        ":commonflow:viewmodel",
         ":examples:commoncore",
         ":examples:androidcore",
         ":examples:welcome:welcome",

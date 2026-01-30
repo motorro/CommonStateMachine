@@ -52,7 +52,7 @@ internal class LoginDataApi @Inject constructor(private val createFactory: Login
  */
 internal class LoginUiApi @Inject constructor() : AuthUiApi {
     @Composable
-    override fun AuthenticationScreen(
+    override fun Screen(
         state: AuthUiState,
         onGesture: (AuthGesture) -> Unit,
         modifier: Modifier

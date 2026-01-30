@@ -26,11 +26,11 @@ import com.motorro.commonstatemachine.CommonMachineState
  * @see com.motorro.commonstatemachine.ProxyMachineState
  * @see CommonFlowHost
  */
-interface CommonFlowDataApi<G: Any, U: Any, I, R, F : CommonFlowHost<R>> {
+interface CommonFlowDataApi<G: Any, U: Any, I, R> {
     /**
      * Creates flow
      */
-    fun init(flowHost: F, input: I? = null): CommonMachineState<G, U>
+    fun init(flowHost: CommonFlowHost<R>, input: I? = null): CommonMachineState<G, U>
 
     /**
      * Returns default UI state

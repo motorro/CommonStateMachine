@@ -100,6 +100,11 @@ tasks.register("runCoroutinesTests") {
     description = "Run unit tests for the coroutines extension layer."
 }
 
+tasks.register("runCommonflowTests") {
+    dependsOn(":commonflow:viewmodel:allTests")
+    description = "Run unit tests for the commonflow library."
+}
+
 tasks.register("runRegisterUnitTests") {
     dependsOn(":examples:welcome:commonregister:allTests")
     description = "Run unit tests for the common register layer."
@@ -116,13 +121,18 @@ tasks.register("runLceUnitTests") {
 }
 
 tasks.register("runWelcomeUnitTests") {
-    dependsOn(":examples:welcome:welcome:testDebugUnitTest") // Note: double colon might be a typo, usually ':examples:welcome:testDebugUnitTest'
+    dependsOn(":examples:welcome:welcome:testDebugUnitTest")
     description = "Run unit tests for welcome app."
 }
 
 tasks.register("runTimerUnitTests") {
     dependsOn(":examples:timer:testAndroidHostTest")
-    description = "Run unit tests for welcome app." // Description seems to be a copy-paste from runWelcomeUnitTests
+    description = "Run unit tests for timer library."
+}
+
+tasks.register("runDiUnitTests") {
+    dependsOn(":examples:di:login:testDebugUnitTest")
+    description = "Run unit tests for di app."
 }
 
 tasks.register("displayVersion") {
@@ -136,11 +146,13 @@ tasks.register("runUnitTests") {
     dependsOn(
             "runStateMachineTests",
             "runCoroutinesTests",
+            "runCommonflowTests",
             "runLoginUnitTests",
             "runRegisterUnitTests",
             "runLceUnitTests",
             "runWelcomeUnitTests",
-            "runTimerUnitTests"
+            "runTimerUnitTests",
+            "runDiUnitTests"
     )
     group = "verification"
     description = "Run unit tests for all modules."

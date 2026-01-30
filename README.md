@@ -1193,12 +1193,13 @@ dependencies {
 The libraries include the following interfaces: 
 
 -   [CommonFlowHost](commonflow/data/src/commonMain/kotlin/com/motorro/commonstatemachine/flow/data/CommonFlowHost.kt) - 
-    the interface the proxy should provide to the child flow. Child uses this flow to terminate but could 
-    also include any other callbacks
--   [CommonFlowDataApi](commonflow/data/src/commonMain/kotlin/com/motorro/commonstatemachine/flow/data/CommonFlowApi.kt) -
+    the interface the proxy should provide to the child flow. Child uses this flow to signal its termination.
+-   [CommonFlowDataApi](commonflow/data/src/commonMain/kotlin/com/motorro/commonstatemachine/flow/data/CommonFlowDataApi.kt) -
     contains methods to initiate the flow and to adapt it to the hosting flow.
 -   [CommonFlowUiApi](commonflow/compose/src/commonMain/kotlin/com/motorro/commonstatemachine/flow/compose/CommonFlowUiApi.kt) -
     An interface with the single `Screen` method to inject and put to the composition
+
+For more details on multiplatform compose viewmodel follow [this link](https://kotlinlang.org/docs/multiplatform/compose-viewmodel.html)
 
 Check the [example](examples/di) that shows the use of this flow:
 

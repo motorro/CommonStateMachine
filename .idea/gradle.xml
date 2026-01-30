@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/commonflow" />
             <option value="$PROJECT_DIR$/commonflow/compose" />
             <option value="$PROJECT_DIR$/commonflow/data" />
+            <option value="$PROJECT_DIR$/commonflow/viewmodel" />
             <option value="$PROJECT_DIR$/commonstatemachine" />
             <option value="$PROJECT_DIR$/coroutines" />
             <option value="$PROJECT_DIR$/examples" />

@@ -31,12 +31,12 @@ interface AuthUiState
 /**
  * Auth flow data API
  */
-interface AuthDataApi : CommonFlowDataApi<AuthGesture, AuthUiState, Unit, Session.Active, AuthFlowHost>
+typealias AuthDataApi = CommonFlowDataApi<AuthGesture, AuthUiState, Unit, Session.Active>
 
 /**
  * Auth flow ui API
  */
-interface AuthUiApi : CommonFlowUiApi<AuthGesture, AuthUiState>
+typealias AuthUiApi = CommonFlowUiApi<AuthGesture, AuthUiState>
 
 /**
  * Local Authentication
