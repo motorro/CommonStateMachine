@@ -40,6 +40,7 @@ Please checkout the Medium article on pattern/library usage.
     + [Gestures and view-states](#gestures-and-view-states)
     + [View implementation](#view-implementation)
     + [Adopting foreign state-flow](#adopting-foreign-state-flow)
+    + [Common flow API](#common-child-flow-api)
 - [Running state-machines in parallel (composition)](#running-state-machines-in-parallel-composition)
   * [MultiMachineState](#multimachinestate)
   * [ProxyMachineContainer](#proxymachinecontainer)
@@ -135,6 +136,7 @@ val commonMain by getting {
 - [Navbar](examples/multi/navbar) - several machines running in proxy state, one of them active at a time
 - [Mixed](examples/multi/mixed) - two machines of different gesture/UI system mixed in one state
 - [Lifecycle](examples/lifecycle) - track your Android app lifecycle to pause pending operations when the app is suspended
+- [DI](examples/di) - late child flow binding, allows for a dynamic module ([read more](#common-child-flow-api))
 - [Contacts](https://github.com/Android-Developer-Basic/Contacts) - more or less real world KMP/CMP application with network and database
 
 ## The basic task - Load-Content-Error
@@ -1173,6 +1175,42 @@ For our example project we provide the `WelcomeFeatureHost` interface to return 
 or to advance to `Complete` state as described in [Common Api](#common-api). The proxy implements 
 this interface by switching host machine to email or complete states in corresponding 
 `backToEmailEntry` and `complete` functions.
+
+#### Common child flow API
+
+For your convenience there are couple of ready-made interfaces to adopt child flow.
+The interfaces are located in a separate libraries:
+
+```groovy
+dependencies {
+    // If you use it for state machines only
+    implementation "com.motorro.commonstatemachine:commonflow-data:x.x.x" 
+    // If you go with compose
+    implementation "com.motorro.commonstatemachine:commonflow-compose:x.x.x"
+}
+```
+
+The libraries include the following interfaces: 
+
+-   [CommonFlowHost](commonflow/data/src/commonMain/kotlin/com/motorro/commonstatemachine/flow/data/CommonFlowHost.kt) - 
+    the interface the proxy should provide to the child flow. Child uses this flow to signal its termination.
+-   [CommonFlowDataApi](commonflow/data/src/commonMain/kotlin/com/motorro/commonstatemachine/flow/data/CommonFlowDataApi.kt) -
+    contains methods to initiate the flow and to adapt it to the hosting flow.
+-   [CommonFlowUiApi](commonflow/compose/src/commonMain/kotlin/com/motorro/commonstatemachine/flow/compose/CommonFlowUiApi.kt) -
+    An interface with the single `Screen` method to inject and put to the composition
+
+For more details on multiplatform compose viewmodel follow [this link](https://kotlinlang.org/docs/multiplatform/compose-viewmodel.html)
+
+Check the [example](examples/di) that shows the use of this flow:
+
+-   The app has two states: `Content` and `Auth`.
+-   `Content` requires authenticated user.
+-   We have a basic [authentication flow](examples/di/api) flow defined.
+-   We have two implementation modules [Login](examples/di/login) and [Social](examples/di/social) that authenticate users
+    using different authentication "providers".
+-   The [app](examples/di/app) module has two build variants to support each.
+-   The concrete sub-flow is provided with the late DI binding using `Hilt`
+
 
 ## Running state-machines in parallel (composition)
 

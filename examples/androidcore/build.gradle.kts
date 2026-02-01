@@ -66,6 +66,7 @@ dependencies {
     implementation(platform(libs.compose.bom))
 
     implementation(libs.bundles.compose.core)
+    implementation(libs.compose.material.icons)
     implementation(libs.compose.activity)
     implementation(libs.compose.foundation)
     implementation(libs.compose.foundation.layouts)

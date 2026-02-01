@@ -37,6 +37,9 @@ include(
     ":tmap",
         ":commonstatemachine",
         ":coroutines",
+        ":commonflow:data",
+        ":commonflow:compose",
+        ":commonflow:viewmodel",
         ":examples:commoncore",
         ":examples:androidcore",
         ":examples:welcome:welcome",
@@ -49,5 +52,13 @@ include(
         ":examples:multi:mixed",
         ":examples:multi:navbar",
         ":examples:multi:parallel",
-        ":examples:lifecycle"
+        ":examples:lifecycle",
+        ":examples:di:api",
+        ":examples:di:login",
+        ":examples:di:social",
+        ":examples:di:app",
+        ":examples:books:domain",
+        ":examples:books:book",
+        ":examples:books:book:demo",
+        ":examples:books:app"
 )
