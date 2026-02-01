@@ -129,7 +129,7 @@ tasks.register("runDiExampleUnitTests") {
 }
 
 tasks.register("runBooksExampleUnitTests") {
-    dependsOn(":examples:books:item:testDebugUnitTest")
+    dependsOn(":examples:books:book:testDebugUnitTest")
     dependsOn(":examples:books:app:testDebugUnitTest")
     description = "Run unit tests for books app."
 }

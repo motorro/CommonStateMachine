@@ -59,5 +59,6 @@ include(
         ":examples:di:app",
         ":examples:books:domain",
         ":examples:books:book",
+        ":examples:books:book:demo",
         ":examples:books:app"
 )

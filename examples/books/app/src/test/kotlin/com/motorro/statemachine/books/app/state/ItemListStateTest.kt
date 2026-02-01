@@ -53,8 +53,8 @@ internal class ItemListStateTest : BaseStateTest() {
         state.start(stateMachine)
 
         coVerify(ordering = Ordering.ORDERED) {
-            stateMachine.setUiState(MainUiState.Loading)
-            stateMachine.setUiState(MainUiState.Master(persistentListOf(BOOK_1)))
+            stateMachine.setUiState(MainUiState.List.Loading)
+            stateMachine.setUiState(MainUiState.List.Master(persistentListOf(BOOK_1)))
         }
     }
 
@@ -65,8 +65,8 @@ internal class ItemListStateTest : BaseStateTest() {
         state.start(stateMachine)
 
         coVerify(ordering = Ordering.ORDERED) {
-            stateMachine.setUiState(MainUiState.Master(persistentListOf(BOOK_2)))
-            stateMachine.setUiState(MainUiState.Master(persistentListOf(BOOK_1)))
+            stateMachine.setUiState(MainUiState.List.Master(persistentListOf(BOOK_2)))
+            stateMachine.setUiState(MainUiState.List.Master(persistentListOf(BOOK_1)))
         }
     }
 
@@ -78,9 +78,9 @@ internal class ItemListStateTest : BaseStateTest() {
         items.emit(persistentListOf(BOOK_2))
 
         coVerify(ordering = Ordering.ORDERED) {
-            stateMachine.setUiState(MainUiState.Loading)
-            stateMachine.setUiState(MainUiState.Master(persistentListOf(BOOK_1)))
-            stateMachine.setUiState(MainUiState.Master(persistentListOf(BOOK_2)))
+            stateMachine.setUiState(MainUiState.List.Loading)
+            stateMachine.setUiState(MainUiState.List.Master(persistentListOf(BOOK_1)))
+            stateMachine.setUiState(MainUiState.List.Master(persistentListOf(BOOK_2)))
         }
     }
 
