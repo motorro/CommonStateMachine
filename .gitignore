@@ -1,16 +1,7 @@
 *.iml
 .gradle
 /local.properties
-/.idea/artifacts
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-/.idea/copilot
-/.idea/*.xd
-/.idea/deviceManager.xml
+/.idea
 .DS_Store
 /build
 /.kotlin
