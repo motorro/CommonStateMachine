@@ -38,7 +38,7 @@ class CommonFlowViewModelTest {
 
     private lateinit var dispatcher: TestDispatcher
     private lateinit var api: TestDataApi
-    private lateinit var model: CommonFlowViewModel<TestGesture, TestUiState, Int, String>
+    private lateinit var model: CommonFlowViewModel<TestGesture, TestUiState, Int, String?>
 
     @BeforeTest
     fun init() {

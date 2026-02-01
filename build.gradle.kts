@@ -105,34 +105,33 @@ tasks.register("runCommonflowTests") {
     description = "Run unit tests for the commonflow library."
 }
 
-tasks.register("runRegisterUnitTests") {
-    dependsOn(":examples:welcome:commonregister:allTests")
-    description = "Run unit tests for the common register layer."
-}
-
-tasks.register("runLoginUnitTests") {
-    dependsOn(":examples:welcome:login:testDebugUnitTest")
-    description = "Run unit tests for the login module."
-}
-
-tasks.register("runLceUnitTests") {
+tasks.register("runLceExampleUnitTests") {
     dependsOn(":examples:lce:testDebugUnitTest")
     description = "Run unit tests for LCE app."
 }
 
-tasks.register("runWelcomeUnitTests") {
+tasks.register("runWelcomeExampleUnitTests") {
+    dependsOn(":examples:welcome:commonregister:allTests")
+    dependsOn(":examples:welcome:login:testDebugUnitTest")
     dependsOn(":examples:welcome:welcome:testDebugUnitTest")
     description = "Run unit tests for welcome app."
 }
 
-tasks.register("runTimerUnitTests") {
+tasks.register("runTimerExampleUnitTests") {
     dependsOn(":examples:timer:testAndroidHostTest")
     description = "Run unit tests for timer library."
 }
 
-tasks.register("runDiUnitTests") {
+tasks.register("runDiExampleUnitTests") {
     dependsOn(":examples:di:login:testDebugUnitTest")
+    dependsOn(":examples:di:social:testDebugUnitTest")
     description = "Run unit tests for di app."
+}
+
+tasks.register("runBooksExampleUnitTests") {
+    dependsOn(":examples:books:item:testDebugUnitTest")
+    dependsOn(":examples:books:app:testDebugUnitTest")
+    description = "Run unit tests for books app."
 }
 
 tasks.register("displayVersion") {
@@ -147,12 +146,11 @@ tasks.register("runUnitTests") {
             "runStateMachineTests",
             "runCoroutinesTests",
             "runCommonflowTests",
-            "runLoginUnitTests",
-            "runRegisterUnitTests",
-            "runLceUnitTests",
-            "runWelcomeUnitTests",
-            "runTimerUnitTests",
-            "runDiUnitTests"
+            "runLceExampleUnitTests",
+            "runWelcomeExampleUnitTests",
+            "runTimerExampleUnitTests",
+            "runDiExampleUnitTests",
+            "runBooksExampleUnitTests"
     )
     group = "verification"
     description = "Run unit tests for all modules."

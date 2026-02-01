@@ -23,7 +23,7 @@ import kotlinx.coroutines.flow.StateFlow
  */
 open class CommonFlowViewModel<G: Any, U: Any, I, R>(
     private val api: CommonFlowDataApi<G, U, I, R>,
-    private val init: I? = null,
+    private val init: I,
     vararg closeables: AutoCloseable
 ) : ViewModel(*closeables) {
 
@@ -46,12 +46,10 @@ open class CommonFlowViewModel<G: Any, U: Any, I, R>(
         object : ProxyMachineState<BaseFlowGesture<G>, BaseFlowUiState<U, R>, G, U>(api.getDefaultUiState()) {
 
             private var terminated = false
-            private val flowHost = object : CommonFlowHost<R> {
-                override fun onComplete(result: R?) {
-                    if (terminated.not()) {
-                        terminated = true
-                        setUiState(BaseFlowUiState.Terminated(result))
-                    }
+            private val flowHost = CommonFlowHost<R> { result ->
+                if (terminated.not()) {
+                    terminated = true
+                    setUiState(BaseFlowUiState.Terminated(result))
                 }
             }
 

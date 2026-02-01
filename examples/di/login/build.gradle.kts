@@ -59,8 +59,6 @@ android {
 }
 
 dependencies {
-    api(libs.timber)
-
     implementation(project(":examples:commoncore"))
     implementation(project(":examples:androidcore"))
     implementation(project(":examples:di:api"))

@@ -28,7 +28,7 @@ enum class TestUiState {
 }
 
 class TestFlowState(
-    private val flowHost: CommonFlowHost<String>,
+    private val flowHost: CommonFlowHost<String?>,
     val init: Int
 ) : CommonMachineState<TestGesture, TestUiState>() {
 
@@ -50,11 +50,11 @@ class TestFlowState(
     }
 }
 
-class TestDataApi : CommonFlowDataApi<TestGesture, TestUiState, Int, String> {
+class TestDataApi : CommonFlowDataApi<TestGesture, TestUiState, Int, String?> {
     lateinit var state: TestFlowState
 
-    override fun init(flowHost: CommonFlowHost<String>, input: Int?): CommonMachineState<TestGesture, TestUiState> {
-        return TestFlowState(flowHost, input ?: 0).also { state = it }
+    override fun init(flowHost: CommonFlowHost<String?>, input: Int): CommonMachineState<TestGesture, TestUiState> {
+        return TestFlowState(flowHost, input).also { state = it }
     }
 
     override fun getDefaultUiState(): TestUiState = TestUiState.LOADING

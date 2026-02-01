@@ -30,7 +30,7 @@ interface CommonFlowDataApi<G: Any, U: Any, I, R> {
     /**
      * Creates flow
      */
-    fun init(flowHost: CommonFlowHost<R>, input: I? = null): CommonMachineState<G, U>
+    fun init(flowHost: CommonFlowHost<R>, input: I): CommonMachineState<G, U>
 
     /**
      * Returns default UI state

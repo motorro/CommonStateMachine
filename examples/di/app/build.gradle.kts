@@ -109,6 +109,7 @@ dependencies {
 
     coreLibraryDesugaring(libs.desugaring)
 
+    implementation(libs.timber)
     implementation(libs.androidx.core)
     implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.androidx.lifecycle.livedata)

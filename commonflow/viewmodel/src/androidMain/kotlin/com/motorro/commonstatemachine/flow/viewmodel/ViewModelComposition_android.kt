@@ -14,6 +14,7 @@
 package com.motorro.commonstatemachine.flow.viewmodel
 
 import android.view.View
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -23,26 +24,32 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider.Factory
 import androidx.lifecycle.viewmodel.CreationExtras
 
 /**
  * Builds state machine composition
  * Ensure that [AppCompatActivity] has correct view model factory
  * @param extrasProducer optional extras producer
+ * @param factoryProducer optional factory producer
  * @param setResult implement to set the activity result or do any result processing
  * @param navigationBackHandler optional back navigation handler. Implement to pass back navigation to the view model
  * @param content content block
  */
-fun <G: Any,  U: Any, R> AppCompatActivity.setStateMachineContent(
-    extrasProducer: (() -> CreationExtras)? = null,
-    setResult: (R?) -> Unit = { },
-    navigationBackHandler: @Composable (Boolean, () -> Unit) -> Unit = { enabled, onBack ->
+inline fun <G: Any,  U: Any, R, reified VM: CommonFlowViewModel<G, U, *, R>> ComponentActivity.setStateMachineContent(
+    noinline extrasProducer: (() -> CreationExtras)? = null,
+    noinline factoryProducer: (() -> Factory)? = null,
+    noinline setResult: (R?) -> Unit = { },
+    noinline navigationBackHandler: @Composable (Boolean, () -> Unit) -> Unit = { enabled, onBack ->
         BackHandler(enabled = enabled) { onBack() }
     },
-    content: @Composable (U, (G) -> Unit) -> Unit
+    noinline content: @Composable (U, (G) -> Unit) -> Unit
 ) {
     setContent {
-        val viewModel: CommonFlowViewModel<G, U, *, R> by viewModels(extrasProducer = extrasProducer)
+        val viewModel: VM by viewModels(
+            extrasProducer = extrasProducer,
+            factoryProducer = factoryProducer
+        )
         CommonFlowComposition(
             viewModel = viewModel,
             navigationBackHandler = navigationBackHandler,
@@ -62,21 +69,26 @@ fun <G: Any,  U: Any, R> AppCompatActivity.setStateMachineContent(
  * Ensure that [Fragment] has correct view model factory
  * @param onFinish called when the flow is finished
  * @param extrasProducer optional extras producer
+ * @param factoryProducer optional factory producer
  * @param navigationBackHandler optional back navigation handler. Implement to pass back navigation to the view model
  * @param content content block
  */
-fun < G: Any,  U: Any, R> Fragment.createStateMachineView(
-    onFinish: (R?) -> Unit,
-    extrasProducer: (() -> CreationExtras)? = null,
-    navigationBackHandler: @Composable (Boolean, () -> Unit) -> Unit = { enabled, onBack ->
+inline fun <G: Any,  U: Any, R, reified VM: CommonFlowViewModel<G, U, *, R>> Fragment.createStateMachineView(
+    noinline onFinish: (R?) -> Unit,
+    noinline extrasProducer: (() -> CreationExtras)? = null,
+    noinline factoryProducer: (() -> Factory)? = null,
+    noinline navigationBackHandler: @Composable (Boolean, () -> Unit) -> Unit = { enabled, onBack ->
         BackHandler(enabled = enabled) { onBack() }
     },
-    content: @Composable (U, (G) -> Unit) -> Unit
+    noinline content: @Composable (U, (G) -> Unit) -> Unit
 ): View = ComposeView(requireContext()).apply {
     setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
 
     setContent {
-        val viewModel: CommonFlowViewModel<G, U, *, R> by viewModels(extrasProducer = extrasProducer)
+        val viewModel: VM by viewModels(
+            extrasProducer = extrasProducer,
+            factoryProducer = factoryProducer
+        )
         CommonFlowComposition(
             viewModel = viewModel,
             navigationBackHandler = navigationBackHandler,

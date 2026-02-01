@@ -20,9 +20,10 @@ package com.motorro.commonstatemachine.flow.data
  * @see com.motorro.commonstatemachine.ProxyMachineState
  * @see CommonFlowDataApi
  */
-interface CommonFlowHost<in R> {
+fun interface CommonFlowHost<in R> {
     /**
      * Completes common flow
+     * @param result Optional result.
      */
-    fun onComplete(result: R? = null)
+    fun onComplete(result: R)
 }

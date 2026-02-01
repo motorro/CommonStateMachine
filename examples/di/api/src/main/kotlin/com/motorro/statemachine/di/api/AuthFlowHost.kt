@@ -19,4 +19,4 @@ import com.motorro.statemachine.di.api.data.Session
 /**
  * Handles authentication
  */
-typealias AuthFlowHost = CommonFlowHost<Session.Active>
+typealias AuthFlowHost = CommonFlowHost<Session.Active?>

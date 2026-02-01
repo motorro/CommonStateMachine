@@ -31,7 +31,7 @@ interface AuthUiState
 /**
  * Auth flow data API
  */
-typealias AuthDataApi = CommonFlowDataApi<AuthGesture, AuthUiState, Unit, Session.Active>
+typealias AuthDataApi = CommonFlowDataApi<AuthGesture, AuthUiState, Unit, Session.Active?>
 
 /**
  * Auth flow ui API

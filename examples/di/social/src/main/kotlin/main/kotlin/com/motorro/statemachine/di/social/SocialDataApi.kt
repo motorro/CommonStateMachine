@@ -33,7 +33,7 @@ internal class SocialDataApi @Inject constructor(private val createFactory: Soci
     /**
      * Initializes flow
      */
-    override fun init(flowHost: AuthFlowHost, input: Unit?) = createFactory(flowHost).form()
+    override fun init(flowHost: AuthFlowHost, input: Unit) = createFactory(flowHost).form()
 
     /**
      * Returns default UI state

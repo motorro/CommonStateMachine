@@ -34,7 +34,7 @@ internal class LoginDataApi @Inject constructor(private val createFactory: Login
     /**
      * Initializes flow
      */
-    override fun init(flowHost: AuthFlowHost, input: Unit?) = createFactory(flowHost).form(LoginDataState())
+    override fun init(flowHost: AuthFlowHost, input: Unit) = createFactory(flowHost).form(LoginDataState())
 
     /**
      * Returns default UI state

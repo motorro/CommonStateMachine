@@ -18,6 +18,10 @@
             <option value="$PROJECT_DIR$/coroutines" />
             <option value="$PROJECT_DIR$/examples" />
             <option value="$PROJECT_DIR$/examples/androidcore" />
+            <option value="$PROJECT_DIR$/examples/books" />
+            <option value="$PROJECT_DIR$/examples/books/app" />
+            <option value="$PROJECT_DIR$/examples/books/book" />
+            <option value="$PROJECT_DIR$/examples/books/domain" />
             <option value="$PROJECT_DIR$/examples/commoncore" />
             <option value="$PROJECT_DIR$/examples/di" />
             <option value="$PROJECT_DIR$/examples/di/api" />

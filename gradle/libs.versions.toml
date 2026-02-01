@@ -12,6 +12,7 @@ lificyclelMultiplatform = "2.9.6"
 composeActivity = "1.12.3"
 composeViewmodel = "2.10.0"
 coroutines = "1.10.2"
+immutable = "0.4.0"
 desugaring = "2.1.5"
 dokka = "2.1.0"
 git = "5.3.3"
@@ -46,7 +47,7 @@ git = { id = "org.ajoberstar.grgit", version.ref = "git" }
 nexus_publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexusPublish" }
 
 [libraries]
-kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
+kotlin-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "immutable" }
 kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlin-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinDatetime" }

@@ -19,7 +19,6 @@ import com.motorro.statemachine.di.api.AuthDataApi
 import com.motorro.statemachine.di.api.AuthFlowHost
 import com.motorro.statemachine.di.api.AuthGesture
 import com.motorro.statemachine.di.api.AuthUiState
-import com.motorro.statemachine.di.api.data.Session
 import com.motorro.statemachine.di.app.data.MainGesture
 import com.motorro.statemachine.di.app.data.MainUiState
 import javax.inject.Inject
@@ -29,22 +28,21 @@ internal class AuthProxy(
     private val api: AuthDataApi
 ) : ProxyMachineState<MainGesture, MainUiState, AuthGesture, AuthUiState>(api.getDefaultUiState()) {
 
-    private val flowHost = object : AuthFlowHost {
-        override fun onComplete(result: Session.Active?) {
-            when(result) {
-                null -> {
-                    Logger.d("Auth cancelled. Terminating...")
-                    setMachineState(context.factory.terminated())
-                }
-                else -> {
-                    Logger.d("Auth completed. Logging in...")
-                    setMachineState(context.factory.loggingIn(result))
-                }
+    private val flowHost = AuthFlowHost { result ->
+        when(result) {
+            null -> {
+                Logger.d("Auth cancelled. Terminating...")
+                setMachineState(context.factory.terminated())
+            }
+
+            else -> {
+                Logger.d("Auth completed. Logging in...")
+                setMachineState(context.factory.loggingIn(result))
             }
         }
     }
 
-    override fun init() = api.init(flowHost)
+    override fun init() = api.init(flowHost, Unit)
 
     override fun mapGesture(parent: MainGesture): AuthGesture? = when (parent) {
         is MainGesture.Auth -> parent.child

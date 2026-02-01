@@ -2,7 +2,9 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="17">
-      <module name="CommonStateMachine.examples.commonflow" target="21" />
+      <module name="CommonStateMachine.examples.commonflow.app" target="21" />
+      <module name="CommonStateMachine.examples.commonflow.domain" target="21" />
+      <module name="CommonStateMachine.examples.commonflow.item" target="21" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -69,7 +69,7 @@ internal interface LoginFactory {
 
         override fun terminated() = object : CommonMachineState<AuthGesture, AuthUiState>() {
             override fun doStart() {
-                context.flowHost.onComplete()
+                context.flowHost.onComplete(null)
             }
         }
     }

@@ -56,5 +56,8 @@ include(
         ":examples:di:api",
         ":examples:di:login",
         ":examples:di:social",
-        ":examples:di:app"
+        ":examples:di:app",
+        ":examples:books:domain",
+        ":examples:books:book",
+        ":examples:books:app"
 )
