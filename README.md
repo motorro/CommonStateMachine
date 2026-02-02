@@ -11,6 +11,7 @@ Please checkout the Medium article on pattern/library usage.
 
 - [Introduction](#introduction)
 - [v3.X Breaking change](#v3x-breaking-change)
+- [v4.X Breaking change](#v4x-breaking-change)
 - [Dependencies](#dependencies)
 - [Examples](#examples)
 - [The basic task - Load-Content-Error](#the-basic-task---load-content-error)
@@ -100,6 +101,18 @@ Key features:
 To be able to get the current UI state of the state-machine and to get rid of inconsistency of the 
 UI state is not yet defined (no updates of UI state happened) the `FlowStateMachine` and 
 the `ProxyMachineState` now require to pass initial UI state in constructors. 
+
+## v4.X Breaking change
+
+The view lifecycle [MachineLifecycle](commonstatemachine/src/commonMain/kotlin/com/motorro/commonstatemachine/lifecycle/MachineLifecycle.kt))
+implementation is moved to the separate multiplatform library:
+
+```groovy
+dependencies {
+    // View lifecycle implementation
+    implementation "com.motorro.commonstatemachine:lifecycle:x.x.x"
+}
+```
 
 ## Dependencies
 

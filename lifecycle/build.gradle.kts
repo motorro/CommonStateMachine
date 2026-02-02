@@ -94,7 +94,6 @@ kotlin {
         commonMain.dependencies {
             api(project(":commonstatemachine"))
             api(libs.kotlin.coroutines.core)
-            api(libs.composeMultiplatform.runtime)
             api(libs.composeMultiplatform.lifecycle)
         }
         commonTest.dependencies {
