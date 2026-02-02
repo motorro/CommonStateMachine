@@ -1,30 +1,30 @@
 package com.motorro.commonstatemachine.lifecycle
 
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.testing.TestLifecycleOwner
 import com.motorro.commonstatemachine.lifecycle.UiMachineLifecycle.Companion.bindLifecycle
+import com.motorro.commonstatemachine.test.PlatformTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
+import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class UiMachineLifecycleTest {
+class UiMachineLifecycleTest : PlatformTest() {
     private lateinit var ls: UiMachineLifecycle
 
-    @Before
+    @BeforeTest
     fun init() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
         ls = UiMachineLifecycle()
     }
 
-    @After
+    @AfterTest
     fun after() {
         Dispatchers.resetMain()
     }
@@ -54,6 +54,7 @@ class UiMachineLifecycleTest {
             assertEquals(MachineLifecycle.State.PAUSED, it)
             updated = true
         }
+
         uls.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
         assertTrue(updated)
 

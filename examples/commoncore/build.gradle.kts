@@ -26,7 +26,13 @@ group = "com.motorro"
 version = versionName
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(21)
+
+    compilerOptions {
+        freeCompilerArgs.addAll(listOf(
+            "-Xexpect-actual-classes"
+        ))
+    }
 
     android {
         namespace = "com.motorro.statemachine.commoncore"
@@ -34,7 +40,7 @@ kotlin {
         minSdk = androidMinSdkVersion
 
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
+            jvmTarget.set(JvmTarget.JVM_21)
         }
     }
 

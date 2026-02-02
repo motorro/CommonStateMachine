@@ -40,6 +40,8 @@ include(
         ":commonflow:data",
         ":commonflow:compose",
         ":commonflow:viewmodel",
+        ":lifecycle",
+        ":platformtest",
         ":examples:commoncore",
         ":examples:androidcore",
         ":examples:welcome:welcome",

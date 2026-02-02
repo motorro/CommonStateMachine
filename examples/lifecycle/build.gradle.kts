@@ -55,12 +55,12 @@ android {
     }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     kotlin {
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
+            jvmTarget.set(JvmTarget.JVM_21)
         }
     }
     buildFeatures {
@@ -76,6 +76,7 @@ android {
 dependencies {
     implementation(project(":commonstatemachine"))
     implementation(project(":coroutines"))
+    implementation(project(":lifecycle"))
     implementation(project(":examples:commoncore"))
     implementation(project(":examples:androidcore"))
     implementation(project(":examples:timer"))

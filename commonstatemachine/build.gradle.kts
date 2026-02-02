@@ -36,7 +36,7 @@ version = rootProject.version
 println("== Project version: $versionName ==")
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(21)
 
     jvm()
     android {
@@ -49,7 +49,7 @@ kotlin {
         }
 
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
+            jvmTarget.set(JvmTarget.JVM_21)
         }
     }
 
@@ -94,15 +94,6 @@ kotlin {
         }
         commonTest.dependencies {
             implementation(libs.test.kotlin)
-        }
-        androidMain.dependencies {
-            api(libs.androidx.lifecycle.common)
-        }
-        val androidHostTest by sourceSets.getting
-        androidHostTest.dependencies {
-            implementation(libs.kotlin.coroutines.core)
-            implementation(libs.test.kotlin.coroutines)
-            implementation(libs.test.androidx.lifecycle)
         }
     }
 }

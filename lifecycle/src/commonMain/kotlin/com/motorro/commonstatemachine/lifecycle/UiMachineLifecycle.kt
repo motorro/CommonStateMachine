@@ -7,9 +7,9 @@ import androidx.lifecycle.LifecycleOwner
 import com.motorro.commonstatemachine.lifecycle.UiMachineLifecycle.Companion.bindLifecycle
 
 /**
- * Watches for Android lifecycle changes.
+ * Watches for UI lifecycle changes.
  * - Put to your `ViewModel` and provide to your states
- * - Call [bindLifecycle] to get Android Lifecycle observer
+ * - Call [bindLifecycle] to get Lifecycle observer
  * - Add your view lifecycle to observer to get lifecycle updates
  */
 class UiMachineLifecycle : MachineLifecycle {

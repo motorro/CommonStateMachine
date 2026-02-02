@@ -100,6 +100,11 @@ tasks.register("runCoroutinesTests") {
     description = "Run unit tests for the coroutines extension layer."
 }
 
+tasks.register("runLifecycleTests") {
+    dependsOn(":lifecycle:allTests")
+    description = "Run unit tests for the lifecycle extension layer."
+}
+
 tasks.register("runCommonflowTests") {
     dependsOn(":commonflow:viewmodel:allTests")
     description = "Run unit tests for the commonflow library."
@@ -145,6 +150,7 @@ tasks.register("runUnitTests") {
     dependsOn(
             "runStateMachineTests",
             "runCoroutinesTests",
+            "runLifecycleTests",
             "runCommonflowTests",
             "runLceExampleUnitTests",
             "runWelcomeExampleUnitTests",
