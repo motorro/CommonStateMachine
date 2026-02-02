@@ -1224,6 +1224,22 @@ Check the [example](examples/di) that shows the use of this flow:
 -   The [app](examples/di/app) module has two build variants to support each.
 -   The concrete sub-flow is provided with the late DI binding using `Hilt`
 
+Additionally, there is another artefact that could make the bridge between conventional view
+and state-machine easier:
+
+```groovy
+dependencies {
+    // Common view-model bridge
+    implementation "com.motorro.commonstatemachine:commonflow-viewmodel:x.x.x" 
+}
+```
+The library contains common `ViewModel` implementation that hosts common-flow and works with
+Activities, Fragments and Compose compositions.
+
+The [CommonFlowComposition](commonflow/viewmodel/src/commonMain/kotlin/com/motorro/commonstatemachine/flow/viewmodel/CommonFlowComposition.kt)
+is a basic scaffold to quickly introduce common-flow state-machine flow to the conventional view or composable.
+
+Take a look at the [books](examples/books) project to see how it works.
 
 ## Running state-machines in parallel (composition)
 
