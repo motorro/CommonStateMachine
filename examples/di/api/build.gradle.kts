@@ -58,8 +58,8 @@ android {
 
 dependencies {
     api(project(":commonstatemachine"))
-    api(project(":commonflow:data"))
-    api(project(":commonflow:compose"))
+    api(project(":commonflow:commonflow-data"))
+    api(project(":commonflow:commonflow-compose"))
 
     coreLibraryDesugaring(libs.desugaring)
 

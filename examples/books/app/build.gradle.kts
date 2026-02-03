@@ -87,9 +87,9 @@ android {
 
 dependencies {
     implementation(project(":commonstatemachine"))
-    implementation(project(":commonflow:data"))
-    implementation(project(":commonflow:compose"))
-    implementation(project(":commonflow:viewmodel"))
+    implementation(project(":commonflow:commonflow-data"))
+    implementation(project(":commonflow:commonflow-compose"))
+    implementation(project(":commonflow:commonflow-viewmodel"))
 
     implementation(project(":examples:commoncore"))
     implementation(project(":examples:androidcore"))

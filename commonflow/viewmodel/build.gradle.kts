@@ -94,7 +94,7 @@ kotlin {
         commonMain.dependencies {
             api(project(":commonstatemachine"))
             api(project(":coroutines"))
-            api(project(":commonflow:compose"))
+            api(project(":commonflow:commonflow-compose"))
             api(libs.composeMultiplatform.viewmodel)
             implementation(libs.composeMultiplatform.lifecycle)
         }

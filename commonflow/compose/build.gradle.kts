@@ -93,7 +93,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(project(":commonstatemachine"))
-            api(project(":commonflow:data"))
+            api(project(":commonflow:commonflow-data"))
             api(libs.composeMultiplatform.runtime)
             api(libs.composeMultiplatform.foundation)
         }

@@ -61,7 +61,7 @@ android {
 dependencies {
     implementation(project(":commonstatemachine"))
     implementation(project(":coroutines"))
-    implementation(project(":commonflow:data"))
+    implementation(project(":commonflow:commonflow-data"))
 
     implementation(project(":examples:commoncore"))
     implementation(project(":examples:androidcore"))

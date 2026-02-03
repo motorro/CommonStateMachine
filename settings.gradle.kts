@@ -33,15 +33,22 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "CommonStateMachine"
+
+// Libraries
+include(":tmap")
+include(":commonstatemachine")
+include(":coroutines")
+include(":lifecycle")
+include(":platformtest")
+include(":commonflow:data")
+project(":commonflow:data").name = "commonflow-data"
+include(":commonflow:compose")
+project(":commonflow:compose").name = "commonflow-compose"
+include(":commonflow:viewmodel")
+project(":commonflow:viewmodel").name = "commonflow-viewmodel"
+
+// Examples
 include(
-    ":tmap",
-        ":commonstatemachine",
-        ":coroutines",
-        ":commonflow:data",
-        ":commonflow:compose",
-        ":commonflow:viewmodel",
-        ":lifecycle",
-        ":platformtest",
         ":examples:commoncore",
         ":examples:androidcore",
         ":examples:welcome:welcome",
@@ -64,3 +71,8 @@ include(
         ":examples:books:book:demo",
         ":examples:books:app"
 )
+
+
+
+
+

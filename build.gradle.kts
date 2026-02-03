@@ -106,7 +106,7 @@ tasks.register("runLifecycleTests") {
 }
 
 tasks.register("runCommonflowTests") {
-    dependsOn(":commonflow:viewmodel:allTests")
+    dependsOn(":commonflow:commonflow-viewmodel:allTests")
     description = "Run unit tests for the commonflow library."
 }
 
