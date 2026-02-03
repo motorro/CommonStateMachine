@@ -118,7 +118,6 @@ publishing {
     publications.withType<MavenPublication> {
         artifact(javadocJar)
         pom {
-            artifactId = libName
             name.set(libName)
             description.set(libDesc)
             url.set(projectUrl)
