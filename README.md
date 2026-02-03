@@ -49,7 +49,6 @@ Please checkout the Medium article on pattern/library usage.
   * [Dispatching gestures](#dispatching-gestures)
   * [MachineLifecle bonus](#machinelifecle-bonus)
 - [Conclusion](#conclusion)
-- [Note on multiplatform](#note-on-multiplatform)
 
 <!-- tocstop -->
 
@@ -1453,12 +1452,3 @@ coroutines to fetch the data, complex RxJava flows or even another MVI library i
 The library was created with multi-platform approach in mind as it contains no concrete platform
 dependencies and coroutines extentions are optional. So you may create your view logic once and 
 adopt it's output to your platform view components.
-
-## Note on multiplatform ##
-Although the logic for registration flow of `Welcome` app is made common,
-I've failed to implement registration view in `androidMain` source due to [some Kotlin-multiplatform
-glitches](https://youtrack.jetbrains.com/issue/KTIJ-22056/KMM-Cant-reference-shared-module-commonMain-source-set-classes-from-another-modules-androidMain-source-set) 
-or misconfiguration. The problem is Android sources fail to import common dependencies from other 
-common modules. If anyone could help me fixing that issue and moving `register` module to 
-`commonregister` I'll much appreciate this. Also if someone would like to try building an iOS sample 
-around `commonregister` module - that will be awesome!
