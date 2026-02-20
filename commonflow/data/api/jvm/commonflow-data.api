@@ -1,0 +1,14 @@
+public abstract interface class com/motorro/commonstatemachine/flow/data/CommonFlowDataApi {
+	public fun getBackGesture ()Ljava/lang/Object;
+	public abstract fun getDefaultUiState ()Ljava/lang/Object;
+	public abstract fun init (Lcom/motorro/commonstatemachine/flow/data/CommonFlowHost;Ljava/lang/Object;)Lcom/motorro/commonstatemachine/CommonMachineState;
+}
+
+public final class com/motorro/commonstatemachine/flow/data/CommonFlowDataApi$DefaultImpls {
+	public static fun getBackGesture (Lcom/motorro/commonstatemachine/flow/data/CommonFlowDataApi;)Ljava/lang/Object;
+}
+
+public abstract interface class com/motorro/commonstatemachine/flow/data/CommonFlowHost {
+	public abstract fun onComplete (Ljava/lang/Object;)V
+}
+

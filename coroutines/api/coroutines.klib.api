@@ -1,0 +1,32 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, wasmJs]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <com.motorro.commonstatemachine:coroutines>
+abstract class <#A: kotlin/Any, #B: kotlin/Any> com.motorro.commonstatemachine.coroutines/CoroutineState : com.motorro.commonstatemachine/CommonMachineState<#A, #B> { // com.motorro.commonstatemachine.coroutines/CoroutineState|null[0]
+    constructor <init>() // com.motorro.commonstatemachine.coroutines/CoroutineState.<init>|<init>(){}[0]
+
+    final val stateScope // com.motorro.commonstatemachine.coroutines/CoroutineState.stateScope|{}stateScope[0]
+        final fun <get-stateScope>(): kotlinx.coroutines/CoroutineScope // com.motorro.commonstatemachine.coroutines/CoroutineState.stateScope.<get-stateScope>|<get-stateScope>(){}[0]
+
+    open fun doClear() // com.motorro.commonstatemachine.coroutines/CoroutineState.doClear|doClear(){}[0]
+}
+
+open class <#A: kotlin/Any, #B: kotlin/Any> com.motorro.commonstatemachine.coroutines/FlowStateMachine : com.motorro.commonstatemachine/CommonStateMachine.Base<#A, #B> { // com.motorro.commonstatemachine.coroutines/FlowStateMachine|null[0]
+    constructor <init>(#B, kotlin/Function0<com.motorro.commonstatemachine/CommonMachineState<#A, #B>>) // com.motorro.commonstatemachine.coroutines/FlowStateMachine.<init>|<init>(1:1;kotlin.Function0<com.motorro.commonstatemachine.CommonMachineState<1:0,1:1>>){}[0]
+
+    final val uiState // com.motorro.commonstatemachine.coroutines/FlowStateMachine.uiState|{}uiState[0]
+        final fun <get-uiState>(): kotlinx.coroutines.flow/StateFlow<#B> // com.motorro.commonstatemachine.coroutines/FlowStateMachine.uiState.<get-uiState>|<get-uiState>(){}[0]
+    final val uiStateSubscriptionCount // com.motorro.commonstatemachine.coroutines/FlowStateMachine.uiStateSubscriptionCount|{}uiStateSubscriptionCount[0]
+        final fun <get-uiStateSubscriptionCount>(): kotlinx.coroutines.flow/StateFlow<kotlin/Int> // com.motorro.commonstatemachine.coroutines/FlowStateMachine.uiStateSubscriptionCount.<get-uiStateSubscriptionCount>|<get-uiStateSubscriptionCount>(){}[0]
+
+    final fun setUiState(#B) // com.motorro.commonstatemachine.coroutines/FlowStateMachine.setUiState|setUiState(1:1){}[0]
+    open fun getUiState(): #B // com.motorro.commonstatemachine.coroutines/FlowStateMachine.getUiState|getUiState(){}[0]
+}
+
+final fun (com.motorro.commonstatemachine.lifecycle/MachineLifecycle).com.motorro.commonstatemachine.coroutines.lifecycle/asFlow(kotlinx.coroutines/CoroutineScope): kotlinx.coroutines.flow/StateFlow<com.motorro.commonstatemachine.lifecycle/MachineLifecycle.State> // com.motorro.commonstatemachine.coroutines.lifecycle/asFlow|asFlow@com.motorro.commonstatemachine.lifecycle.MachineLifecycle(kotlinx.coroutines.CoroutineScope){}[0]
+final fun (kotlinx.coroutines.flow/StateFlow<com.motorro.commonstatemachine.lifecycle/MachineLifecycle.State>).com.motorro.commonstatemachine.coroutines.lifecycle/asCallback(kotlinx.coroutines/CoroutineScope): com.motorro.commonstatemachine.lifecycle/MachineLifecycle // com.motorro.commonstatemachine.coroutines.lifecycle/asCallback|asCallback@kotlinx.coroutines.flow.StateFlow<com.motorro.commonstatemachine.lifecycle.MachineLifecycle.State>(kotlinx.coroutines.CoroutineScope){}[0]
+final fun <#A: kotlin/Any, #B: kotlin/Any> (com.motorro.commonstatemachine.coroutines/FlowStateMachine<#A, #B>).com.motorro.commonstatemachine.coroutines/mapUiSubscriptions(kotlinx.coroutines/CoroutineScope, kotlin/Function0<#A>? = ..., kotlin/Function0<#A>? = ...) // com.motorro.commonstatemachine.coroutines/mapUiSubscriptions|mapUiSubscriptions@com.motorro.commonstatemachine.coroutines.FlowStateMachine<0:0,0:1>(kotlinx.coroutines.CoroutineScope;kotlin.Function0<0:0>?;kotlin.Function0<0:0>?){0§<kotlin.Any>;1§<kotlin.Any>}[0]

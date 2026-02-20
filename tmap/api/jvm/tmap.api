@@ -1,0 +1,25 @@
+public abstract interface class com/motorro/commonstatemachine/tmap/TElement {
+	public abstract fun getKey ()Lcom/motorro/commonstatemachine/tmap/TKey;
+	public abstract fun getValue ()Ljava/lang/Object;
+}
+
+public abstract interface class com/motorro/commonstatemachine/tmap/TKey {
+}
+
+public abstract interface class com/motorro/commonstatemachine/tmap/TMap : java/util/Collection, kotlin/jvm/internal/markers/KMappedMarker {
+	public static final field Companion Lcom/motorro/commonstatemachine/tmap/TMap$Companion;
+	public abstract fun get (Lcom/motorro/commonstatemachine/tmap/TKey;)Ljava/lang/Object;
+	public abstract fun minusKey (Lcom/motorro/commonstatemachine/tmap/TKey;)Lcom/motorro/commonstatemachine/tmap/TMap;
+	public abstract fun plus (Lcom/motorro/commonstatemachine/tmap/TElement;)Lcom/motorro/commonstatemachine/tmap/TMap;
+}
+
+public final class com/motorro/commonstatemachine/tmap/TMap$Companion {
+	public final fun empty ()Lcom/motorro/commonstatemachine/tmap/TMap;
+	public final fun of (Ljava/lang/Iterable;)Lcom/motorro/commonstatemachine/tmap/TMap;
+	public final fun of ([Lcom/motorro/commonstatemachine/tmap/TElement;)Lcom/motorro/commonstatemachine/tmap/TMap;
+}
+
+public final class com/motorro/commonstatemachine/tmap/TMapKt {
+	public static final fun tot (Lcom/motorro/commonstatemachine/tmap/TKey;Ljava/lang/Object;)Lcom/motorro/commonstatemachine/tmap/TElement;
+}
+

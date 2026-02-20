@@ -1,0 +1,8 @@
+public abstract interface class com/motorro/commonstatemachine/flow/compose/CommonFlowUiApi {
+	public abstract fun Screen (Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class com/motorro/commonstatemachine/flow/compose/CommonFlowUiApi$ComposeDefaultImpls {
+	public static final fun Screen$default (Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Lcom/motorro/commonstatemachine/flow/compose/CommonFlowUiApi;Landroidx/compose/runtime/Composer;II)V
+}
+

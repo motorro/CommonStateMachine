@@ -1,0 +1,206 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, wasmJs]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <com.motorro.commonstatemachine:commonstatemachine>
+abstract interface <#A: in kotlin/Any> com.motorro.commonstatemachine/MachineInput { // com.motorro.commonstatemachine/MachineInput|null[0]
+    abstract fun clear() // com.motorro.commonstatemachine/MachineInput.clear|clear(){}[0]
+    abstract fun process(#A) // com.motorro.commonstatemachine/MachineInput.process|process(1:0){}[0]
+}
+
+abstract interface <#A: kotlin/Any, #B: kotlin/Any> com.motorro.commonstatemachine.multi/ActiveMachineContainer : com.motorro.commonstatemachine.multi/ProxyMachineContainer<#A, #B> { // com.motorro.commonstatemachine.multi/ActiveMachineContainer|null[0]
+    abstract fun dispose(kotlin.collections/Set<com.motorro.commonstatemachine.multi/MachineKey<*, out #B>>) // com.motorro.commonstatemachine.multi/ActiveMachineContainer.dispose|dispose(kotlin.collections.Set<com.motorro.commonstatemachine.multi.MachineKey<*,out|1:1>>){}[0]
+    abstract fun disposeInactive() // com.motorro.commonstatemachine.multi/ActiveMachineContainer.disposeInactive|disposeInactive(){}[0]
+    abstract fun getActive(): kotlin.collections/Set<com.motorro.commonstatemachine.multi/MachineKey<*, out #B>> // com.motorro.commonstatemachine.multi/ActiveMachineContainer.getActive|getActive(){}[0]
+    abstract fun setActive(kotlin.collections/Set<com.motorro.commonstatemachine.multi/MachineKey<*, out #B>>) // com.motorro.commonstatemachine.multi/ActiveMachineContainer.setActive|setActive(kotlin.collections.Set<com.motorro.commonstatemachine.multi.MachineKey<*,out|1:1>>){}[0]
+    open fun dispose(kotlin/Array<out com.motorro.commonstatemachine.multi/MachineKey<*, out #B>>...) // com.motorro.commonstatemachine.multi/ActiveMachineContainer.dispose|dispose(kotlin.Array<out|com.motorro.commonstatemachine.multi.MachineKey<*,out|1:1>>...){}[0]
+    open fun setActive(kotlin/Array<out com.motorro.commonstatemachine.multi/MachineKey<*, out #B>>...) // com.motorro.commonstatemachine.multi/ActiveMachineContainer.setActive|setActive(kotlin.Array<out|com.motorro.commonstatemachine.multi.MachineKey<*,out|1:1>>...){}[0]
+}
+
+abstract interface <#A: kotlin/Any, #B: kotlin/Any> com.motorro.commonstatemachine.multi/GestureProcessor { // com.motorro.commonstatemachine.multi/GestureProcessor|null[0]
+    abstract fun <#A1: #A> process(com.motorro.commonstatemachine.multi/MachineKey<#A1, out #B>, #A1) // com.motorro.commonstatemachine.multi/GestureProcessor.process|process(com.motorro.commonstatemachine.multi.MachineKey<0:0,out|1:1>;0:0){0§<1:0>}[0]
+}
+
+abstract interface <#A: kotlin/Any, #B: kotlin/Any> com.motorro.commonstatemachine.multi/MachineAccess { // com.motorro.commonstatemachine.multi/MachineAccess|null[0]
+    abstract val keys // com.motorro.commonstatemachine.multi/MachineAccess.keys|{}keys[0]
+        abstract fun <get-keys>(): kotlin.collections/Set<com.motorro.commonstatemachine.multi/MachineKey<*, out #B>> // com.motorro.commonstatemachine.multi/MachineAccess.keys.<get-keys>|<get-keys>(){}[0]
+
+    abstract fun <#A1: #A> process(com.motorro.commonstatemachine.multi/MachineKey<#A1, out #B>, #A1) // com.motorro.commonstatemachine.multi/MachineAccess.process|process(com.motorro.commonstatemachine.multi.MachineKey<0:0,out|1:1>;0:0){0§<1:0>}[0]
+    abstract fun <#A1: #B> getState(com.motorro.commonstatemachine.multi/MachineKey<*, #A1>): #A1? // com.motorro.commonstatemachine.multi/MachineAccess.getState|getState(com.motorro.commonstatemachine.multi.MachineKey<*,0:0>){0§<1:1>}[0]
+}
+
+abstract interface <#A: kotlin/Any, #B: kotlin/Any> com.motorro.commonstatemachine.multi/MachineInit { // com.motorro.commonstatemachine.multi/MachineInit|null[0]
+    abstract val init // com.motorro.commonstatemachine.multi/MachineInit.init|{}init[0]
+        abstract fun <get-init>(): kotlin/Function1<com.motorro.commonstatemachine.lifecycle/MachineLifecycle, com.motorro.commonstatemachine/CommonMachineState<#A, #B>> // com.motorro.commonstatemachine.multi/MachineInit.init.<get-init>|<get-init>(){}[0]
+    abstract val initialUiState // com.motorro.commonstatemachine.multi/MachineInit.initialUiState|{}initialUiState[0]
+        abstract fun <get-initialUiState>(): #B // com.motorro.commonstatemachine.multi/MachineInit.initialUiState.<get-initialUiState>|<get-initialUiState>(){}[0]
+    abstract val key // com.motorro.commonstatemachine.multi/MachineInit.key|{}key[0]
+        abstract fun <get-key>(): com.motorro.commonstatemachine.multi/MachineKey<#A, #B> // com.motorro.commonstatemachine.multi/MachineInit.key.<get-key>|<get-key>(){}[0]
+}
+
+abstract interface <#A: kotlin/Any, #B: kotlin/Any> com.motorro.commonstatemachine.multi/ProxyMachineContainer { // com.motorro.commonstatemachine.multi/ProxyMachineContainer|null[0]
+    abstract val machineAccess // com.motorro.commonstatemachine.multi/ProxyMachineContainer.machineAccess|{}machineAccess[0]
+        abstract fun <get-machineAccess>(): com.motorro.commonstatemachine.multi/MachineAccess<#A, #B> // com.motorro.commonstatemachine.multi/ProxyMachineContainer.machineAccess.<get-machineAccess>|<get-machineAccess>(){}[0]
+
+    abstract fun clear() // com.motorro.commonstatemachine.multi/ProxyMachineContainer.clear|clear(){}[0]
+    abstract fun start(kotlin/Function2<com.motorro.commonstatemachine.multi/MachineKey<*, out #B>, #B, kotlin/Unit>) // com.motorro.commonstatemachine.multi/ProxyMachineContainer.start|start(kotlin.Function2<com.motorro.commonstatemachine.multi.MachineKey<*,out|1:1>,1:1,kotlin.Unit>){}[0]
+
+    abstract class <#A1: kotlin/Any, #B1: kotlin/Any, #C1: com.motorro.commonstatemachine/CommonStateMachine<*, out #B1>> Base : com.motorro.commonstatemachine.multi/ProxyMachineContainer<#A1, #B1> { // com.motorro.commonstatemachine.multi/ProxyMachineContainer.Base|null[0]
+        constructor <init>(kotlin.collections/Collection<com.motorro.commonstatemachine.multi/MachineInit<*, out #B1>>) // com.motorro.commonstatemachine.multi/ProxyMachineContainer.Base.<init>|<init>(kotlin.collections.Collection<com.motorro.commonstatemachine.multi.MachineInit<*,out|1:1>>){}[0]
+
+        open val machineAccess // com.motorro.commonstatemachine.multi/ProxyMachineContainer.Base.machineAccess|{}machineAccess[0]
+            open fun <get-machineAccess>(): com.motorro.commonstatemachine.multi/MachineAccess<#A1, #B1> // com.motorro.commonstatemachine.multi/ProxyMachineContainer.Base.machineAccess.<get-machineAccess>|<get-machineAccess>(){}[0]
+
+        final var machines // com.motorro.commonstatemachine.multi/ProxyMachineContainer.Base.machines|{}machines[0]
+            final fun <get-machines>(): kotlin.collections/Map<com.motorro.commonstatemachine.multi/MachineKey<*, out #B1>, #C1> // com.motorro.commonstatemachine.multi/ProxyMachineContainer.Base.machines.<get-machines>|<get-machines>(){}[0]
+            final fun <set-machines>(kotlin.collections/Map<com.motorro.commonstatemachine.multi/MachineKey<*, out #B1>, #C1>) // com.motorro.commonstatemachine.multi/ProxyMachineContainer.Base.machines.<set-machines>|<set-machines>(kotlin.collections.Map<com.motorro.commonstatemachine.multi.MachineKey<*,out|1:1>,1:2>){}[0]
+
+        abstract fun create(com.motorro.commonstatemachine.multi/MachineInit<*, out #B1>, kotlin/Function2<com.motorro.commonstatemachine.multi/MachineKey<*, out #B1>, #B1, kotlin/Unit>): #C1 // com.motorro.commonstatemachine.multi/ProxyMachineContainer.Base.create|create(com.motorro.commonstatemachine.multi.MachineInit<*,out|1:1>;kotlin.Function2<com.motorro.commonstatemachine.multi.MachineKey<*,out|1:1>,1:1,kotlin.Unit>){}[0]
+        open fun clear() // com.motorro.commonstatemachine.multi/ProxyMachineContainer.Base.clear|clear(){}[0]
+        open fun doStart() // com.motorro.commonstatemachine.multi/ProxyMachineContainer.Base.doStart|doStart(){}[0]
+        open fun start(kotlin/Function2<com.motorro.commonstatemachine.multi/MachineKey<*, out #B1>, #B1, kotlin/Unit>) // com.motorro.commonstatemachine.multi/ProxyMachineContainer.Base.start|start(kotlin.Function2<com.motorro.commonstatemachine.multi.MachineKey<*,out|1:1>,1:1,kotlin.Unit>){}[0]
+    }
+
+    final object Companion { // com.motorro.commonstatemachine.multi/ProxyMachineContainer.Companion|null[0]
+        final fun <#A2: kotlin/Any, #B2: kotlin/Any> allTogether(kotlin.collections/Collection<com.motorro.commonstatemachine.multi/MachineInit<out #A2, out #B2>>): com.motorro.commonstatemachine.multi/ProxyMachineContainer<#A2, #B2> // com.motorro.commonstatemachine.multi/ProxyMachineContainer.Companion.allTogether|allTogether(kotlin.collections.Collection<com.motorro.commonstatemachine.multi.MachineInit<out|0:0,out|0:1>>){0§<kotlin.Any>;1§<kotlin.Any>}[0]
+        final fun <#A2: kotlin/Any, #B2: kotlin/Any> some(kotlin.collections/Collection<com.motorro.commonstatemachine.multi/MachineInit<out #A2, out #B2>>, kotlin.collections/Set<com.motorro.commonstatemachine.multi/MachineKey<out #A2, out #B2>> = ...): com.motorro.commonstatemachine.multi/ActiveMachineContainer<#A2, #B2> // com.motorro.commonstatemachine.multi/ProxyMachineContainer.Companion.some|some(kotlin.collections.Collection<com.motorro.commonstatemachine.multi.MachineInit<out|0:0,out|0:1>>;kotlin.collections.Set<com.motorro.commonstatemachine.multi.MachineKey<out|0:0,out|0:1>>){0§<kotlin.Any>;1§<kotlin.Any>}[0]
+    }
+}
+
+abstract interface <#A: kotlin/Any, #B: kotlin/Any> com.motorro.commonstatemachine/CommonStateMachine : com.motorro.commonstatemachine/MachineInput<#A>, com.motorro.commonstatemachine/MachineOutput<#A, #B>, com.motorro.commonstatemachine/MachineStatus<#B> { // com.motorro.commonstatemachine/CommonStateMachine|null[0]
+    abstract fun start() // com.motorro.commonstatemachine/CommonStateMachine.start|start(){}[0]
+
+    abstract class <#A1: kotlin/Any, #B1: kotlin/Any> Base : com.motorro.commonstatemachine/CommonStateMachine<#A1, #B1> { // com.motorro.commonstatemachine/CommonStateMachine.Base|null[0]
+        constructor <init>(kotlin/Function0<com.motorro.commonstatemachine/CommonMachineState<#A1, #B1>>) // com.motorro.commonstatemachine/CommonStateMachine.Base.<init>|<init>(kotlin.Function0<com.motorro.commonstatemachine.CommonMachineState<1:0,1:1>>){}[0]
+
+        final var activeState // com.motorro.commonstatemachine/CommonStateMachine.Base.activeState|{}activeState[0]
+            final fun <get-activeState>(): com.motorro.commonstatemachine/CommonMachineState<#A1, #B1> // com.motorro.commonstatemachine/CommonStateMachine.Base.activeState.<get-activeState>|<get-activeState>(){}[0]
+            final fun <set-activeState>(com.motorro.commonstatemachine/CommonMachineState<#A1, #B1>) // com.motorro.commonstatemachine/CommonStateMachine.Base.activeState.<set-activeState>|<set-activeState>(com.motorro.commonstatemachine.CommonMachineState<1:0,1:1>){}[0]
+
+        final fun clear() // com.motorro.commonstatemachine/CommonStateMachine.Base.clear|clear(){}[0]
+        final fun isStarted(): kotlin/Boolean // com.motorro.commonstatemachine/CommonStateMachine.Base.isStarted|isStarted(){}[0]
+        final fun process(#A1) // com.motorro.commonstatemachine/CommonStateMachine.Base.process|process(1:0){}[0]
+        final fun setMachineState(com.motorro.commonstatemachine/CommonMachineState<#A1, #B1>) // com.motorro.commonstatemachine/CommonStateMachine.Base.setMachineState|setMachineState(com.motorro.commonstatemachine.CommonMachineState<1:0,1:1>){}[0]
+        open fun start() // com.motorro.commonstatemachine/CommonStateMachine.Base.start|start(){}[0]
+    }
+}
+
+abstract interface <#A: kotlin/Any, #B: kotlin/Any> com.motorro.commonstatemachine/MachineOutput { // com.motorro.commonstatemachine/MachineOutput|null[0]
+    abstract fun setMachineState(com.motorro.commonstatemachine/CommonMachineState<#A, #B>) // com.motorro.commonstatemachine/MachineOutput.setMachineState|setMachineState(com.motorro.commonstatemachine.CommonMachineState<1:0,1:1>){}[0]
+    abstract fun setUiState(#B) // com.motorro.commonstatemachine/MachineOutput.setUiState|setUiState(1:1){}[0]
+}
+
+abstract interface <#A: kotlin/Any> com.motorro.commonstatemachine.multi/UiStateProvider { // com.motorro.commonstatemachine.multi/UiStateProvider|null[0]
+    abstract fun <#A1: #A> get(com.motorro.commonstatemachine.multi/MachineKey<*, #A1>): #A1? // com.motorro.commonstatemachine.multi/UiStateProvider.get|get(com.motorro.commonstatemachine.multi.MachineKey<*,0:0>){0§<1:0>}[0]
+    abstract fun getMachineKeys(): kotlin.collections/Set<com.motorro.commonstatemachine.multi/MachineKey<*, out #A>> // com.motorro.commonstatemachine.multi/UiStateProvider.getMachineKeys|getMachineKeys(){}[0]
+    open fun <#A1: #A> getValue(com.motorro.commonstatemachine.multi/MachineKey<*, out #A1>): #A1 // com.motorro.commonstatemachine.multi/UiStateProvider.getValue|getValue(com.motorro.commonstatemachine.multi.MachineKey<*,out|0:0>){0§<1:0>}[0]
+}
+
+abstract interface <#A: out kotlin/Any> com.motorro.commonstatemachine/MachineStatus { // com.motorro.commonstatemachine/MachineStatus|null[0]
+    abstract fun getUiState(): #A // com.motorro.commonstatemachine/MachineStatus.getUiState|getUiState(){}[0]
+    abstract fun isStarted(): kotlin/Boolean // com.motorro.commonstatemachine/MachineStatus.isStarted|isStarted(){}[0]
+}
+
+abstract interface com.motorro.commonstatemachine.lifecycle/MachineLifecycle { // com.motorro.commonstatemachine.lifecycle/MachineLifecycle|null[0]
+    abstract fun addObserver(com.motorro.commonstatemachine.lifecycle/MachineLifecycle.Observer) // com.motorro.commonstatemachine.lifecycle/MachineLifecycle.addObserver|addObserver(com.motorro.commonstatemachine.lifecycle.MachineLifecycle.Observer){}[0]
+    abstract fun getState(): com.motorro.commonstatemachine.lifecycle/MachineLifecycle.State // com.motorro.commonstatemachine.lifecycle/MachineLifecycle.getState|getState(){}[0]
+    abstract fun hasObservers(): kotlin/Boolean // com.motorro.commonstatemachine.lifecycle/MachineLifecycle.hasObservers|hasObservers(){}[0]
+    abstract fun removeObserver(com.motorro.commonstatemachine.lifecycle/MachineLifecycle.Observer) // com.motorro.commonstatemachine.lifecycle/MachineLifecycle.removeObserver|removeObserver(com.motorro.commonstatemachine.lifecycle.MachineLifecycle.Observer){}[0]
+
+    final enum class State : kotlin/Enum<com.motorro.commonstatemachine.lifecycle/MachineLifecycle.State> { // com.motorro.commonstatemachine.lifecycle/MachineLifecycle.State|null[0]
+        enum entry ACTIVE // com.motorro.commonstatemachine.lifecycle/MachineLifecycle.State.ACTIVE|null[0]
+        enum entry PAUSED // com.motorro.commonstatemachine.lifecycle/MachineLifecycle.State.PAUSED|null[0]
+
+        final val entries // com.motorro.commonstatemachine.lifecycle/MachineLifecycle.State.entries|#static{}entries[0]
+            final fun <get-entries>(): kotlin.enums/EnumEntries<com.motorro.commonstatemachine.lifecycle/MachineLifecycle.State> // com.motorro.commonstatemachine.lifecycle/MachineLifecycle.State.entries.<get-entries>|<get-entries>#static(){}[0]
+
+        final fun valueOf(kotlin/String): com.motorro.commonstatemachine.lifecycle/MachineLifecycle.State // com.motorro.commonstatemachine.lifecycle/MachineLifecycle.State.valueOf|valueOf#static(kotlin.String){}[0]
+        final fun values(): kotlin/Array<com.motorro.commonstatemachine.lifecycle/MachineLifecycle.State> // com.motorro.commonstatemachine.lifecycle/MachineLifecycle.State.values|values#static(){}[0]
+    }
+
+    abstract fun interface Observer { // com.motorro.commonstatemachine.lifecycle/MachineLifecycle.Observer|null[0]
+        abstract fun onStateChange(com.motorro.commonstatemachine.lifecycle/MachineLifecycle.State) // com.motorro.commonstatemachine.lifecycle/MachineLifecycle.Observer.onStateChange|onStateChange(com.motorro.commonstatemachine.lifecycle.MachineLifecycle.State){}[0]
+    }
+}
+
+abstract interface com.motorro.commonstatemachine.multi/Activated { // com.motorro.commonstatemachine.multi/Activated|null[0]
+    abstract fun activate() // com.motorro.commonstatemachine.multi/Activated.activate|activate(){}[0]
+    abstract fun deactivate() // com.motorro.commonstatemachine.multi/Activated.deactivate|deactivate(){}[0]
+    abstract fun isActive(): kotlin/Boolean // com.motorro.commonstatemachine.multi/Activated.isActive|isActive(){}[0]
+}
+
+abstract class <#A: kotlin/Any, #B: kotlin/Any, #C: kotlin/Any, #D: kotlin/Any> com.motorro.commonstatemachine.multi/MultiMachineState : com.motorro.commonstatemachine/CommonMachineState<#A, #B> { // com.motorro.commonstatemachine.multi/MultiMachineState|null[0]
+    constructor <init>() // com.motorro.commonstatemachine.multi/MultiMachineState.<init>|<init>(){}[0]
+
+    abstract val container // com.motorro.commonstatemachine.multi/MultiMachineState.container|{}container[0]
+        abstract fun <get-container>(): com.motorro.commonstatemachine.multi/ProxyMachineContainer<#C, #D> // com.motorro.commonstatemachine.multi/MultiMachineState.container.<get-container>|<get-container>(){}[0]
+
+    abstract fun mapGesture(#A, com.motorro.commonstatemachine.multi/GestureProcessor<#C, #D>) // com.motorro.commonstatemachine.multi/MultiMachineState.mapGesture|mapGesture(1:0;com.motorro.commonstatemachine.multi.GestureProcessor<1:2,1:3>){}[0]
+    abstract fun mapUiState(com.motorro.commonstatemachine.multi/UiStateProvider<#D>, com.motorro.commonstatemachine.multi/MachineKey<*, out #D>?): #B // com.motorro.commonstatemachine.multi/MultiMachineState.mapUiState|mapUiState(com.motorro.commonstatemachine.multi.UiStateProvider<1:3>;com.motorro.commonstatemachine.multi.MachineKey<*,out|1:3>?){}[0]
+    final fun updateUi() // com.motorro.commonstatemachine.multi/MultiMachineState.updateUi|updateUi(){}[0]
+    open fun doClear() // com.motorro.commonstatemachine.multi/MultiMachineState.doClear|doClear(){}[0]
+    open fun doProcess(#A) // com.motorro.commonstatemachine.multi/MultiMachineState.doProcess|doProcess(1:0){}[0]
+    open fun doStart() // com.motorro.commonstatemachine.multi/MultiMachineState.doStart|doStart(){}[0]
+}
+
+abstract class <#A: kotlin/Any, #B: kotlin/Any, #C: kotlin/Any, #D: kotlin/Any> com.motorro.commonstatemachine/ProxyMachineState : com.motorro.commonstatemachine/CommonMachineState<#A, #B> { // com.motorro.commonstatemachine/ProxyMachineState|null[0]
+    constructor <init>(#D) // com.motorro.commonstatemachine/ProxyMachineState.<init>|<init>(1:3){}[0]
+
+    abstract fun init(): com.motorro.commonstatemachine/CommonMachineState<#C, #D> // com.motorro.commonstatemachine/ProxyMachineState.init|init(){}[0]
+    abstract fun mapGesture(#A): #C? // com.motorro.commonstatemachine/ProxyMachineState.mapGesture|mapGesture(1:0){}[0]
+    abstract fun mapUiState(#D): #B // com.motorro.commonstatemachine/ProxyMachineState.mapUiState|mapUiState(1:3){}[0]
+    final fun getChildMachineState(): com.motorro.commonstatemachine/MachineStatus<#D> // com.motorro.commonstatemachine/ProxyMachineState.getChildMachineState|getChildMachineState(){}[0]
+    open fun doClear() // com.motorro.commonstatemachine/ProxyMachineState.doClear|doClear(){}[0]
+    open fun doProcess(#A) // com.motorro.commonstatemachine/ProxyMachineState.doProcess|doProcess(1:0){}[0]
+    open fun doStart() // com.motorro.commonstatemachine/ProxyMachineState.doStart|doStart(){}[0]
+}
+
+abstract class <#A: kotlin/Any, #B: kotlin/Any> com.motorro.commonstatemachine.multi/MachineKey { // com.motorro.commonstatemachine.multi/MachineKey|null[0]
+    constructor <init>(kotlin/String? = ...) // com.motorro.commonstatemachine.multi/MachineKey.<init>|<init>(kotlin.String?){}[0]
+
+    final val tag // com.motorro.commonstatemachine.multi/MachineKey.tag|{}tag[0]
+        final fun <get-tag>(): kotlin/String? // com.motorro.commonstatemachine.multi/MachineKey.tag.<get-tag>|<get-tag>(){}[0]
+
+    open fun equals(kotlin/Any?): kotlin/Boolean // com.motorro.commonstatemachine.multi/MachineKey.equals|equals(kotlin.Any?){}[0]
+    open fun hashCode(): kotlin/Int // com.motorro.commonstatemachine.multi/MachineKey.hashCode|hashCode(){}[0]
+}
+
+final class com.motorro.commonstatemachine.lifecycle/ActivatedMachineLifecycle : com.motorro.commonstatemachine.lifecycle/MachineLifecycle, com.motorro.commonstatemachine.multi/Activated { // com.motorro.commonstatemachine.lifecycle/ActivatedMachineLifecycle|null[0]
+    constructor <init>(com.motorro.commonstatemachine.lifecycle/MachineLifecycle.State) // com.motorro.commonstatemachine.lifecycle/ActivatedMachineLifecycle.<init>|<init>(com.motorro.commonstatemachine.lifecycle.MachineLifecycle.State){}[0]
+
+    final fun activate() // com.motorro.commonstatemachine.lifecycle/ActivatedMachineLifecycle.activate|activate(){}[0]
+    final fun addObserver(com.motorro.commonstatemachine.lifecycle/MachineLifecycle.Observer) // com.motorro.commonstatemachine.lifecycle/ActivatedMachineLifecycle.addObserver|addObserver(com.motorro.commonstatemachine.lifecycle.MachineLifecycle.Observer){}[0]
+    final fun deactivate() // com.motorro.commonstatemachine.lifecycle/ActivatedMachineLifecycle.deactivate|deactivate(){}[0]
+    final fun getState(): com.motorro.commonstatemachine.lifecycle/MachineLifecycle.State // com.motorro.commonstatemachine.lifecycle/ActivatedMachineLifecycle.getState|getState(){}[0]
+    final fun hasObservers(): kotlin/Boolean // com.motorro.commonstatemachine.lifecycle/ActivatedMachineLifecycle.hasObservers|hasObservers(){}[0]
+    final fun isActive(): kotlin/Boolean // com.motorro.commonstatemachine.lifecycle/ActivatedMachineLifecycle.isActive|isActive(){}[0]
+    final fun removeObserver(com.motorro.commonstatemachine.lifecycle/MachineLifecycle.Observer) // com.motorro.commonstatemachine.lifecycle/ActivatedMachineLifecycle.removeObserver|removeObserver(com.motorro.commonstatemachine.lifecycle.MachineLifecycle.Observer){}[0]
+}
+
+final class com.motorro.commonstatemachine.lifecycle/BaseMachineLifecycle : com.motorro.commonstatemachine.lifecycle/MachineLifecycle { // com.motorro.commonstatemachine.lifecycle/BaseMachineLifecycle|null[0]
+    constructor <init>(com.motorro.commonstatemachine.lifecycle/MachineLifecycle.State) // com.motorro.commonstatemachine.lifecycle/BaseMachineLifecycle.<init>|<init>(com.motorro.commonstatemachine.lifecycle.MachineLifecycle.State){}[0]
+
+    final fun addObserver(com.motorro.commonstatemachine.lifecycle/MachineLifecycle.Observer) // com.motorro.commonstatemachine.lifecycle/BaseMachineLifecycle.addObserver|addObserver(com.motorro.commonstatemachine.lifecycle.MachineLifecycle.Observer){}[0]
+    final fun getState(): com.motorro.commonstatemachine.lifecycle/MachineLifecycle.State // com.motorro.commonstatemachine.lifecycle/BaseMachineLifecycle.getState|getState(){}[0]
+    final fun hasObservers(): kotlin/Boolean // com.motorro.commonstatemachine.lifecycle/BaseMachineLifecycle.hasObservers|hasObservers(){}[0]
+    final fun removeObserver(com.motorro.commonstatemachine.lifecycle/MachineLifecycle.Observer) // com.motorro.commonstatemachine.lifecycle/BaseMachineLifecycle.removeObserver|removeObserver(com.motorro.commonstatemachine.lifecycle.MachineLifecycle.Observer){}[0]
+    final fun setState(com.motorro.commonstatemachine.lifecycle/MachineLifecycle.State) // com.motorro.commonstatemachine.lifecycle/BaseMachineLifecycle.setState|setState(com.motorro.commonstatemachine.lifecycle.MachineLifecycle.State){}[0]
+}
+
+open class <#A: kotlin/Any, #B: kotlin/Any> com.motorro.commonstatemachine/CommonMachineState { // com.motorro.commonstatemachine/CommonMachineState|null[0]
+    constructor <init>() // com.motorro.commonstatemachine/CommonMachineState.<init>|<init>(){}[0]
+
+    final fun clear() // com.motorro.commonstatemachine/CommonMachineState.clear|clear(){}[0]
+    final fun process(#A) // com.motorro.commonstatemachine/CommonMachineState.process|process(1:0){}[0]
+    final fun setMachineState(com.motorro.commonstatemachine/CommonMachineState<#A, #B>) // com.motorro.commonstatemachine/CommonMachineState.setMachineState|setMachineState(com.motorro.commonstatemachine.CommonMachineState<1:0,1:1>){}[0]
+    final fun setUiState(#B) // com.motorro.commonstatemachine/CommonMachineState.setUiState|setUiState(1:1){}[0]
+    final fun start(com.motorro.commonstatemachine/MachineOutput<#A, #B>) // com.motorro.commonstatemachine/CommonMachineState.start|start(com.motorro.commonstatemachine.MachineOutput<1:0,1:1>){}[0]
+    open fun doClear() // com.motorro.commonstatemachine/CommonMachineState.doClear|doClear(){}[0]
+    open fun doProcess(#A) // com.motorro.commonstatemachine/CommonMachineState.doProcess|doProcess(1:0){}[0]
+    open fun doStart() // com.motorro.commonstatemachine/CommonMachineState.doStart|doStart(){}[0]
+}
+
+final fun (com.motorro.commonstatemachine.lifecycle/MachineLifecycle).com.motorro.commonstatemachine.lifecycle/combinePaused(com.motorro.commonstatemachine.lifecycle/MachineLifecycle): com.motorro.commonstatemachine.lifecycle/MachineLifecycle // com.motorro.commonstatemachine.lifecycle/combinePaused|combinePaused@com.motorro.commonstatemachine.lifecycle.MachineLifecycle(com.motorro.commonstatemachine.lifecycle.MachineLifecycle){}[0]

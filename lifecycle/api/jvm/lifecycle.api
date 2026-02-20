@@ -1,0 +1,18 @@
+public final class com/motorro/commonstatemachine/lifecycle/UiMachineLifecycle : com/motorro/commonstatemachine/lifecycle/MachineLifecycle {
+	public static final field $stable I
+	public static final field Companion Lcom/motorro/commonstatemachine/lifecycle/UiMachineLifecycle$Companion;
+	public fun <init> ()V
+	public fun addObserver (Lcom/motorro/commonstatemachine/lifecycle/MachineLifecycle$Observer;)V
+	public fun getState ()Lcom/motorro/commonstatemachine/lifecycle/MachineLifecycle$State;
+	public fun hasObservers ()Z
+	public fun removeObserver (Lcom/motorro/commonstatemachine/lifecycle/MachineLifecycle$Observer;)V
+}
+
+public final class com/motorro/commonstatemachine/lifecycle/UiMachineLifecycle$Companion {
+	public final fun bindLifecycle (Lcom/motorro/commonstatemachine/lifecycle/UiMachineLifecycle;Landroidx/lifecycle/Lifecycle;)Lcom/motorro/commonstatemachine/lifecycle/UiMachineLifecycle$UiObserver;
+}
+
+public abstract interface class com/motorro/commonstatemachine/lifecycle/UiMachineLifecycle$UiObserver : androidx/lifecycle/LifecycleObserver {
+	public abstract fun dispose ()V
+}
+

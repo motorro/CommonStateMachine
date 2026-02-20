@@ -1,0 +1,187 @@
+public class com/motorro/commonstatemachine/CommonMachineState {
+	public fun <init> ()V
+	public final fun clear ()V
+	protected fun doClear ()V
+	protected fun doProcess (Ljava/lang/Object;)V
+	protected fun doStart ()V
+	public final fun process (Ljava/lang/Object;)V
+	protected final fun setMachineState (Lcom/motorro/commonstatemachine/CommonMachineState;)V
+	protected final fun setUiState (Ljava/lang/Object;)V
+	public final fun start (Lcom/motorro/commonstatemachine/MachineOutput;)V
+}
+
+public abstract interface class com/motorro/commonstatemachine/CommonStateMachine : com/motorro/commonstatemachine/MachineInput, com/motorro/commonstatemachine/MachineOutput, com/motorro/commonstatemachine/MachineStatus {
+	public abstract fun start ()V
+}
+
+public abstract class com/motorro/commonstatemachine/CommonStateMachine$Base : com/motorro/commonstatemachine/CommonStateMachine {
+	protected field activeState Lcom/motorro/commonstatemachine/CommonMachineState;
+	public fun <init> (Lkotlin/jvm/functions/Function0;)V
+	public final fun clear ()V
+	protected final fun getActiveState ()Lcom/motorro/commonstatemachine/CommonMachineState;
+	public final fun isStarted ()Z
+	public final fun process (Ljava/lang/Object;)V
+	protected final fun setActiveState (Lcom/motorro/commonstatemachine/CommonMachineState;)V
+	public final fun setMachineState (Lcom/motorro/commonstatemachine/CommonMachineState;)V
+	public fun start ()V
+}
+
+public abstract interface class com/motorro/commonstatemachine/MachineInput {
+	public abstract fun clear ()V
+	public abstract fun process (Ljava/lang/Object;)V
+}
+
+public abstract interface class com/motorro/commonstatemachine/MachineOutput {
+	public abstract fun setMachineState (Lcom/motorro/commonstatemachine/CommonMachineState;)V
+	public abstract fun setUiState (Ljava/lang/Object;)V
+}
+
+public abstract interface class com/motorro/commonstatemachine/MachineStatus {
+	public abstract fun getUiState ()Ljava/lang/Object;
+	public abstract fun isStarted ()Z
+}
+
+public abstract class com/motorro/commonstatemachine/ProxyMachineState : com/motorro/commonstatemachine/CommonMachineState {
+	public fun <init> (Ljava/lang/Object;)V
+	protected fun doClear ()V
+	protected fun doProcess (Ljava/lang/Object;)V
+	protected fun doStart ()V
+	protected final fun getChildMachineState ()Lcom/motorro/commonstatemachine/MachineStatus;
+	protected abstract fun init ()Lcom/motorro/commonstatemachine/CommonMachineState;
+	protected abstract fun mapGesture (Ljava/lang/Object;)Ljava/lang/Object;
+	protected abstract fun mapUiState (Ljava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class com/motorro/commonstatemachine/lifecycle/ActivatedMachineLifecycle : com/motorro/commonstatemachine/lifecycle/MachineLifecycle, com/motorro/commonstatemachine/multi/Activated {
+	public fun <init> (Lcom/motorro/commonstatemachine/lifecycle/MachineLifecycle$State;)V
+	public fun activate ()V
+	public fun addObserver (Lcom/motorro/commonstatemachine/lifecycle/MachineLifecycle$Observer;)V
+	public fun deactivate ()V
+	public fun getState ()Lcom/motorro/commonstatemachine/lifecycle/MachineLifecycle$State;
+	public fun hasObservers ()Z
+	public fun isActive ()Z
+	public fun removeObserver (Lcom/motorro/commonstatemachine/lifecycle/MachineLifecycle$Observer;)V
+}
+
+public final class com/motorro/commonstatemachine/lifecycle/BaseMachineLifecycle : com/motorro/commonstatemachine/lifecycle/MachineLifecycle {
+	public fun <init> (Lcom/motorro/commonstatemachine/lifecycle/MachineLifecycle$State;)V
+	public fun addObserver (Lcom/motorro/commonstatemachine/lifecycle/MachineLifecycle$Observer;)V
+	public fun getState ()Lcom/motorro/commonstatemachine/lifecycle/MachineLifecycle$State;
+	public fun hasObservers ()Z
+	public fun removeObserver (Lcom/motorro/commonstatemachine/lifecycle/MachineLifecycle$Observer;)V
+	public final fun setState (Lcom/motorro/commonstatemachine/lifecycle/MachineLifecycle$State;)V
+}
+
+public abstract interface class com/motorro/commonstatemachine/lifecycle/MachineLifecycle {
+	public abstract fun addObserver (Lcom/motorro/commonstatemachine/lifecycle/MachineLifecycle$Observer;)V
+	public abstract fun getState ()Lcom/motorro/commonstatemachine/lifecycle/MachineLifecycle$State;
+	public abstract fun hasObservers ()Z
+	public abstract fun removeObserver (Lcom/motorro/commonstatemachine/lifecycle/MachineLifecycle$Observer;)V
+}
+
+public abstract interface class com/motorro/commonstatemachine/lifecycle/MachineLifecycle$Observer {
+	public abstract fun onStateChange (Lcom/motorro/commonstatemachine/lifecycle/MachineLifecycle$State;)V
+}
+
+public final class com/motorro/commonstatemachine/lifecycle/MachineLifecycle$State : java/lang/Enum {
+	public static final field ACTIVE Lcom/motorro/commonstatemachine/lifecycle/MachineLifecycle$State;
+	public static final field PAUSED Lcom/motorro/commonstatemachine/lifecycle/MachineLifecycle$State;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/motorro/commonstatemachine/lifecycle/MachineLifecycle$State;
+	public static fun values ()[Lcom/motorro/commonstatemachine/lifecycle/MachineLifecycle$State;
+}
+
+public final class com/motorro/commonstatemachine/lifecycle/MachineLifecycleKt {
+	public static final fun combinePaused (Lcom/motorro/commonstatemachine/lifecycle/MachineLifecycle;Lcom/motorro/commonstatemachine/lifecycle/MachineLifecycle;)Lcom/motorro/commonstatemachine/lifecycle/MachineLifecycle;
+}
+
+public abstract interface class com/motorro/commonstatemachine/multi/Activated {
+	public abstract fun activate ()V
+	public abstract fun deactivate ()V
+	public abstract fun isActive ()Z
+}
+
+public abstract interface class com/motorro/commonstatemachine/multi/ActiveMachineContainer : com/motorro/commonstatemachine/multi/ProxyMachineContainer {
+	public abstract fun dispose (Ljava/util/Set;)V
+	public fun dispose ([Lcom/motorro/commonstatemachine/multi/MachineKey;)V
+	public abstract fun disposeInactive ()V
+	public abstract fun getActive ()Ljava/util/Set;
+	public abstract fun setActive (Ljava/util/Set;)V
+	public fun setActive ([Lcom/motorro/commonstatemachine/multi/MachineKey;)V
+}
+
+public final class com/motorro/commonstatemachine/multi/ActiveMachineContainer$DefaultImpls {
+	public static fun dispose (Lcom/motorro/commonstatemachine/multi/ActiveMachineContainer;[Lcom/motorro/commonstatemachine/multi/MachineKey;)V
+	public static fun setActive (Lcom/motorro/commonstatemachine/multi/ActiveMachineContainer;[Lcom/motorro/commonstatemachine/multi/MachineKey;)V
+}
+
+public abstract interface class com/motorro/commonstatemachine/multi/GestureProcessor {
+	public abstract fun process (Lcom/motorro/commonstatemachine/multi/MachineKey;Ljava/lang/Object;)V
+}
+
+public abstract interface class com/motorro/commonstatemachine/multi/MachineAccess {
+	public abstract fun getKeys ()Ljava/util/Set;
+	public abstract fun getState (Lcom/motorro/commonstatemachine/multi/MachineKey;)Ljava/lang/Object;
+	public abstract fun process (Lcom/motorro/commonstatemachine/multi/MachineKey;Ljava/lang/Object;)V
+}
+
+public abstract interface class com/motorro/commonstatemachine/multi/MachineInit {
+	public abstract fun getInit ()Lkotlin/jvm/functions/Function1;
+	public abstract fun getInitialUiState ()Ljava/lang/Object;
+	public abstract fun getKey ()Lcom/motorro/commonstatemachine/multi/MachineKey;
+}
+
+public abstract class com/motorro/commonstatemachine/multi/MachineKey {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getTag ()Ljava/lang/String;
+	public fun hashCode ()I
+}
+
+public abstract class com/motorro/commonstatemachine/multi/MultiMachineState : com/motorro/commonstatemachine/CommonMachineState {
+	public fun <init> ()V
+	protected fun doClear ()V
+	protected fun doProcess (Ljava/lang/Object;)V
+	protected fun doStart ()V
+	protected abstract fun getContainer ()Lcom/motorro/commonstatemachine/multi/ProxyMachineContainer;
+	protected abstract fun mapGesture (Ljava/lang/Object;Lcom/motorro/commonstatemachine/multi/GestureProcessor;)V
+	protected abstract fun mapUiState (Lcom/motorro/commonstatemachine/multi/UiStateProvider;Lcom/motorro/commonstatemachine/multi/MachineKey;)Ljava/lang/Object;
+	protected final fun updateUi ()V
+}
+
+public abstract interface class com/motorro/commonstatemachine/multi/ProxyMachineContainer {
+	public static final field Companion Lcom/motorro/commonstatemachine/multi/ProxyMachineContainer$Companion;
+	public abstract fun clear ()V
+	public abstract fun getMachineAccess ()Lcom/motorro/commonstatemachine/multi/MachineAccess;
+	public abstract fun start (Lkotlin/jvm/functions/Function2;)V
+}
+
+public abstract class com/motorro/commonstatemachine/multi/ProxyMachineContainer$Base : com/motorro/commonstatemachine/multi/ProxyMachineContainer {
+	public fun <init> (Ljava/util/Collection;)V
+	public fun clear ()V
+	public abstract fun create (Lcom/motorro/commonstatemachine/multi/MachineInit;Lkotlin/jvm/functions/Function2;)Lcom/motorro/commonstatemachine/CommonStateMachine;
+	public fun doStart ()V
+	public fun getMachineAccess ()Lcom/motorro/commonstatemachine/multi/MachineAccess;
+	protected final fun getMachines ()Ljava/util/Map;
+	protected final fun setMachines (Ljava/util/Map;)V
+	public fun start (Lkotlin/jvm/functions/Function2;)V
+}
+
+public final class com/motorro/commonstatemachine/multi/ProxyMachineContainer$Companion {
+	public final fun allTogether (Ljava/util/Collection;)Lcom/motorro/commonstatemachine/multi/ProxyMachineContainer;
+	public final fun some (Ljava/util/Collection;Ljava/util/Set;)Lcom/motorro/commonstatemachine/multi/ActiveMachineContainer;
+	public static synthetic fun some$default (Lcom/motorro/commonstatemachine/multi/ProxyMachineContainer$Companion;Ljava/util/Collection;Ljava/util/Set;ILjava/lang/Object;)Lcom/motorro/commonstatemachine/multi/ActiveMachineContainer;
+}
+
+public abstract interface class com/motorro/commonstatemachine/multi/UiStateProvider {
+	public abstract fun get (Lcom/motorro/commonstatemachine/multi/MachineKey;)Ljava/lang/Object;
+	public abstract fun getMachineKeys ()Ljava/util/Set;
+	public fun getValue (Lcom/motorro/commonstatemachine/multi/MachineKey;)Ljava/lang/Object;
+}
+
+public final class com/motorro/commonstatemachine/multi/UiStateProvider$DefaultImpls {
+	public static fun getValue (Lcom/motorro/commonstatemachine/multi/UiStateProvider;Lcom/motorro/commonstatemachine/multi/MachineKey;)Ljava/lang/Object;
+}
+

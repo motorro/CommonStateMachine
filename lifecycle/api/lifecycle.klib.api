@@ -1,0 +1,28 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, wasmJs]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <com.motorro.commonstatemachine:lifecycle>
+final class com.motorro.commonstatemachine.lifecycle/UiMachineLifecycle : com.motorro.commonstatemachine.lifecycle/MachineLifecycle { // com.motorro.commonstatemachine.lifecycle/UiMachineLifecycle|null[0]
+    constructor <init>() // com.motorro.commonstatemachine.lifecycle/UiMachineLifecycle.<init>|<init>(){}[0]
+
+    final fun addObserver(com.motorro.commonstatemachine.lifecycle/MachineLifecycle.Observer) // com.motorro.commonstatemachine.lifecycle/UiMachineLifecycle.addObserver|addObserver(com.motorro.commonstatemachine.lifecycle.MachineLifecycle.Observer){}[0]
+    final fun getState(): com.motorro.commonstatemachine.lifecycle/MachineLifecycle.State // com.motorro.commonstatemachine.lifecycle/UiMachineLifecycle.getState|getState(){}[0]
+    final fun hasObservers(): kotlin/Boolean // com.motorro.commonstatemachine.lifecycle/UiMachineLifecycle.hasObservers|hasObservers(){}[0]
+    final fun removeObserver(com.motorro.commonstatemachine.lifecycle/MachineLifecycle.Observer) // com.motorro.commonstatemachine.lifecycle/UiMachineLifecycle.removeObserver|removeObserver(com.motorro.commonstatemachine.lifecycle.MachineLifecycle.Observer){}[0]
+
+    abstract interface UiObserver : androidx.lifecycle/LifecycleObserver { // com.motorro.commonstatemachine.lifecycle/UiMachineLifecycle.UiObserver|null[0]
+        abstract fun dispose() // com.motorro.commonstatemachine.lifecycle/UiMachineLifecycle.UiObserver.dispose|dispose(){}[0]
+    }
+
+    final object Companion { // com.motorro.commonstatemachine.lifecycle/UiMachineLifecycle.Companion|null[0]
+        final fun (com.motorro.commonstatemachine.lifecycle/UiMachineLifecycle).bindLifecycle(androidx.lifecycle/Lifecycle): com.motorro.commonstatemachine.lifecycle/UiMachineLifecycle.UiObserver // com.motorro.commonstatemachine.lifecycle/UiMachineLifecycle.Companion.bindLifecycle|bindLifecycle@com.motorro.commonstatemachine.lifecycle.UiMachineLifecycle(androidx.lifecycle.Lifecycle){}[0]
+    }
+}
+
+final val com.motorro.commonstatemachine.lifecycle/com_motorro_commonstatemachine_lifecycle_UiMachineLifecycle$stableprop // com.motorro.commonstatemachine.lifecycle/com_motorro_commonstatemachine_lifecycle_UiMachineLifecycle$stableprop|#static{}com_motorro_commonstatemachine_lifecycle_UiMachineLifecycle$stableprop[0]
+
+final fun com.motorro.commonstatemachine.lifecycle/com_motorro_commonstatemachine_lifecycle_UiMachineLifecycle$stableprop_getter(): kotlin/Int // com.motorro.commonstatemachine.lifecycle/com_motorro_commonstatemachine_lifecycle_UiMachineLifecycle$stableprop_getter|com_motorro_commonstatemachine_lifecycle_UiMachineLifecycle$stableprop_getter(){}[0]

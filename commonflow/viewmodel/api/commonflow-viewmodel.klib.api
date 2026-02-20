@@ -1,0 +1,95 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, wasmJs]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <com.motorro.commonstatemachine:commonflow-viewmodel>
+open class <#A: kotlin/Any, #B: kotlin/Any, #C: kotlin/Any?, #D: kotlin/Any?> com.motorro.commonstatemachine.flow.viewmodel/CommonFlowViewModel : androidx.lifecycle/ViewModel { // com.motorro.commonstatemachine.flow.viewmodel/CommonFlowViewModel|null[0]
+    constructor <init>(com.motorro.commonstatemachine.flow.data/CommonFlowDataApi<#A, #B, #C, #D>, #C, kotlin/Array<out kotlin/AutoCloseable>...) // com.motorro.commonstatemachine.flow.viewmodel/CommonFlowViewModel.<init>|<init>(com.motorro.commonstatemachine.flow.data.CommonFlowDataApi<1:0,1:1,1:2,1:3>;1:2;kotlin.Array<out|kotlin.AutoCloseable>...){}[0]
+
+    final val uiState // com.motorro.commonstatemachine.flow.viewmodel/CommonFlowViewModel.uiState|{}uiState[0]
+        final fun <get-uiState>(): kotlinx.coroutines.flow/StateFlow<com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowUiState<#B, #D>> // com.motorro.commonstatemachine.flow.viewmodel/CommonFlowViewModel.uiState.<get-uiState>|<get-uiState>(){}[0]
+
+    final fun process(com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowGesture<#A>) // com.motorro.commonstatemachine.flow.viewmodel/CommonFlowViewModel.process|process(com.motorro.commonstatemachine.flow.viewmodel.data.BaseFlowGesture<1:0>){}[0]
+
+    final object Companion { // com.motorro.commonstatemachine.flow.viewmodel/CommonFlowViewModel.Companion|null[0]
+        final const val CLOSABLE_KEY // com.motorro.commonstatemachine.flow.viewmodel/CommonFlowViewModel.Companion.CLOSABLE_KEY|{}CLOSABLE_KEY[0]
+            final fun <get-CLOSABLE_KEY>(): kotlin/String // com.motorro.commonstatemachine.flow.viewmodel/CommonFlowViewModel.Companion.CLOSABLE_KEY.<get-CLOSABLE_KEY>|<get-CLOSABLE_KEY>(){}[0]
+    }
+}
+
+sealed class <#A: out kotlin/Any, #B: out kotlin/Any?> com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowUiState { // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowUiState|null[0]
+    abstract val backHandlerEnabled // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowUiState.backHandlerEnabled|{}backHandlerEnabled[0]
+        abstract fun <get-backHandlerEnabled>(): kotlin/Boolean // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowUiState.backHandlerEnabled.<get-backHandlerEnabled>|<get-backHandlerEnabled>(){}[0]
+
+    final class <#A1: out kotlin/Any> Child : com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowUiState<#A1, kotlin/Nothing> { // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowUiState.Child|null[0]
+        constructor <init>(#A1, kotlin/Boolean) // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowUiState.Child.<init>|<init>(1:0;kotlin.Boolean){}[0]
+
+        final val backHandlerEnabled // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowUiState.Child.backHandlerEnabled|{}backHandlerEnabled[0]
+            final fun <get-backHandlerEnabled>(): kotlin/Boolean // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowUiState.Child.backHandlerEnabled.<get-backHandlerEnabled>|<get-backHandlerEnabled>(){}[0]
+        final val child // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowUiState.Child.child|{}child[0]
+            final fun <get-child>(): #A1 // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowUiState.Child.child.<get-child>|<get-child>(){}[0]
+
+        final fun component1(): #A1 // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowUiState.Child.component1|component1(){}[0]
+        final fun component2(): kotlin/Boolean // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowUiState.Child.component2|component2(){}[0]
+        final fun copy(#A1 = ..., kotlin/Boolean = ...): com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowUiState.Child<#A1> // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowUiState.Child.copy|copy(1:0;kotlin.Boolean){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowUiState.Child.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowUiState.Child.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowUiState.Child.toString|toString(){}[0]
+    }
+
+    final class <#A1: out kotlin/Any?> Terminated : com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowUiState<kotlin/Nothing, #A1> { // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowUiState.Terminated|null[0]
+        constructor <init>(#A1?) // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowUiState.Terminated.<init>|<init>(1:0?){}[0]
+
+        final val backHandlerEnabled // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowUiState.Terminated.backHandlerEnabled|{}backHandlerEnabled[0]
+            final fun <get-backHandlerEnabled>(): kotlin/Boolean // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowUiState.Terminated.backHandlerEnabled.<get-backHandlerEnabled>|<get-backHandlerEnabled>(){}[0]
+        final val result // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowUiState.Terminated.result|{}result[0]
+            final fun <get-result>(): #A1? // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowUiState.Terminated.result.<get-result>|<get-result>(){}[0]
+
+        final fun component1(): #A1? // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowUiState.Terminated.component1|component1(){}[0]
+        final fun copy(#A1? = ...): com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowUiState.Terminated<#A1> // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowUiState.Terminated.copy|copy(1:0?){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowUiState.Terminated.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowUiState.Terminated.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowUiState.Terminated.toString|toString(){}[0]
+    }
+}
+
+sealed class <#A: out kotlin/Any> com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowGesture { // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowGesture|null[0]
+    final class <#A1: kotlin/Any> Child : com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowGesture<#A1> { // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowGesture.Child|null[0]
+        constructor <init>(#A1) // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowGesture.Child.<init>|<init>(1:0){}[0]
+
+        final val child // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowGesture.Child.child|{}child[0]
+            final fun <get-child>(): #A1 // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowGesture.Child.child.<get-child>|<get-child>(){}[0]
+
+        final fun component1(): #A1 // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowGesture.Child.component1|component1(){}[0]
+        final fun copy(#A1 = ...): com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowGesture.Child<#A1> // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowGesture.Child.copy|copy(1:0){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowGesture.Child.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowGesture.Child.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowGesture.Child.toString|toString(){}[0]
+    }
+
+    final object Back : com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowGesture<kotlin/Nothing> { // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowGesture.Back|null[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowGesture.Back.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowGesture.Back.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // com.motorro.commonstatemachine.flow.viewmodel.data/BaseFlowGesture.Back.toString|toString(){}[0]
+    }
+}
+
+final val com.motorro.commonstatemachine.flow.viewmodel.data/com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowGesture$stableprop // com.motorro.commonstatemachine.flow.viewmodel.data/com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowGesture$stableprop|#static{}com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowGesture$stableprop[0]
+final val com.motorro.commonstatemachine.flow.viewmodel.data/com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowGesture_Back$stableprop // com.motorro.commonstatemachine.flow.viewmodel.data/com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowGesture_Back$stableprop|#static{}com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowGesture_Back$stableprop[0]
+final val com.motorro.commonstatemachine.flow.viewmodel.data/com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowGesture_Child$stableprop // com.motorro.commonstatemachine.flow.viewmodel.data/com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowGesture_Child$stableprop|#static{}com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowGesture_Child$stableprop[0]
+final val com.motorro.commonstatemachine.flow.viewmodel.data/com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowUiState$stableprop // com.motorro.commonstatemachine.flow.viewmodel.data/com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowUiState$stableprop|#static{}com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowUiState$stableprop[0]
+final val com.motorro.commonstatemachine.flow.viewmodel.data/com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowUiState_Child$stableprop // com.motorro.commonstatemachine.flow.viewmodel.data/com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowUiState_Child$stableprop|#static{}com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowUiState_Child$stableprop[0]
+final val com.motorro.commonstatemachine.flow.viewmodel.data/com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowUiState_Terminated$stableprop // com.motorro.commonstatemachine.flow.viewmodel.data/com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowUiState_Terminated$stableprop|#static{}com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowUiState_Terminated$stableprop[0]
+final val com.motorro.commonstatemachine.flow.viewmodel/com_motorro_commonstatemachine_flow_viewmodel_CommonFlowViewModel$stableprop // com.motorro.commonstatemachine.flow.viewmodel/com_motorro_commonstatemachine_flow_viewmodel_CommonFlowViewModel$stableprop|#static{}com_motorro_commonstatemachine_flow_viewmodel_CommonFlowViewModel$stableprop[0]
+
+final fun <#A: kotlin/Any, #B: kotlin/Any, #C: kotlin/Any?> com.motorro.commonstatemachine.flow.viewmodel/CommonFlowComposition(com.motorro.commonstatemachine.flow.viewmodel/CommonFlowViewModel<#A, #B, *, #C>, kotlin/Function4<kotlin/Boolean, kotlin/Function0<kotlin/Unit>, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>?, kotlin/Function4<#B, kotlin/Function1<#A, kotlin/Unit>, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>, kotlin/Function1<#C?, kotlin/Unit>, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // com.motorro.commonstatemachine.flow.viewmodel/CommonFlowComposition|CommonFlowComposition(com.motorro.commonstatemachine.flow.viewmodel.CommonFlowViewModel<0:0,0:1,*,0:2>;kotlin.Function4<kotlin.Boolean,kotlin.Function0<kotlin.Unit>,androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>?;kotlin.Function4<0:1,kotlin.Function1<0:0,kotlin.Unit>,androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>;kotlin.Function1<0:2?,kotlin.Unit>;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){0§<kotlin.Any>;1§<kotlin.Any>;2§<kotlin.Any?>}[0]
+final fun com.motorro.commonstatemachine.flow.viewmodel.data/com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowGesture$stableprop_getter(): kotlin/Int // com.motorro.commonstatemachine.flow.viewmodel.data/com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowGesture$stableprop_getter|com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowGesture$stableprop_getter(){}[0]
+final fun com.motorro.commonstatemachine.flow.viewmodel.data/com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowGesture_Back$stableprop_getter(): kotlin/Int // com.motorro.commonstatemachine.flow.viewmodel.data/com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowGesture_Back$stableprop_getter|com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowGesture_Back$stableprop_getter(){}[0]
+final fun com.motorro.commonstatemachine.flow.viewmodel.data/com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowGesture_Child$stableprop_getter(): kotlin/Int // com.motorro.commonstatemachine.flow.viewmodel.data/com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowGesture_Child$stableprop_getter|com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowGesture_Child$stableprop_getter(){}[0]
+final fun com.motorro.commonstatemachine.flow.viewmodel.data/com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowUiState$stableprop_getter(): kotlin/Int // com.motorro.commonstatemachine.flow.viewmodel.data/com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowUiState$stableprop_getter|com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowUiState$stableprop_getter(){}[0]
+final fun com.motorro.commonstatemachine.flow.viewmodel.data/com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowUiState_Child$stableprop_getter(): kotlin/Int // com.motorro.commonstatemachine.flow.viewmodel.data/com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowUiState_Child$stableprop_getter|com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowUiState_Child$stableprop_getter(){}[0]
+final fun com.motorro.commonstatemachine.flow.viewmodel.data/com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowUiState_Terminated$stableprop_getter(): kotlin/Int // com.motorro.commonstatemachine.flow.viewmodel.data/com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowUiState_Terminated$stableprop_getter|com_motorro_commonstatemachine_flow_viewmodel_data_BaseFlowUiState_Terminated$stableprop_getter(){}[0]
+final fun com.motorro.commonstatemachine.flow.viewmodel/com_motorro_commonstatemachine_flow_viewmodel_CommonFlowViewModel$stableprop_getter(): kotlin/Int // com.motorro.commonstatemachine.flow.viewmodel/com_motorro_commonstatemachine_flow_viewmodel_CommonFlowViewModel$stableprop_getter|com_motorro_commonstatemachine_flow_viewmodel_CommonFlowViewModel$stableprop_getter(){}[0]

@@ -1,0 +1,30 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, wasmJs]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <com.motorro.commonstatemachine:tmap>
+abstract interface <#A: kotlin/Any, #B: com.motorro.commonstatemachine.tmap/TKey<#A>> com.motorro.commonstatemachine.tmap/TElement { // com.motorro.commonstatemachine.tmap/TElement|null[0]
+    abstract val key // com.motorro.commonstatemachine.tmap/TElement.key|{}key[0]
+        abstract fun <get-key>(): #B // com.motorro.commonstatemachine.tmap/TElement.key.<get-key>|<get-key>(){}[0]
+    abstract val value // com.motorro.commonstatemachine.tmap/TElement.value|{}value[0]
+        abstract fun <get-value>(): #A // com.motorro.commonstatemachine.tmap/TElement.value.<get-value>|<get-value>(){}[0]
+}
+
+abstract interface <#A: kotlin/Any> com.motorro.commonstatemachine.tmap/TKey // com.motorro.commonstatemachine.tmap/TKey|null[0]
+
+abstract interface com.motorro.commonstatemachine.tmap/TMap : kotlin.collections/Collection<com.motorro.commonstatemachine.tmap/TElement<*, *>> { // com.motorro.commonstatemachine.tmap/TMap|null[0]
+    abstract fun <#A1: kotlin/Any, #B1: com.motorro.commonstatemachine.tmap/TKey<#A1>> get(#B1): #A1? // com.motorro.commonstatemachine.tmap/TMap.get|get(0:1){0§<kotlin.Any>;1§<com.motorro.commonstatemachine.tmap.TKey<0:0>>}[0]
+    abstract fun <#A1: kotlin/Any, #B1: com.motorro.commonstatemachine.tmap/TKey<#A1>> plus(com.motorro.commonstatemachine.tmap/TElement<#A1, #B1>): com.motorro.commonstatemachine.tmap/TMap // com.motorro.commonstatemachine.tmap/TMap.plus|plus(com.motorro.commonstatemachine.tmap.TElement<0:0,0:1>){0§<kotlin.Any>;1§<com.motorro.commonstatemachine.tmap.TKey<0:0>>}[0]
+    abstract fun minusKey(com.motorro.commonstatemachine.tmap/TKey<*>): com.motorro.commonstatemachine.tmap/TMap // com.motorro.commonstatemachine.tmap/TMap.minusKey|minusKey(com.motorro.commonstatemachine.tmap.TKey<*>){}[0]
+
+    final object Companion { // com.motorro.commonstatemachine.tmap/TMap.Companion|null[0]
+        final fun empty(): com.motorro.commonstatemachine.tmap/TMap // com.motorro.commonstatemachine.tmap/TMap.Companion.empty|empty(){}[0]
+        final fun of(kotlin.collections/Iterable<com.motorro.commonstatemachine.tmap/TElement<*, *>>): com.motorro.commonstatemachine.tmap/TMap // com.motorro.commonstatemachine.tmap/TMap.Companion.of|of(kotlin.collections.Iterable<com.motorro.commonstatemachine.tmap.TElement<*,*>>){}[0]
+        final fun of(kotlin/Array<out com.motorro.commonstatemachine.tmap/TElement<*, *>>...): com.motorro.commonstatemachine.tmap/TMap // com.motorro.commonstatemachine.tmap/TMap.Companion.of|of(kotlin.Array<out|com.motorro.commonstatemachine.tmap.TElement<*,*>>...){}[0]
+    }
+}
+
+final fun <#A: kotlin/Any, #B: com.motorro.commonstatemachine.tmap/TKey<#A>> (#B).com.motorro.commonstatemachine.tmap/tot(#A): com.motorro.commonstatemachine.tmap/TElement<#A, #B> // com.motorro.commonstatemachine.tmap/tot|tot@0:1(0:0){0§<kotlin.Any>;1§<com.motorro.commonstatemachine.tmap.TKey<0:0>>}[0]

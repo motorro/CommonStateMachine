@@ -12,9 +12,11 @@
  */
 
 @file:Suppress("unused")
+@file:OptIn(ExperimentalAbiValidation::class)
 
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
@@ -35,6 +37,10 @@ version = rootProject.version
 println("== Project version: $versionName ==")
 
 kotlin {
+    abiValidation {
+        enabled = true
+    }
+
     jvmToolchain(21)
 
     jvm()

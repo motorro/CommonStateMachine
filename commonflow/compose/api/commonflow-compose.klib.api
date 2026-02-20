@@ -1,0 +1,15 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, wasmJs]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <com.motorro.commonstatemachine:commonflow-compose>
+abstract interface <#A: kotlin/Any, #B: kotlin/Any> com.motorro.commonstatemachine.flow.compose/CommonFlowUiApi { // com.motorro.commonstatemachine.flow.compose/CommonFlowUiApi|null[0]
+    abstract fun Screen(#B, kotlin/Function1<#A, kotlin/Unit>, androidx.compose.ui/Modifier, androidx.compose.runtime/Composer?, kotlin/Int) // com.motorro.commonstatemachine.flow.compose/CommonFlowUiApi.Screen|Screen(1:1;kotlin.Function1<1:0,kotlin.Unit>;androidx.compose.ui.Modifier;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+
+    final class ComposeDefaultImpls { // com.motorro.commonstatemachine.flow.compose/CommonFlowUiApi.ComposeDefaultImpls|null[0]
+        final fun Screen$default(#B, kotlin/Function1<#A, kotlin/Unit>, androidx.compose.ui/Modifier?, com.motorro.commonstatemachine.flow.compose/CommonFlowUiApi<#A, #B>, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // com.motorro.commonstatemachine.flow.compose/CommonFlowUiApi.ComposeDefaultImpls.Screen$default|Screen$default#static(2:1;kotlin.Function1<2:0,kotlin.Unit>;androidx.compose.ui.Modifier?;com.motorro.commonstatemachine.flow.compose.CommonFlowUiApi<2:0,2:1>;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+    }
+}
