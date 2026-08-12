@@ -38,12 +38,13 @@ println("== Project version: $versionName ==")
 
 kotlin {
     abiValidation {
-        enabled = true
+
     }
 
-    jvm()
+    jvmToolchain(21)
 
     jvm()
+
     android {
         namespace = "com.motorro.commonstatemachine.tmap"
         compileSdk = androidCompileSdkVersion
@@ -58,7 +59,7 @@ kotlin {
         }
     }
 
-    js(IR) {
+    js {
         binaries.library()
         useCommonJs()
         browser {

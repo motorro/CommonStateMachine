@@ -38,7 +38,7 @@ println("== Project version: $versionName ==")
 
 kotlin {
     abiValidation {
-        enabled = true
+
     }
 
     jvmToolchain(21)
@@ -57,7 +57,7 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_21)
         }
     }
-    js(IR) {
+    js {
         binaries.library()
         useCommonJs()
         browser {

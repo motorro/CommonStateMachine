@@ -51,8 +51,8 @@ allprojects {
 
     val androidBuildToolsVersion by extra("35.0.0")
     val androidMinSdkVersion by extra(24)
-    val androidTargetSdkVersion by extra(36)
-    val androidCompileSdkVersion by extra(36)
+    val androidTargetSdkVersion by extra(37)
+    val androidCompileSdkVersion by extra(37)
 
     val developerId by extra("motorro")
     val developerName by extra("Nikolai Kotchetkov")

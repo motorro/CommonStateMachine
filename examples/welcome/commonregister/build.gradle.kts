@@ -42,7 +42,7 @@ kotlin {
         }
     }
 
-    js(IR) {
+    js {
         binaries.library()
         useCommonJs()
         browser {

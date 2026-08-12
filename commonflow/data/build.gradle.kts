@@ -38,12 +38,13 @@ println("== Project version: $versionName ==")
 
 kotlin {
     abiValidation {
-        enabled = true
+
     }
 
     jvmToolchain(21)
 
     jvm()
+
     android {
         namespace = "com.motorro.commonstatemachine.commonflow.data"
         compileSdk = androidCompileSdkVersion
@@ -58,7 +59,7 @@ kotlin {
         }
     }
 
-    js(IR) {
+    js {
         binaries.library()
         useCommonJs()
         browser {
@@ -83,7 +84,6 @@ kotlin {
     }
 
     listOf(
-        iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach {

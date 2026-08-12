@@ -40,7 +40,7 @@ println("== Project version: $versionName ==")
 
 kotlin {
     abiValidation {
-        enabled = true
+
     }
 
     jvmToolchain(21)
@@ -60,7 +60,7 @@ kotlin {
         }
     }
 
-    js(IR) {
+    js {
         binaries.library()
         useCommonJs()
         browser {
@@ -85,7 +85,6 @@ kotlin {
     }
 
     listOf(
-        iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach {
