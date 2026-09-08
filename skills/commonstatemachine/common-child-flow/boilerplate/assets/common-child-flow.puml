@@ -1,0 +1,185 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+hide empty members
+
+interface CommonFlowDataApi<G: Any, U: Any, I, R>
+interface CommonFlowUiApi<G: Any, U: Any>
+abstract class CommonMachineState<G: Any, U : Any>
+abstract class CoroutineState<G: Any, U: Any>
+
+CoroutineState -up-|> CommonMachineState
+
+package API {
+    interface AuthGesture
+    note left
+        Marker intent (gesture) interface for Auth feature
+        May include public properties available to the API client
+    end note
+    interface AuthUiState
+    note right
+        Marker UI-state interface for Auth feature
+        May include public properties available to the API client
+    end note
+
+    class AuthInput
+    class AuthResult
+
+    interface AuthDataApi {
+        +init(flowHost: CommonFlowHost<AuthResult>, input: AuthInput): CommonMachineState<AuthGesture, AuthUiState>
+        +getDefaultUiState(): AuthUiState
+        +getBackGesture(): AuthGesture? = null
+    }
+    AuthDataApi -up-|> CommonFlowDataApi: implements
+    AuthDataApi -down-> AuthGesture: driven by
+    AuthDataApi -down-> AuthUiState: displays
+    AuthDataApi -right-> AuthResult: returns
+    AuthInput -> AuthDataApi: initializes
+
+    interface AuthUiApi {
+        +Screen(state: AuthUiState, onGesture: (AuthGesture) -> Unit, modifier: Modifier = Modifier)
+    }
+    AuthUiApi -up-|> CommonFlowUiApi: implements
+    AuthUiApi -down-> AuthGesture: emits
+    AuthUiApi -down-> AuthUiState: displays
+}
+
+package Implementation {
+    package data {
+        interface AuthGestureImpl
+        note left
+            A sealed structure of all available gestures (UI intents) for the feature
+        end note
+
+        object Back
+        note bottom
+            Example: Back navigation button
+        end note
+
+        object Action
+        note bottom
+            Example: Main action button
+        end note
+        AuthGestureImpl -up-|> AuthGesture
+        AuthGestureImpl <|-down- Back
+        AuthGestureImpl <|-down- Action
+
+        interface AuthUiStateImpl
+        note right
+            A sealed structure of all possible UI states for the feature
+        end note
+
+        object Loading
+        note bottom
+            Example: Loading screen
+        end note
+
+        class Form {
+            +username: String
+            +password: String
+        }
+        note bottom
+            Example: Login form
+        end note
+        AuthUiStateImpl -up-|> AuthUiState
+        AuthUiStateImpl <|-down- Loading
+        AuthUiStateImpl <|-down- Form
+
+        class AuthStateData {
+            +username: String
+            +password: String
+        }
+        note right
+            A flow data state passed between machine states.
+            Stores inter-state data
+        end note
+    }
+
+    package state {
+        interface AuthState
+        note top
+            Type-alias or an interface of the machine state
+        end note
+        AuthState -up-|> CommonMachineState
+
+        abstract class BaseAuthState
+        note top
+            Common base class for all machine states
+        end note
+        BaseAuthState -up-|> CoroutineState
+        BaseAuthState -|> AuthContext: delegates implementation
+
+        class LoadingState
+        LoadingState -up-|> BaseAuthState
+        note bottom
+            Example: sample machine state - Loading
+        end note
+
+        class FormState
+        FormState -up-|> BaseAuthState
+        note bottom
+            Example: sample machine state - Login form
+        end note
+
+        interface AuthStateFactory {
+            +loading(): AuthState
+            +form(data: AuthStateData): AuthState
+        }
+        AuthStateFactory -> AuthState: creates
+        note left
+            Abstracts the state from another state creation
+        end note
+
+        class AuthStateFactoryImpl
+        note bottom
+            State factory implementation
+        end note
+        AuthStateFactoryImpl -up-|> AuthStateFactory
+        AuthStateFactory -> BaseAuthState: creates
+
+        interface AuthContext {
+            +factory: AuthStateFactory
+            +flowHost: CommonFlowHost<AuthResult>
+            +renderer: AuthUiRenderer
+        }
+        note bottom
+            State-machine context available to every state
+            Put immutable links to common tools here:
+            - factory
+            - flow host
+            - etc
+        end note
+    }
+
+    package ui {
+        interface AuthUiRenderer {
+            +renderLoading(): AuthUiState
+            +renderForm(data: AuthStateData): AuthUiState
+        }
+        note top
+            Transforms data-state to AuthUiState.
+            Abstracts machine state from the interface data rendering
+        end note
+        AuthUiRenderer -> AuthStateData: renders
+        AuthUiRenderer -> AuthUiStateImpl: creates
+
+        class AuthUiRendererImpl
+        AuthUiRendererImpl -up-|> AuthUiRenderer
+        AuthUiRendererImpl -> AuthUiStateImpl: creates
+    }
+
+    class AuthDataApiImpl
+    note bottom
+        Data API implementation
+        Injects factory and initializes the flow by calling `init`
+    end note
+    AuthUiStateImpl -up-|> AuthDataApi
+
+    class AuthUiApiImpl
+    note bottom
+        UI API implementation
+        Builds the view with Compose components inside the module
+    end note
+    AuthUiStateImpl -up-|> AuthUiApi
+}
+@enduml
