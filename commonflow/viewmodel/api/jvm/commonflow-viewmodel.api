@@ -17,7 +17,7 @@ public final class com/motorro/commonstatemachine/flow/viewmodel/CommonFlowViewM
 public final class com/motorro/commonstatemachine/flow/viewmodel/ComposableSingletons$CommonFlowCompositionKt {
 	public static final field INSTANCE Lcom/motorro/commonstatemachine/flow/viewmodel/ComposableSingletons$CommonFlowCompositionKt;
 	public fun <init> ()V
-	public final fun getLambda$1100526547$commonflow_viewmodel ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$1100526547$com_motorro_commonstatemachine_commonflow_viewmodel ()Lkotlin/jvm/functions/Function4;
 }
 
 public abstract class com/motorro/commonstatemachine/flow/viewmodel/data/BaseFlowGesture {
