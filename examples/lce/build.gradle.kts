@@ -75,6 +75,10 @@ dependencies {
     implementation(project(":examples:commoncore"))
     implementation(project(":examples:androidcore"))
 
+    api(project(":commonstatemachine"))
+    api(project(":commonflow:commonflow-data"))
+    api(project(":commonflow:commonflow-compose"))
+
     coreLibraryDesugaring(libs.desugaring)
 
     implementation(libs.timber)

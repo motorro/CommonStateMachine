@@ -122,8 +122,9 @@ package Implementation {
         end note
 
         interface AuthStateFactory {
-            +loading(): AuthState
+            +startup(input: AuthInput): AuthState
             +form(data: AuthStateData): AuthState
+            +terminated(result: AuthResult): AuthState
         }
         AuthStateFactory -> AuthState: creates
         note left
@@ -155,6 +156,7 @@ package Implementation {
         interface AuthUiRenderer {
             +renderLoading(): AuthUiState
             +renderForm(data: AuthStateData): AuthUiState
+            +renderError(error: Throwable): AuthUiState
         }
         note top
             Transforms data-state to AuthUiState.

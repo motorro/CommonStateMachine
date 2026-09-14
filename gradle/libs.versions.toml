@@ -23,6 +23,7 @@ kotlinDatetime = "0.8.0"
 lifecycle = "2.11.0"
 nexusPublish = "2.0.0"
 timber = "5.0.1"
+napier = "2.7.1"
 testAndroidxArch = "2.2.0"
 testAndroidxCore = "1.7.0"
 testAndroidxEspresso = "3.7.0"
@@ -31,6 +32,7 @@ testJunit = "4.13.2"
 testMockk = "1.14.11"
 testMockkCommon = "1.13.5"
 robolectric = "4.16.1"
+mokkery = "3.3.0"
 
 [plugins]
 compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
@@ -44,6 +46,7 @@ android_kotlin_multiplatform_library = { id = "com.android.kotlin.multiplatform.
 kotlin_dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+mockery = { id = "dev.mokkery", version.ref = "mokkery" }
 git = { id = "org.ajoberstar.grgit", version.ref = "git" }
 nexus_publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexusPublish" }
 
@@ -52,6 +55,8 @@ kotlin-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutab
 kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlin-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinDatetime" }
+
+napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 
 desugaring = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugaring" }
 

@@ -8,5 +8,5 @@ interface AuthUiState {
     /**
      * Some common property available to a feature consumer
      */
-    val modal: Boolean
+    val interactive: Boolean
 }
