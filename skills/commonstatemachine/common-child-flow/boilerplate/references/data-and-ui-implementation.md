@@ -59,6 +59,9 @@ Follow these common rules:
 
 Take a look at the [example](../assets/example/implementation/data/AuthStateData.kt) - interstate data for password authentication.
 
+Important: If you create any utility function based on the interstate data (like `isValidToAuthenticate` in the example above), 
+add a [unit test](../assets/example/implementation-tests/data/AuthStateDataTest.kt) for it.
+
 ## Step 4. Test fixtures
 Create some fixtures and test data for the created data classes:
 
