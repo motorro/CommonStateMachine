@@ -1,5 +1,5 @@
 # Module implementation: state implementation
-Use this reference to implement the machine-state for the `CommonStateMachine` framework. 
+Use this reference to implement the machine-state(s) for the `CommonStateMachine` framework. 
 Take a look at the [class diagram](../assets/common-child-flow.puml) to get the idea about components purpose.
 Take a look at the [example](../assets/example/implementation/state/PreloadingState.kt).
 

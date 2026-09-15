@@ -33,7 +33,7 @@ kotlin {
     jvmToolchain(21)
 
     android {
-        namespace = "com.motorro.statemachine.auth.api"
+        namespace = "com.motorro.statemachine.skills.auth.api"
         compileSdk = androidCompileSdkVersion
         minSdk = androidMinSdkVersion
 

@@ -95,7 +95,7 @@ Then follow these guides for the module implementation:
 5. [Create a base abstract unit-test class](references/renderer-factory-context-interface-implementation.md).
 
 ## Step 4. Create the machine states
-For the user to kick-off faster, we will create some states:
+For the user to kick-off faster, we will create some machine-states:
 
 - If the user gave you the instructions about what would be the state-flow, or what states does he need - create the states for him. 
   Implement the required functionality or place TODOs in place of the code if it is not clear what to do exactly.
@@ -107,4 +107,5 @@ For the user to kick-off faster, we will create some states:
 
 Refer to [this manual](references/state-implementation.md) to get the idea of the state mechanics.
 Repeat this step for every state you need to create.
+Create a unit-test for every created machine-state according to [this manual](references/state-test-implementation.md)
 

@@ -17,9 +17,6 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.android.kotlin.multiplatform.library)
-    alias(libs.plugins.compose)
-    alias(libs.plugins.composeMultiplatform)
-    alias(libs.plugins.mockery)
 }
 
 val versionName: String by project.extra
@@ -34,13 +31,9 @@ kotlin {
     jvmToolchain(21)
 
     android {
-        namespace = "com.motorro.statemachine.skills.auth.implementation"
+        namespace = "com.motorro.statemachine.skills.domain"
         compileSdk = androidCompileSdkVersion
         minSdk = androidMinSdkVersion
-
-        withHostTest {
-            isIncludeAndroidResources = true
-        }
 
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_21)
@@ -49,20 +42,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(project(":commonstatemachine"))
-            implementation(project(":coroutines"))
-            implementation(project(":commonflow:commonflow-data"))
-            implementation(project(":commonflow:commonflow-compose"))
-            implementation(project(":examples:skills:domain"))
-            implementation(project(":examples:skills:auth:api"))
             implementation(libs.kotlin.coroutines.core)
-            implementation(libs.composeMultiplatform.runtime)
-            implementation(libs.composeMultiplatform.foundation)
-            implementation(libs.napier)
-        }
-        commonTest.dependencies {
-            implementation(libs.test.kotlin)
-            implementation(libs.test.kotlin.coroutines)
         }
     }
 }

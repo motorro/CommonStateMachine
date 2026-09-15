@@ -73,6 +73,7 @@ include(
         ":examples:books:book",
         ":examples:books:book:demo",
         ":examples:books:app",
+        ":examples:skills:domain",
         ":examples:skills:auth:api",
         ":examples:skills:auth:implementation"
 )

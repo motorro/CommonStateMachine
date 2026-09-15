@@ -41,4 +41,4 @@ You will need to initialize all the mocks listed in the previous state and mock 
 12. Create the common coroutine test function wrapping `runTest` and using the test dispatcher from the second step.
     Subclasses will use this function to run the tests.
 
-Take a look at the [example](../assets/example/implementation-test/state/BaseStateTest.kt) of such a class.
+Take a look at the [example](../assets/example/implementation-tests/state/BaseStateTest.kt) of such a class.

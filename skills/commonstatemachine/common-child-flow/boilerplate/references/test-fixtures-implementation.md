@@ -10,6 +10,6 @@ For the fixture data, scan the project for already defined fixtures available an
 your own fixtures. For example, look for the modules like `domain` or `entity` and use their fixtures. Check existing feature 
 modules for the clue how to create fixtures and where to get the common fixture module.
 
-Take a look at the [example](../assets/example/implementation-test/data/authGestures.kt) gesture fixtures.
-Take a look at the [example](../assets/example/implementation-test/data/uiStates.kt) ui-state fixtures.
-Take a look at the [example](../assets/example/implementation-test/data/dataStates.kt) interstate.
+Take a look at the [example](../assets/example/implementation-tests/data/authGesturesFixtures.kt) gesture fixtures.
+Take a look at the [example](../assets/example/implementation-tests/data/uiStatesFixtures.kt) ui-state fixtures.
+Take a look at the [example](../assets/example/implementation-tests/data/dataStatesFixtures.kt) interstate.
