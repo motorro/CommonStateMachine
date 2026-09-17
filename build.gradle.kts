@@ -139,6 +139,11 @@ tasks.register("runBooksExampleUnitTests") {
     description = "Run unit tests for books app."
 }
 
+tasks.register("runSkillsExampleUnitTests") {
+    dependsOn(":examples:skills:auth:implementation:allTests")
+    description = "Run unit tests for skills."
+}
+
 tasks.register("displayVersion") {
     description = "Display application version name"
     doLast {
@@ -156,7 +161,8 @@ tasks.register("runUnitTests") {
             "runWelcomeExampleUnitTests",
             "runTimerExampleUnitTests",
             "runDiExampleUnitTests",
-            "runBooksExampleUnitTests"
+            "runBooksExampleUnitTests",
+            "runSkillsExampleUnitTests"
     )
     group = "verification"
     description = "Run unit tests for all modules."

@@ -62,6 +62,7 @@ kotlin {
 
     js {
         binaries.library()
+        binaries.executable()
         useCommonJs()
         browser {
             testTask(Action {
@@ -74,6 +75,7 @@ kotlin {
 
     wasmJs {
         binaries.library()
+        binaries.executable()
         useCommonJs()
         browser {
             testTask(Action {
