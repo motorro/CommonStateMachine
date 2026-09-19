@@ -29,5 +29,10 @@ internal sealed class AuthGestureImpl : AuthGesture {
          * Password input changed
          */
         data class PasswordChanged(val value: String) : Form()
+
+        /**
+         * Skips the authentication
+         */
+        data object Skip : Form()
     }
 }

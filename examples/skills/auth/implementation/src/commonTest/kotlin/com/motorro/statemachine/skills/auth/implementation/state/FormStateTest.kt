@@ -92,8 +92,34 @@ internal class FormStateTest : BaseStateTest() {
         state.process(AuthGestureImpl.Back)
 
         verify {
-            stateFactory.terminated(AuthResult(false))
+            stateFactory.terminated(AuthResult(authenticated = false))
             stateMachine.setMachineState(nextState)
+        }
+    }
+
+    @Test
+    fun processesSkip() = test {
+        every { stateFactory.terminated(any()) } returns nextState
+
+        state.start(stateMachine)
+        state.process(AuthGestureImpl.Form.Skip)
+
+        verify {
+            stateFactory.terminated(AuthResult(authenticated = false))
+            stateMachine.setMachineState(nextState)
+        }
+    }
+
+    @Test
+    fun doesNotProcessSkipIfNotSkippable() = test {
+        state.data = EMPTY_STATE.copy(input = EMPTY_STATE.input.copy(skippable = false))
+
+        state.start(stateMachine)
+        state.process(AuthGestureImpl.Form.Skip)
+
+        verify(VerifyMode.exactly(0)) {
+            stateFactory.terminated(any())
+            stateMachine.setMachineState(any())
         }
     }
 }

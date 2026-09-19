@@ -74,6 +74,7 @@ include(
         ":examples:books:book:demo",
         ":examples:books:app",
         ":examples:skills:domain",
+        ":examples:skills:appcore",
         ":examples:skills:auth:api",
         ":examples:skills:auth:implementation"
 )

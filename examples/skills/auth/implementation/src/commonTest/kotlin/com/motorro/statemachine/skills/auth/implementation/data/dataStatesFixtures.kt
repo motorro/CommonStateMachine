@@ -9,7 +9,7 @@ import com.motorro.statemachine.skills.auth.api.AuthResult
 /**
  * Input fixture
  */
-internal val INPUT = AuthInput("Please login!")
+internal val INPUT = AuthInput(true)
 
 /**
  * Result fixture

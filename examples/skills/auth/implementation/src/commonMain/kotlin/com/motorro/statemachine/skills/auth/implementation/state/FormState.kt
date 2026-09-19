@@ -64,6 +64,12 @@ internal class FormState(
             is AuthGestureImpl.Form.PasswordChanged -> updateData {
                 copy(password = gesture.value)
             }
+            is AuthGestureImpl.Form.Skip -> if (data.input.skippable) {
+                Napier.d { "Skipping authentication..." }
+                setMachineState {
+                    terminated(AuthResult(false))
+                }
+            }
         }
     }
 }

@@ -109,3 +109,10 @@ Refer to [this manual](references/state-implementation.md) to get the idea of th
 Repeat this step for every state you need to create.
 Create a unit-test for every created machine-state according to [this manual](references/state-test-implementation.md)
 
+## Step 5. Create basic Compose views
+To make the module complete, create some views for the created UI-states if user didn't tell you
+otherwise or has given you some special instructions, screenshots, etc.
+Follow these steps to implement the views:
+
+1. [Implement UI renderer if used](references/ui-renderer-implementation.md)
+2. [Implement sample composables](references/ui-view-implementation.md)

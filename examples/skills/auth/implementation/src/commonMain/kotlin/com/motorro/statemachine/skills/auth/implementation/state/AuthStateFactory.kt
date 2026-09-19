@@ -39,6 +39,13 @@ internal interface AuthStateFactory {
     fun authenticating(data: AuthStateData): AuthState
 
     /**
+     * Creates an authentication error state.
+     * @param data Interstate data
+     * @param error Error that occurred during the initialization
+     */
+    fun authenticationError(data: AuthStateData, error: AppException): AuthState
+
+    /**
      * Creates the termination state that finishes the flow.
      * All interstate data is lost as not needed anymore.
      * @param result Flow result

@@ -19,7 +19,6 @@ plugins {
     alias(libs.plugins.android.kotlin.multiplatform.library)
     alias(libs.plugins.compose)
     alias(libs.plugins.composeMultiplatform)
-    alias(libs.plugins.mockery)
 }
 
 val versionName: String by project.extra
@@ -34,7 +33,7 @@ kotlin {
     jvmToolchain(21)
 
     android {
-        namespace = "com.motorro.statemachine.skills.auth.implementation"
+        namespace = "com.motorro.statemachine.skills.appcore"
         compileSdk = androidCompileSdkVersion
         minSdk = androidMinSdkVersion
 
@@ -51,23 +50,14 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(project(":commonstatemachine"))
-            implementation(project(":coroutines"))
-            implementation(project(":commonflow:commonflow-data"))
-            implementation(project(":commonflow:commonflow-compose"))
-            implementation(project(":examples:skills:domain"))
-            implementation(project(":examples:skills:appcore"))
-            implementation(project(":examples:skills:auth:api"))
-            implementation(libs.kotlin.coroutines.core)
-            implementation(libs.composeMultiplatform.runtime)
-            implementation(libs.composeMultiplatform.foundation)
-            implementation(libs.napier)
-            implementation(libs.composeMultiplatform.resources)
+            api(libs.composeMultiplatform.runtime)
+            api(libs.composeMultiplatform.foundation)
+            api(libs.composeMultiplatform.ui)
+            api(libs.composeMultiplatform.resources)
+            api(libs.composeMultiplatform.material3)
+            api(libs.composeMultiplatform.icons)
+            implementation(libs.composeMultiplatform.navigationevent)
             implementation(libs.composeMultiplatform.preview)
-        }
-        commonTest.dependencies {
-            implementation(libs.test.kotlin)
-            implementation(libs.test.kotlin.coroutines)
         }
     }
 }
@@ -78,7 +68,7 @@ dependencies {
 
 compose.resources {
     publicResClass = false
-    packageOfResClass = "com.motorro.statemachine.skills.auth.implementation"
+    packageOfResClass = "com.motorro.statemachine.skills.appcore"
     generateResClass = always
 }
 

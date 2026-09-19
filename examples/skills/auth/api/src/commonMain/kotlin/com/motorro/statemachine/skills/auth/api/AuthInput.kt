@@ -2,6 +2,6 @@ package com.motorro.statemachine.skills.auth.api
 
 /**
  * Initializing data for the feature flow
- * @param message Example of a property passed to authentication flow
+ * @property skippable If true, allows user to skip authentication
  */
-data class AuthInput(val message: String)
+data class AuthInput(val skippable: Boolean)

@@ -7,11 +7,6 @@ import com.motorro.statemachine.skills.auth.api.AuthUiState
  */
 internal sealed class AuthUiStateImpl : AuthUiState {
     /**
-     * Some common property implementation
-     */
-    override val interactive: Boolean = true
-
-    /**
      * Loading data
      */
     data object Loading : AuthUiStateImpl()
@@ -20,13 +15,22 @@ internal sealed class AuthUiStateImpl : AuthUiState {
      * Login form
      * @property username Username
      * @property password Password
-     * @property loginEnabled If true, the form is complete and the user can log-in
+     * @property passwordRequirements Password requirements description
+     * @property loginEnabled If true, the form is complete and the user can log in
+     * @property canSkip If true, the user can skip the authentication
      */
-    data class Form(val username: String, val password: String, val loginEnabled: Boolean) : AuthUiStateImpl()
+    data class Form(
+        val username: String,
+        val password: String,
+        val passwordRequirements: String,
+        val loginEnabled: Boolean,
+        val canSkip: Boolean
+    ) : AuthUiStateImpl()
 
     /**
      * Displays error
-     * @param message Error message to display
+     * @property message Error message to display
+     * @property canRetry If true, the error is recoverable and can be retried
      */
-    data class Error(val message: String) : AuthUiStateImpl()
+    data class Error(val message: String, val canRetry: Boolean) : AuthUiStateImpl()
 }

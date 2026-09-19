@@ -13,6 +13,7 @@ import io.github.aakira.napier.Napier
  */
 internal class AuthStateFactoryImpl(
     private val preloadingStateFactory: PreloadingState.Factory,
+    private val authenticatingStateFactory: AuthenticatingState.Factory,
     flowHost: CommonFlowHost<AuthResult>,
     renderer: AuthUiRenderer
 ) : AuthStateFactory {
@@ -52,11 +53,21 @@ internal class AuthStateFactoryImpl(
     )
 
     /**
-     * Left for the future
+     * Creates authenticating state
      */
-    override fun authenticating(data: AuthStateData): AuthState {
-        TODO("Implement the authenticating state")
-    }
+    override fun authenticating(data: AuthStateData): AuthState = authenticatingStateFactory.create(
+        context,
+        data
+    )
+
+    /**
+     * Creates authentication error state
+     */
+    override fun authenticationError(data: AuthStateData, error: AppException) = AuthenticationErrorState(
+        context,
+        data,
+        error
+    )
 
     /**
      * Ad-hoc terminated state implementation

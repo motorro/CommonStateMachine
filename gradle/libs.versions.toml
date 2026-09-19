@@ -7,8 +7,11 @@ androidxFragment = "1.9.0"
 androidxHilt = "1.4.0"
 compose = "2026.09.00"
 composeMultiplatform = "1.12.0"
+composeMultiplatformMaterial = "1.9.0"
+composeMultiplatformMaterialIcons = "1.7.3"
 viewmodelMultiplatform = "2.11.0"
 lificyclelMultiplatform = "2.11.0"
+navigationMultiplatform = "1.1.0"
 composeActivity = "1.13.0"
 composeViewmodel = "2.11.0"
 coroutines = "1.11.0"
@@ -83,8 +86,15 @@ compose-foundation-layouts = { module = "androidx.compose.foundation:foundation-
 
 composeMultiplatform-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "composeMultiplatform" }
 composeMultiplatform-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "composeMultiplatform" }
+composeMultiplatform-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "composeMultiplatform" }
+composeMultiplatform-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "composeMultiplatformMaterial" }
+composeMultiplatform-icons = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "composeMultiplatformMaterialIcons" }
+composeMultiplatform-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "composeMultiplatform" }
 composeMultiplatform-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "viewmodelMultiplatform" }
 composeMultiplatform-lifecycle = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lificyclelMultiplatform" }
+composeMultiplatform-navigationevent = { module = "org.jetbrains.androidx.navigationevent:navigationevent-compose", version.ref = "navigationMultiplatform" }
+composeMultiplatform-tooling = { module = "org.jetbrains.compose.ui:ui-tooling", version.ref = "composeMultiplatform" }
+composeMultiplatform-preview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "composeMultiplatform" }
 
 hilt_android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt_compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }

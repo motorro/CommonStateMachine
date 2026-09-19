@@ -1,26 +1,25 @@
 package com.motorro.statemachine.skills.auth.implementation.state
 
 import com.motorro.commonstatemachine.skills.domain.exception.AppException
-import com.motorro.statemachine.skills.auth.api.AuthResult
 import com.motorro.statemachine.skills.auth.implementation.data.AuthGestureImpl
 import com.motorro.statemachine.skills.auth.implementation.data.FATAL_ERROR
-import com.motorro.statemachine.skills.auth.implementation.data.INPUT
 import com.motorro.statemachine.skills.auth.implementation.data.NON_FATAL_ERROR
 import com.motorro.statemachine.skills.auth.implementation.data.UI_STATE
+import com.motorro.statemachine.skills.auth.implementation.data.VALID_FORM_STATE
 import dev.mokkery.answering.returns
 import dev.mokkery.every
 import dev.mokkery.matcher.any
 import dev.mokkery.verify
 import kotlin.test.Test
 
-internal class PreloadingErrorStateTest : BaseStateTest() {
+internal class AuthenticationErrorStateTest : BaseStateTest() {
     override fun doInit() {
         every { renderer.renderFullScreenError(any(), any()) } returns UI_STATE
     }
 
-    private fun createState(error: AppException) = PreloadingErrorState(
+    private fun createState(error: AppException) = AuthenticationErrorState(
         context,
-        INPUT,
+        VALID_FORM_STATE,
         error
     )
 
@@ -45,46 +44,43 @@ internal class PreloadingErrorStateTest : BaseStateTest() {
     }
 
     @Test
-    fun terminatesOnBack() = test {
+    fun returnsToFormOnBack() = test {
         val state = createState(NON_FATAL_ERROR)
-
-        every { stateFactory.terminated(any()) } returns nextState
+        every { stateFactory.form(any()) } returns nextState
 
         state.start(stateMachine)
         state.process(AuthGestureImpl.Back)
 
         verify {
-            stateFactory.terminated(AuthResult(authenticated = false))
+            stateFactory.form(VALID_FORM_STATE)
             stateMachine.setMachineState(nextState)
         }
     }
 
     @Test
-    fun terminatesOnActionIfCannotRetry() = test {
-        val state = createState(FATAL_ERROR)
-
-        every { stateFactory.terminated(any()) } returns nextState
-
-        state.start(stateMachine)
-        state.process(AuthGestureImpl.Action)
-
-        verify {
-            stateFactory.terminated(AuthResult(authenticated = false))
-            stateMachine.setMachineState(nextState)
-        }
-    }
-
-    @Test
-    fun reloadsOnActionIfCanRetry() = test {
+    fun retriesOnActionIfRetryable() = test {
         val state = createState(NON_FATAL_ERROR)
-
-        every { stateFactory.preloading(any()) } returns nextState
+        every { stateFactory.authenticating(any()) } returns nextState
 
         state.start(stateMachine)
         state.process(AuthGestureImpl.Action)
 
         verify {
-            stateFactory.preloading(INPUT)
+            stateFactory.authenticating(VALID_FORM_STATE)
+            stateMachine.setMachineState(nextState)
+        }
+    }
+
+    @Test
+    fun returnsToFormOnActionIfNotRetryable() = test {
+        val state = createState(FATAL_ERROR)
+        every { stateFactory.form(any()) } returns nextState
+
+        state.start(stateMachine)
+        state.process(AuthGestureImpl.Action)
+
+        verify {
+            stateFactory.form(VALID_FORM_STATE)
             stateMachine.setMachineState(nextState)
         }
     }
