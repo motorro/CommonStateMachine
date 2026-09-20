@@ -90,7 +90,7 @@ The typical error state would:
 - May switch back to the loading state if the error is considered recoverable.
 - States of that kind are usually rather simple so you don't need any state-factory.
 
-### Example 3. Form state
+## Example 3. Form state
 For example of a state that handles the user input, validates and prepares the data, take a look at the [FormState](../assets/example/implementation/state/FormState.kt) class.
 The state does the following when started:
 

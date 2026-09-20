@@ -30,7 +30,7 @@ Take a look at the [example](../assets/example/implementation/state/BaseAuthStat
 
 ## Step 3. Basic gesture processing
 The `com.motorro.commonstatemachine.CommonMachineState` processes the user gestures in the `doProcess` method. 
-The concrete state usually only processes those gestures he is interested in.
+The concrete state usually only processes those gestures it is interested in.
 Example: the login form state is interested only in gestures that are relevant to login actions, it does not process 
 gestures of the logout screen.
 If the project uses the logging framework, add a simple `doProcess` override to the base class: if the state gets the

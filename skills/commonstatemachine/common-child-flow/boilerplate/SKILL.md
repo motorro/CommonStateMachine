@@ -100,9 +100,9 @@ Then follow these guides for the module implementation:
 ## Step 4. Create the machine states
 For the user to kick-off faster, we will create some machine-states:
 
-- If the user gave you the instructions about what would be the state-flow, or what states does he need - create the states for him. 
+- If the user gave you the instructions about what would be the state-flow, or what states they need - create the states for them. 
   Implement the required functionality or place TODOs in place of the code if it is not clear what to do exactly.
-  Don't hesitate to ask the user to clarify what he needs.
+  Don't hesitate to ask the user to clarify what they need.
 - If the user didn't give you any specifics, create a classic LCE example:
   - create a dummy preloading state
   - create a dummy content state
