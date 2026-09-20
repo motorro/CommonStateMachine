@@ -36,7 +36,7 @@ Your task here is to:
 
 Take a look at the [example](../assets/example/implementation/state/AuthState.kt).
 
-## Step 4. UI renderer interface
+## Step 3. UI renderer interface
 States are encouraged to use a separate renderer interface that translates the [interstate data](data-and-ui-implementation.md#step-3-interstate-data) 
 to the [UI state](data-and-ui-implementation.md#step-2-ui-states).
 

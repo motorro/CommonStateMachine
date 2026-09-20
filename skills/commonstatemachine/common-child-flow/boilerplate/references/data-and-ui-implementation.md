@@ -17,7 +17,7 @@ Follow these common rules:
 
 - Make the created structure internal.
 - Create data objects for gestures that don't carry any data. Example: user clicks the Back button.
-- Create data classes for gestures that carry some data. Example: user changes an input text and the new value is passed with the event.## UI gestures.
+- Create data classes for gestures that carry some data. Example: user changes an input text and the new value is passed with the event.
 - Always include the data object for the backwards navigation gesture: `Back`.
 - If user didn't give you any information on the input gestures he wants, `Back` would be the only child object in a structure.
 - If user gives you a picture of a user interface - inspect it and create gestures for every screen.

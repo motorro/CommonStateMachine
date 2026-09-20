@@ -3,7 +3,7 @@ Use this reference to create test fixtures for the [data classes of the feature 
 
 1. Create a `data` sub-package in the test source set.
 2. Create a fixture file for data-class gestures.
-3. Create some ui-state fixture to use when mocking the [renderer](renderer-factory-context-interface-implementation.md#step-4-ui-renderer-interface).
+3. Create some ui-state fixture to use when mocking the [renderer](renderer-factory-context-interface-implementation.md#step-3-ui-renderer-interface).
 4. Create a fixture file for data-class interstate data, input and result data classes.
    
 For the fixture data, scan the project for already defined fixtures available and prefer using them instead of creating 

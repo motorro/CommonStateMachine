@@ -1,5 +1,5 @@
 # Module implementation: renderer implementation
-Use this reference to implement the [UI-renderer](renderer-factory-context-interface-implementation.md#step-4-ui-renderer-interface) (if used in the module).
+Use this reference to implement the [UI-renderer](renderer-factory-context-interface-implementation.md#step-3-ui-renderer-interface) (if used in the module).
 
 ## Step 1. Implement renderer
 Follow these steps:

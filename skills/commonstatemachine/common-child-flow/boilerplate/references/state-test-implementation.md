@@ -38,7 +38,7 @@ Example: the [test](../assets/example/implementation-tests/state/PreloadingError
 - The state asynchronously loads some data with the use-case at startup.
 - You need to check the state displays `Loading`.
 
-# Step 2. Testing the asynchronous outcomes
+## Step 2. Testing the asynchronous outcomes
 If the state uses any use-cases or asynchronous operations run at startup, check their outcome:
 
 - UI updates if any.

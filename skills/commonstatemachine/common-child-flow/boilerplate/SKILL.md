@@ -94,8 +94,8 @@ Then follow these guides for the module implementation:
 1. [Create gestures, ui-states, data-state](references/data-and-ui-implementation.md).
 2. [Create common-state binding, ui-renderer, state factory and context interfaces](references/renderer-factory-context-interface-implementation.md).
 3. [Create basic test fixtures for the data-classes created in the previous state](references/test-fixtures-implementation.md).
-4. [Create an abstract base state](references/renderer-factory-context-interface-implementation.md).
-5. [Create a base abstract unit-test class](references/renderer-factory-context-interface-implementation.md).
+4. [Create an abstract base state](references/base-state-implementation.md).
+5. [Create a base abstract unit-test class](references/base-test-class-implementation.md).
 
 ## Step 4. Create the machine states
 For the user to kick-off faster, we will create some machine-states:
@@ -121,7 +121,7 @@ Follow these steps to implement the views:
 2. [Implement sample composables](references/ui-view-implementation.md)
 
 ## Step 6. Create API implementation and DI modules
-To be able to use the created implementation, follow this guide to implement:
+To be able to use the created implementation, follow [this guide](references/di-implementation.md) to implement:
 
 - Data and UI API implementations
 - DI Modules (optional)

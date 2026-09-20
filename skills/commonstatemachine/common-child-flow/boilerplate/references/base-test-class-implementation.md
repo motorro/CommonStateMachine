@@ -17,7 +17,7 @@ Create the following protected properties to use in child test-classes:
 
 - `stateMachine` - `com.motorro.commonstatemachine.CommonStateMachine` mock bound with [implementation gesture and ui-state types](data-and-ui-implementation.md)
 - `stateFactory` - [machine state factory mock](renderer-factory-context-interface-implementation.md#step-2-state-factory-interface)
-- `renderer` - [ui state renderer mock](renderer-factory-context-interface-implementation.md#step-4-ui-renderer-interface)
+- `renderer` - [ui state renderer mock](renderer-factory-context-interface-implementation.md#step-3-ui-renderer-interface)
 - `flowHost` - `com.motorro.commonstatemachine.flow.data.CommonFlowHost` mock bound with the return type
 - `context` - [interstate context mock](renderer-factory-context-interface-implementation.md#step-4-state-context)
 - `nextState` - a bound `com.motorro.commonstatemachine.CommonMachineState` type to use with the state-factory mock.
