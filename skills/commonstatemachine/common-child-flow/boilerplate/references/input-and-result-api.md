@@ -12,11 +12,11 @@ Example: the main application flow could run a child flow in-place to log the us
 ## Step 1. Input
 If the user asks to provide any input - create an immutable type - a data class or a sealed structure.
 If no input type explicitly required - confirm and use `Unit`
-Take a look at the [class diagram](../assets/common-child-flow.puml) for more details.
+Take a look at the [class diagram](common-child-flow.puml) for more details.
 Take a look at the [example](../assets/example/api/AuthInput.kt) - common API definition
 
 ## Step 2. Result
 If the user asks to provide a flow result - create an immutable type - a data class or a sealed structure.
 If no result type explicitly required - confirm and use `Unit`
-Take a look at the [class diagram](../assets/common-child-flow.puml) for more details.
+Take a look at the [class diagram](common-child-flow.puml) for more details.
 Take a look at the [example](../assets/example/api/AuthResult.kt) - common API definition

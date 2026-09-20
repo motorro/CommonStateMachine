@@ -20,6 +20,8 @@ desugaring = "2.1.5"
 dokka = "2.2.0"
 git = "5.3.3"
 hilt = "2.60.1"
+koin-plugin = "1.2.1"
+koin-bom = "4.2.2"
 ksp = "2.3.12"
 kotlin = "2.4.20"
 kotlinDatetime = "0.8.0"
@@ -49,11 +51,15 @@ android_kotlin_multiplatform_library = { id = "com.android.kotlin.multiplatform.
 kotlin_dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+koin = { id = "io.insert-koin.compiler.plugin", version.ref = "koin-plugin" }
 mockery = { id = "dev.mokkery", version.ref = "mokkery" }
 git = { id = "org.ajoberstar.grgit", version.ref = "git" }
 nexus_publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexusPublish" }
 
 [libraries]
+insert-koin-koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel" }
+insert-koin-koin-compose = { module = "io.insert-koin:koin-compose" }
+insert-koin-koin-android = { module = "io.insert-koin:koin-android" }
 kotlin-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "immutable" }
 kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
@@ -100,6 +106,14 @@ hilt_android = { module = "com.google.dagger:hilt-android", version.ref = "hilt"
 hilt_compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 hilt_compiler_androidx = { module = "androidx.hilt:hilt-compiler", version.ref = "androidxHilt" }
 hilt_compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "androidxHilt" }
+
+koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koin-bom" }
+koin-core = { module = "io.insert-koin:koin-core" }
+koin-core-viewmodel = { module = "io.insert-koin:koin-core-viewmodel" }
+koin-annotations = { module = "io.insert-koin:koin-annotations" }
+koin-android = { module = "io.insert-koin:koin-android" }
+koin-compose = { module = "io.insert-koin:koin-compose" }
+koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel" }
 
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 

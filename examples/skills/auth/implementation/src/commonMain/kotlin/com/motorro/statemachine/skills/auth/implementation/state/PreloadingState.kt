@@ -9,6 +9,7 @@ import com.motorro.statemachine.skills.auth.implementation.data.AuthStateData
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
+import org.koin.core.annotation.Factory
 
 /**
  * Example of a state that preloads some data with the usecase
@@ -66,7 +67,8 @@ internal class PreloadingState(
      * State factory
      * State dependencies are injected here
      */
-    class Factory(private val getPasswordRequirements: GetPasswordRequirements) {
+    @Factory
+    class StateFactory(private val getPasswordRequirements: GetPasswordRequirements) {
         fun create(context: AuthContext, input: AuthInput): AuthState = PreloadingState(
             context = context,
             input = input,

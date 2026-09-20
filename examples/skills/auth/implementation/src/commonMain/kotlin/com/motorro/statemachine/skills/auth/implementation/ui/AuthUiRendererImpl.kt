@@ -3,10 +3,12 @@ package com.motorro.statemachine.skills.auth.implementation.ui
 import com.motorro.commonstatemachine.skills.domain.exception.AppException
 import com.motorro.statemachine.skills.auth.implementation.data.AuthStateData
 import com.motorro.statemachine.skills.auth.implementation.data.AuthUiStateImpl
+import org.koin.core.annotation.Factory
 
 /**
  * UI renderer implementation
  */
+@Factory
 internal class AuthUiRendererImpl : AuthUiRenderer {
 
     override fun renderLoading(): AuthUiStateImpl = AuthUiStateImpl.Loading

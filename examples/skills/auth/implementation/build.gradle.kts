@@ -20,6 +20,7 @@ plugins {
     alias(libs.plugins.compose)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.mockery)
+    alias(libs.plugins.koin)
 }
 
 val versionName: String by project.extra
@@ -64,6 +65,9 @@ kotlin {
             implementation(libs.napier)
             implementation(libs.composeMultiplatform.resources)
             implementation(libs.composeMultiplatform.preview)
+            implementation(project.dependencies.platform(libs.koin.bom))
+            implementation(libs.koin.core)
+            implementation(libs.koin.annotations)
         }
         commonTest.dependencies {
             implementation(libs.test.kotlin)

@@ -5,7 +5,7 @@ Use this reference to create auxiliary interfaces and classes:
 - UI-state renderer
 - Interstate context
 
-Take a look at the [class diagram](../assets/common-child-flow.puml) to get the idea about components purpose.
+Take a look at the [class diagram](common-child-flow.puml) to get the idea about components purpose.
 
 ## Step 1. CommonMachineState binding
 The framework main building block is a `com.motorro.commonstatemachine.CommonMachineState` - it is a logical state of a state-machine running the flow.

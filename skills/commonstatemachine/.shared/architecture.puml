@@ -1,0 +1,51 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+hide empty members
+
+interface CommonStateMachine<G, U> {
+    + process(gesture: G)
+    + clear()
+}
+
+abstract class CommonMachineState<G, U> {
+    + {abstract} doStart()
+    + {abstract} doProcess(gesture: G)
+    + {abstract} doClear()
+    # setMachineState(next: CommonMachineState)
+    # setUiState(ui: U)
+}
+
+class FlowStateMachine<G, U> implements CommonStateMachine {
+    + uiState: StateFlow<U>
+}
+
+class ViewModel {
+    - stateMachine: CommonStateMachine
+    + uiState: StateFlow<U>
+    + process(gesture: G)
+}
+
+interface StateFactory {
+    + createNextState(...): CommonMachineState
+}
+
+interface UiRenderer<D, U> {
+    + render(data: D): U
+}
+
+interface StateContext {
+    + factory: StateFactory
+    + renderer: UiRenderer
+}
+
+class DataState << (D, #FF7700) DataClass >>
+
+CommonStateMachine "1" *-- "1" CommonMachineState : current
+ViewModel "1" *-- "1" CommonStateMachine
+CommonMachineState ..> CommonMachineState : transitions
+CommonMachineState -right-> StateContext : uses
+StateContext "1" *-- "1" StateFactory
+StateContext "1" *-- "1" UiRenderer
+UiRenderer ..> DataState : renders
+@enduml

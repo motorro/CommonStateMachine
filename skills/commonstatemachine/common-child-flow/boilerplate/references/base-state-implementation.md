@@ -1,6 +1,6 @@
 # Module implementation: base state
 Use this reference to implement a common base state for the flow.
-Take a look at the [class diagram](../assets/common-child-flow.puml) to get the idea about components purpose.
+Take a look at the [class diagram](common-child-flow.puml) to get the idea about components purpose.
 Take a look at the [example](../assets/example/implementation/state/BaseAuthState.kt).
 
 ## Step 1. Create a base class

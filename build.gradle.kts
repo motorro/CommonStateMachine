@@ -28,6 +28,7 @@ plugins {
     alias(libs.plugins.compose) apply false
     alias(libs.plugins.kotlin.dokka) apply false
     alias(libs.plugins.hilt) apply false
+    alias(libs.plugins.koin) apply false
     alias(libs.plugins.nexus.publish)
     alias(libs.plugins.git)
 }

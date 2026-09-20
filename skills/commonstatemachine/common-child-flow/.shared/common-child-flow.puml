@@ -175,13 +175,13 @@ package Implementation {
         Data API implementation
         Injects factory and initializes the flow by calling `init`
     end note
-    AuthUiStateImpl -up-|> AuthDataApi
+    AuthDataApiImpl -up-|> AuthDataApi
 
     class AuthUiApiImpl
     note bottom
         UI API implementation
         Builds the view with Compose components inside the module
     end note
-    AuthUiStateImpl -up-|> AuthUiApi
+    AuthUiApiImpl -up-|> AuthUiApi
 }
 @enduml

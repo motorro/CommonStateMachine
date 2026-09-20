@@ -7,14 +7,17 @@ import com.motorro.statemachine.skills.auth.api.AuthResult
 import com.motorro.statemachine.skills.auth.implementation.data.AuthStateData
 import com.motorro.statemachine.skills.auth.implementation.ui.AuthUiRenderer
 import io.github.aakira.napier.Napier
+import org.koin.core.annotation.Factory
+import org.koin.core.annotation.InjectedParam
 
 /**
  * Main state-factory implementation
  */
+@Factory
 internal class AuthStateFactoryImpl(
-    private val preloadingStateFactory: PreloadingState.Factory,
-    private val authenticatingStateFactory: AuthenticatingState.Factory,
-    flowHost: CommonFlowHost<AuthResult>,
+    private val preloadingStateFactory: PreloadingState.StateFactory,
+    private val authenticatingStateFactory: AuthenticatingState.StateFactory,
+    @InjectedParam flowHost: CommonFlowHost<AuthResult>,
     renderer: AuthUiRenderer
 ) : AuthStateFactory {
 

@@ -17,22 +17,25 @@ metadata:
 ---
 
 ## Description
-Use this skill to add a new feature boilerplate to the app based on the [CommonStateMachine](https://github.com/motorro/CommonStateMachine) architecture.
-following the [Common Child Flow](https://github.com/motorro/CommonStateMachine/tree/master#common-child-flow-api) design. This design sets a common approach to use proxy state machines for a feature-flow.
+Use this skill to add a new feature boilerplate to the app based on the `CommonStateMachine` architecture.
+following the `Common Child Flow` design. This design sets a common approach to use proxy state machines for a feature-flow.
+
+For a deeper dive into the state machine mechanics and common components, refer to the [Core Architecture](references/ARCHITECTURE.md).
+For a deeper dive into the common child flow philosophy and design, refer to the [Common Child Flow Architecture](references/COMMON-CHILD-FLOW.md).
 
 ## Example
-This instruction uses an example authentication module. All examples, schemes and code samples refer
+This instruction uses an [example authentication module](assets/example). All examples, schemes and code samples refer
 to such an example. Adjust the names and packages to your actual need.
 
 ## Strategy
-You will create a set of gradle modules that together form a feature:
+You will create a set of Gradle modules that together form a feature:
 
 - The API module: contains the definition of input and output data types for the feature. 
   Example: authentication API that provides the basic interface to the authentication feature.
 - One or more implementation modules: contains the implementation of the API.
   Example: login implementation module - implements API with login/password functionality.
 
-Take a look at the [class diagram](assets/common-child-flow.puml). It contains an overview
+Take a look at the [class diagram](references/common-child-flow.puml). It contains an overview
 between all the interfaces, classes and objects in a setup using the Authentication module example.
 
 Follow the following common rules when writing code:
@@ -116,3 +119,9 @@ Follow these steps to implement the views:
 
 1. [Implement UI renderer if used](references/ui-renderer-implementation.md)
 2. [Implement sample composables](references/ui-view-implementation.md)
+
+## Step 6. Create API implementation and DI modules
+To be able to use the created implementation, follow this guide to implement:
+
+- Data and UI API implementations
+- DI Modules (optional)

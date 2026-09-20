@@ -1,6 +1,6 @@
 # Module implementation: data classes
 Use this reference to create data classes for the feature implementation.
-Take a look at the [class diagram](../assets/common-child-flow.puml) to get the idea about the data types within the module.
+Take a look at the [class diagram](common-child-flow.puml) to get the idea about the data types within the module.
 
 ## Step 1. UI gestures
 Create the sealed class to enumerate all the UI events (gestures) the user could send to the model:

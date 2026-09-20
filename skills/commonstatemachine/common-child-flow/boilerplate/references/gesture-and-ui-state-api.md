@@ -11,13 +11,13 @@ The framework behind is a Model-View-Intent architecture, so:
 The implementation is hidden from the module consumer using the internal gesture structures.
 To use the feature we export the basic marker interface that may only contain some common public properties.
 This interface would be implemented later in the implementation module.
-Take a look at the [class diagram](../assets/common-child-flow.puml) for more details.
+Take a look at the [class diagram](common-child-flow.puml) for more details.
 Take a look at the [example](../assets/example/api/AuthGesture.kt) - common API definition
 
 ## Step 2. UI-states
 The implementation is hidden from the module consumer using the internal ui-state structures.
 To use the feature we export the basic marker interface that may only contain some common public properties.
 This interface would be implemented later in the implementation module.
-Take a look at the [class diagram](../assets/common-child-flow.puml) for more details.
+Take a look at the [class diagram](common-child-flow.puml) for more details.
 Take a look at the [example](../assets/example/api/AuthUiState.kt) - common API definition
 

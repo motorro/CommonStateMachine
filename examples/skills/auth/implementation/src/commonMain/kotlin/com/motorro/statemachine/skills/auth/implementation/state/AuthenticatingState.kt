@@ -8,6 +8,7 @@ import com.motorro.statemachine.skills.auth.implementation.data.AuthStateData
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
+import org.koin.core.annotation.Factory
 
 /**
  * Authenticates the user
@@ -68,7 +69,8 @@ internal class AuthenticatingState(
      * State factory
      * State dependencies are injected here
      */
-    class Factory(private val authenticate: AuthenticateWithPassword) {
+    @Factory
+    class StateFactory(private val authenticate: AuthenticateWithPassword) {
         fun create(context: AuthContext, data: AuthStateData): AuthState = AuthenticatingState(
             context = context,
             data = data,
