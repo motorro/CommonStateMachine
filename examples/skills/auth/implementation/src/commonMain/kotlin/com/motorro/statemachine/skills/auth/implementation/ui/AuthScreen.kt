@@ -1,23 +1,15 @@
 package com.motorro.statemachine.skills.auth.implementation.ui
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import com.motorro.statemachine.auth.appcore.ui.design.SkillsAppBar
 import com.motorro.statemachine.auth.appcore.ui.preview.SkillsPreviewComposition
-import com.motorro.statemachine.skills.auth.implementation.Res
 import com.motorro.statemachine.skills.auth.implementation.data.AuthGestureImpl
 import com.motorro.statemachine.skills.auth.implementation.data.AuthUiStateImpl
-import com.motorro.statemachine.skills.auth.implementation.title
-import org.jetbrains.compose.resources.stringResource
 
 /**
  * Authentication screen
@@ -28,35 +20,22 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 internal fun AuthScreen(
     state: AuthUiStateImpl,
+    modifier: Modifier = Modifier,
     onGesture: (AuthGestureImpl) -> Unit,
 ) {
-    val onBack = remember {
-        { onGesture(AuthGestureImpl.Back) }
-    }
-    Scaffold(
-        topBar = {
-            SkillsAppBar(
-                title = stringResource(Res.string.title),
-                modifier = Modifier.fillMaxWidth(),
-                topLevel = false,
-                onBack = onBack
-            )
-        }
-    ) { paddingValues ->
-        val modifier = Modifier.fillMaxSize().padding(paddingValues)
-        when(state) {
-            AuthUiStateImpl.Loading -> AuthLoadingScreen(modifier)
-            is AuthUiStateImpl.Error -> AuthErrorScreen(
-                state = state,
-                modifier = modifier,
-                onGesture = onGesture
-            )
-            is AuthUiStateImpl.Form -> AuthFormScreen(
-                state = state,
-                modifier = modifier,
-                onGesture = onGesture
-            )
-        }
+    val modifier = modifier.fillMaxSize()
+    when(state) {
+        AuthUiStateImpl.Loading -> AuthLoadingScreen(modifier)
+        is AuthUiStateImpl.Error -> AuthErrorScreen(
+            state = state,
+            modifier = modifier,
+            onGesture = onGesture
+        )
+        is AuthUiStateImpl.Form -> AuthFormScreen(
+            state = state,
+            modifier = modifier,
+            onGesture = onGesture
+        )
     }
 }
 

@@ -30,6 +30,13 @@ version = versionName
 kotlin {
     jvmToolchain(21)
 
+    compilerOptions.freeCompilerArgs.addAll(listOf(
+        "-opt-in=kotlin.RequiresOptIn",
+        "-Xexpect-actual-classes",
+        "-Xexplicit-backing-fields",
+        "-Xcontext-parameters"
+    ))
+
     android {
         namespace = "com.motorro.statemachine.skills.domain"
         compileSdk = androidCompileSdkVersion
@@ -42,7 +49,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(libs.kotlin.coroutines.core)
+            api(libs.kotlin.coroutines.core)
         }
     }
 }

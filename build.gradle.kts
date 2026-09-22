@@ -15,7 +15,7 @@
 
 import groovy.lang.Closure
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompile
 
 plugins {
     alias(libs.plugins.android.app) apply false
@@ -62,13 +62,11 @@ allprojects {
     val projectScm by extra("https://github.com/motorro/CommonStateMachine.git")
     val projectUrl by extra("https://github.com/motorro/CommonStateMachine")
 
-    tasks.withType<KotlinCompile>().configureEach {
-        compilerOptions {
-            freeCompilerArgs.addAll(listOf(
-                "-opt-in=kotlin.RequiresOptIn",
-                "-Xexpect-actual-classes"
-            ))
-        }
+    tasks.withType<AbstractKotlinCompile<*>>().configureEach {
+        compilerOptions.freeCompilerArgs.addAll(listOf(
+            "-opt-in=kotlin.RequiresOptIn",
+            "-Xexplicit-backing-fields"
+        ))
     }
 
     tasks.withType<Test>().configureEach {

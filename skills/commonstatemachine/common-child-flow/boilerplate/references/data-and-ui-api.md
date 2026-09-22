@@ -12,13 +12,17 @@ The [Common Child Flow](https://github.com/motorro/CommonStateMachine/tree/maste
   The API implementation is then created in the implementation module and could be injected into the composition using locals or any other way.
 
 ## Step 1. Data flow
-Take the created [Gestures and UI-states](gesture-and-ui-state-api.md), [input and result](input-and-result-api.md) and create an interface or a typealias
-to bind the generics of the `com.motorro.commonstatemachine.flow.data.CommonFlowDataApi`. This API would be available to the flow consumer to start the feature flow.
+Take the created [Gestures and UI-states](gesture-and-ui-state-api.md), [input and result](input-and-result-api.md) and create an interface to bind the generics 
+of the `com.motorro.commonstatemachine.flow.data.CommonFlowDataApi`. This API would be available to the flow consumer to start the feature flow.
+
 Take a look at the [class diagram](common-child-flow.puml) for more details.
+
 Take a look at the [example](../assets/example/api/AuthDataApi.kt) - data API definition
 
 ## Step 2. UI flow
-Take the created [Gestures and UI-states](gesture-and-ui-state-api.md) and create an interface or a typealias
-to bind the generics of the `com.motorro.commonstatemachine.flow.compose.CommonFlowUiApi`. This API would be available to the flow consumer to display the feature.
+Take the created [Gestures and UI-states](gesture-and-ui-state-api.md) and create an interface to bind the generics
+of the `com.motorro.commonstatemachine.flow.compose.CommonFlowUiApi`. This API would be available to the flow consumer to display the feature.
+
 Take a look at the [class diagram](common-child-flow.puml) for more details.
+
 Take a look at the [example](../assets/example/api/AuthUiApi.kt) - UI API definition

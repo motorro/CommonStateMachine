@@ -1,11 +1,12 @@
 package com.motorro.statemachine.skills.auth.demo
 
 import android.app.Application
-import com.motorro.commonstatemachine.skills.domain.entity.PasswordRequirements
+import com.motorro.commonstatemachine.skills.domain.authenticate.AuthenticateWithPassword
+import com.motorro.commonstatemachine.skills.domain.authenticate.GetPasswordRequirements
+import com.motorro.commonstatemachine.skills.domain.authenticate.data.PasswordRequirements
 import com.motorro.commonstatemachine.skills.domain.exception.AuthenticationException
 import com.motorro.commonstatemachine.skills.domain.exception.IOException
-import com.motorro.commonstatemachine.skills.domain.usecase.AuthenticateWithPassword
-import com.motorro.commonstatemachine.skills.domain.usecase.GetPasswordRequirements
+import com.motorro.commonstatemachine.skills.domain.session.data.Username
 import com.motorro.statemachine.skills.auth.implementation.AuthModule
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
@@ -35,7 +36,7 @@ class App : Application() {
 }
 
 @Module(includes = [AuthModule::class])
-@ComponentScan("com.motorro.statemachine.skills.auth.demo")
+@ComponentScan
 class AppModule {
 
     @Single
@@ -69,7 +70,7 @@ class AppModule {
         var attempt = 1
         val tag = AuthenticateWithPassword::class.simpleName!!
         return object : AuthenticateWithPassword {
-            override suspend fun invoke(username: String, password: String) {
+            override suspend fun invoke(username: Username, password: String) {
                 delay(2.seconds)
                 when (attempt) {
                     1 -> {

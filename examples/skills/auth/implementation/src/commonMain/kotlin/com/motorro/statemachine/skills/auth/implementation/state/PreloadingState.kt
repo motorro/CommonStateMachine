@@ -1,7 +1,7 @@
 package com.motorro.statemachine.skills.auth.implementation.state
 
+import com.motorro.commonstatemachine.skills.domain.authenticate.GetPasswordRequirements
 import com.motorro.commonstatemachine.skills.domain.exception.toAppException
-import com.motorro.commonstatemachine.skills.domain.usecase.GetPasswordRequirements
 import com.motorro.statemachine.skills.auth.api.AuthInput
 import com.motorro.statemachine.skills.auth.api.AuthResult
 import com.motorro.statemachine.skills.auth.implementation.data.AuthGestureImpl

@@ -125,3 +125,8 @@ To be able to use the created implementation, follow [this guide](references/di-
 
 - Data and UI API implementations
 - DI Modules (optional)
+
+## Step 7. Proxy creation (optional)
+If the user wants to integrate the child flow to one or several parent flows,
+implement the proxy machine states for the hosting flows.
+Read [this guide](references/proxy-implementation.md) for more information.

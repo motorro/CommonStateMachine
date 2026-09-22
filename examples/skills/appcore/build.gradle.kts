@@ -32,6 +32,13 @@ version = versionName
 kotlin {
     jvmToolchain(21)
 
+    compilerOptions.freeCompilerArgs.addAll(listOf(
+        "-opt-in=kotlin.RequiresOptIn",
+        "-Xexpect-actual-classes",
+        "-Xexplicit-backing-fields",
+        "-Xcontext-parameters"
+    ))
+
     android {
         namespace = "com.motorro.statemachine.skills.appcore"
         compileSdk = androidCompileSdkVersion

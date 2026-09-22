@@ -1,4 +1,4 @@
-package com.motorro.commonstatemachine.skills.domain.entity
+package com.motorro.commonstatemachine.skills.domain.authenticate.data
 
 /**
  * Password requirements

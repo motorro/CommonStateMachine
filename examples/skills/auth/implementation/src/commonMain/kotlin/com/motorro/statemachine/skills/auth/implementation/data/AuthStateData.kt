@@ -1,6 +1,6 @@
 package com.motorro.statemachine.skills.auth.implementation.data
 
-import com.motorro.commonstatemachine.skills.domain.entity.PasswordRequirements
+import com.motorro.commonstatemachine.skills.domain.authenticate.data.PasswordRequirements
 import com.motorro.statemachine.skills.auth.api.AuthInput
 
 /**

@@ -1,6 +1,6 @@
-package com.motorro.commonstatemachine.skills.domain.usecase
+package com.motorro.commonstatemachine.skills.domain.authenticate
 
-import com.motorro.commonstatemachine.skills.domain.entity.PasswordRequirements
+import com.motorro.commonstatemachine.skills.domain.authenticate.data.PasswordRequirements
 
 /**
  * Loads password requirements

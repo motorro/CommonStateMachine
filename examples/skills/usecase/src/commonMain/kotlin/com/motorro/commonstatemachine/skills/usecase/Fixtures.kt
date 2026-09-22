@@ -1,0 +1,21 @@
+package com.motorro.commonstatemachine.skills.usecase
+
+import com.motorro.commonstatemachine.skills.domain.authenticate.data.PasswordRequirements
+import com.motorro.commonstatemachine.skills.domain.session.data.Username
+import kotlin.time.Duration.Companion.seconds
+
+internal object Fixtures {
+
+    val NETWORK_DELAY = 2.seconds
+
+    object Authentication {
+        val REQUIREMENTS = PasswordRequirements(
+            regex = "^.{8,}$".toRegex(),
+            description = "Minimum eight characters"
+        )
+
+        val USERNAME = Username("user")
+
+        const val PASSWORD = "password"
+    }
+}

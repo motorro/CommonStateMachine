@@ -1,7 +1,8 @@
 package com.motorro.statemachine.skills.auth.implementation.state
 
+import com.motorro.commonstatemachine.skills.domain.authenticate.AuthenticateWithPassword
 import com.motorro.commonstatemachine.skills.domain.exception.toAppException
-import com.motorro.commonstatemachine.skills.domain.usecase.AuthenticateWithPassword
+import com.motorro.commonstatemachine.skills.domain.session.data.Username
 import com.motorro.statemachine.skills.auth.api.AuthResult
 import com.motorro.statemachine.skills.auth.implementation.data.AuthGestureImpl
 import com.motorro.statemachine.skills.auth.implementation.data.AuthStateData
@@ -50,7 +51,7 @@ internal class AuthenticatingState(
      */
     private fun doAuthenticate() = stateScope.launch {
         try {
-            authenticate(data.username, data.password)
+            authenticate(Username(data.username), data.password)
             // Advance to the next state
             setMachineState {
                 terminated(AuthResult(authenticated = true))

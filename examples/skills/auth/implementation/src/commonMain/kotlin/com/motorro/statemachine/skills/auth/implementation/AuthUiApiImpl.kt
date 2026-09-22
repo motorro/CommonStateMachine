@@ -21,6 +21,7 @@ internal class AuthUiApiImpl : AuthUiApi {
         modifier: Modifier
     ) = AuthScreen(
         state = state as AuthUiStateImpl,
+        modifier = modifier,
         onGesture = onGesture
     )
 }

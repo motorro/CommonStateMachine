@@ -53,7 +53,7 @@ own state factories put to the DI graph. This lifts a burden of state creation m
 the main state factory implementation.
 Create such a factory for the startup state:
 
-- Implement as a child class with the name `Factory`.
+- Implement as a child class with the name `StateFactory`.
 - If required by the DI framework used in project, add required inject annotations.
 - Inject external dependencies required by the state to the factory constructor.
 - Add a single `create` method that will accept the [context](renderer-factory-context-interface-implementation.md#step-4-state-context) and all the required interstate parameters that will come from the main factory.

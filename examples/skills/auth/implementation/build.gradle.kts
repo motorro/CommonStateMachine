@@ -34,6 +34,13 @@ version = versionName
 kotlin {
     jvmToolchain(21)
 
+    compilerOptions.freeCompilerArgs.addAll(listOf(
+        "-opt-in=kotlin.RequiresOptIn",
+        "-Xexpect-actual-classes",
+        "-Xexplicit-backing-fields",
+        "-Xcontext-parameters"
+    ))
+
     android {
         namespace = "com.motorro.statemachine.skills.auth.implementation"
         compileSdk = androidCompileSdkVersion
@@ -62,12 +69,12 @@ kotlin {
             implementation(libs.kotlin.coroutines.core)
             implementation(libs.composeMultiplatform.runtime)
             implementation(libs.composeMultiplatform.foundation)
-            implementation(libs.napier)
             implementation(libs.composeMultiplatform.resources)
             implementation(libs.composeMultiplatform.preview)
             implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.koin.core)
             implementation(libs.koin.annotations)
+            implementation(libs.napier)
         }
         commonTest.dependencies {
             implementation(libs.test.kotlin)
