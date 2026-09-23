@@ -1,10 +1,11 @@
 package com.motorro.commonstatemachine.skills.domain.friends
 
 import com.motorro.commonstatemachine.skills.domain.friends.data.Friend
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Retrieves a friend list
  */
 interface GetFriendList {
-    suspend operator fun invoke(): List<Friend>
+    operator fun invoke(): Flow<List<Friend>>
 }

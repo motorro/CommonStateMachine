@@ -13,33 +13,17 @@
 
 package com.motorro.statemachine.skills.app.state
 
-import com.motorro.commonstatemachine.skills.domain.session.SessionManager
-import com.motorro.commonstatemachine.skills.domain.session.data.Session
 import com.motorro.statemachine.skills.app.data.MainGesture
 import io.github.aakira.napier.Napier
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import org.koin.core.annotation.Factory
 
-internal class ContentState(context: MainContext, private val sessionManager: SessionManager) : BaseMainState(context) {
+/**
+ * Content stub
+ */
+internal class ContentState(context: MainContext) : BaseMainState(context) {
     override fun doStart() {
-        subscribeSession()
+        setUiState(renderer.renderContent())
     }
-
-    private fun subscribeSession() = sessionManager
-        .session
-        .catch { emit(Session.None) }
-        .onEach {
-            when(it) {
-                is Session.None -> {
-                    Napier.d("No session. Switching to Auth...")
-                    setMachineState(factory.auth())
-                }
-                is Session.Active -> setUiState(renderer.renderContent())
-            }
-        }
-        .launchIn(stateScope)
 
     override fun doProcess(gesture: MainGesture) {
         when (gesture) {
@@ -52,10 +36,9 @@ internal class ContentState(context: MainContext, private val sessionManager: Se
     }
 
     @Factory
-    class StateFactory(private val sessionManager: SessionManager) {
+    class StateFactory() {
         fun create(context: MainContext) = ContentState(
-            context,
-            sessionManager
+            context
         )
     }
 }
