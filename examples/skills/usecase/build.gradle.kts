@@ -25,9 +25,6 @@ val androidMinSdkVersion: Int by project.extra
 val androidTargetSdkVersion: Int by project.extra
 val androidCompileSdkVersion: Int by project.extra
 
-group = "com.motorro"
-version = versionName
-
 kotlin {
     jvmToolchain(21)
 
