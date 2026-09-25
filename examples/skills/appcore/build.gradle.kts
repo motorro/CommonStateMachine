@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 /*
 * Copyright 2023 Nikolai Kotchetkov.
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,68 +10,19 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    alias(libs.plugins.kotlin.multiplatform)
-    alias(libs.plugins.android.kotlin.multiplatform.library)
-    alias(libs.plugins.compose)
-    alias(libs.plugins.composeMultiplatform)
+    alias(libs.plugins.motorro.cmp)
 }
-
-val versionName: String by project.extra
-val androidMinSdkVersion: Int by project.extra
-val androidTargetSdkVersion: Int by project.extra
-val androidCompileSdkVersion: Int by project.extra
 
 kotlin {
-    jvmToolchain(21)
-
-    compilerOptions.freeCompilerArgs.addAll(listOf(
-        "-opt-in=kotlin.RequiresOptIn",
-        "-Xexpect-actual-classes",
-        "-Xexplicit-backing-fields",
-        "-Xcontext-parameters"
-    ))
-
-    android {
-        namespace = "com.motorro.statemachine.skills.appcore"
-        compileSdk = androidCompileSdkVersion
-        minSdk = androidMinSdkVersion
-
-        withHostTest {
-            isIncludeAndroidResources = true
-        }
-
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
-        }
-
-        androidResources.enable = true
-    }
-
     sourceSets {
         commonMain.dependencies {
-            api(libs.composeMultiplatform.runtime)
-            api(libs.composeMultiplatform.foundation)
-            api(libs.composeMultiplatform.ui)
-            api(libs.composeMultiplatform.resources)
-            api(libs.composeMultiplatform.material3)
-            api(libs.composeMultiplatform.icons)
-            implementation(libs.composeMultiplatform.navigationevent)
-            implementation(libs.composeMultiplatform.preview)
+            api(libs.compose.multiplatform.icons)
+            implementation(libs.compose.multiplatform.navigationevent)
+            implementation(libs.compose.multiplatform.preview)
         }
     }
-}
-
-dependencies {
-    androidRuntimeClasspath(libs.composeMultiplatform.tooling)
-}
-
-compose.resources {
-    publicResClass = false
-    packageOfResClass = "com.motorro.statemachine.skills.appcore"
-    generateResClass = always
 }
 
 

@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 /*
 * Copyright 2023 Nikolai Kotchetkov.
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,38 +10,12 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    alias(libs.plugins.kotlin.multiplatform)
-    alias(libs.plugins.android.kotlin.multiplatform.library)
+    alias(libs.plugins.motorro.kmp)
 }
 
-val versionName: String by project.extra
-val androidMinSdkVersion: Int by project.extra
-val androidTargetSdkVersion: Int by project.extra
-val androidCompileSdkVersion: Int by project.extra
-
 kotlin {
-    jvmToolchain(21)
-
-    compilerOptions.freeCompilerArgs.addAll(listOf(
-        "-opt-in=kotlin.RequiresOptIn",
-        "-Xexpect-actual-classes",
-        "-Xexplicit-backing-fields",
-        "-Xcontext-parameters"
-    ))
-
-    android {
-        namespace = "com.motorro.statemachine.skills.domain"
-        compileSdk = androidCompileSdkVersion
-        minSdk = androidMinSdkVersion
-
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
-        }
-    }
-
     sourceSets {
         commonMain.dependencies {
             api(libs.kotlin.coroutines.core)

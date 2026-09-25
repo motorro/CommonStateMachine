@@ -37,6 +37,8 @@ dependencyResolutionManagement {
 }
 rootProject.name = "CommonStateMachine"
 
+includeBuild("build-logic")
+
 // Libraries
 include(":tmap")
 include(":commonstatemachine")
@@ -53,10 +55,8 @@ project(":commonflow:viewmodel").name = "commonflow-viewmodel"
 // Examples
 include(
         ":examples:commoncore",
-        ":examples:androidcore",
-        ":examples:welcome:welcome",
+    ":examples:welcome:app",
         ":examples:welcome:login",
-        ":examples:welcome:commonregister",
         ":examples:welcome:commonapi",
         ":examples:welcome:register",
         ":examples:lce",

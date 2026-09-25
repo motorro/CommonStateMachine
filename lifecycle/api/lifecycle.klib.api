@@ -22,7 +22,3 @@ final class com.motorro.commonstatemachine.lifecycle/UiMachineLifecycle : com.mo
         final fun (com.motorro.commonstatemachine.lifecycle/UiMachineLifecycle).bindLifecycle(androidx.lifecycle/Lifecycle): com.motorro.commonstatemachine.lifecycle/UiMachineLifecycle.UiObserver // com.motorro.commonstatemachine.lifecycle/UiMachineLifecycle.Companion.bindLifecycle|bindLifecycle@com.motorro.commonstatemachine.lifecycle.UiMachineLifecycle(androidx.lifecycle.Lifecycle){}[0]
     }
 }
-
-final val com.motorro.commonstatemachine.lifecycle/com_motorro_commonstatemachine_lifecycle_UiMachineLifecycle$stableprop // com.motorro.commonstatemachine.lifecycle/com_motorro_commonstatemachine_lifecycle_UiMachineLifecycle$stableprop|#static{}com_motorro_commonstatemachine_lifecycle_UiMachineLifecycle$stableprop[0]
-
-final fun com.motorro.commonstatemachine.lifecycle/com_motorro_commonstatemachine_lifecycle_UiMachineLifecycle$stableprop_getter(): kotlin/Int // com.motorro.commonstatemachine.lifecycle/com_motorro_commonstatemachine_lifecycle_UiMachineLifecycle$stableprop_getter|com_motorro_commonstatemachine_lifecycle_UiMachineLifecycle$stableprop_getter(){}[0]

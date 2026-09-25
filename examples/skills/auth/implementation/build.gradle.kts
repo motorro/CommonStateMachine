@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 /*
 * Copyright 2023 Nikolai Kotchetkov.
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,48 +10,14 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    alias(libs.plugins.kotlin.multiplatform)
-    alias(libs.plugins.android.kotlin.multiplatform.library)
-    alias(libs.plugins.compose)
-    alias(libs.plugins.composeMultiplatform)
+    alias(libs.plugins.motorro.cmp)
     alias(libs.plugins.mockery)
     alias(libs.plugins.koin)
 }
 
-val versionName: String by project.extra
-val androidMinSdkVersion: Int by project.extra
-val androidTargetSdkVersion: Int by project.extra
-val androidCompileSdkVersion: Int by project.extra
-
 kotlin {
-    jvmToolchain(21)
-
-    compilerOptions.freeCompilerArgs.addAll(listOf(
-        "-opt-in=kotlin.RequiresOptIn",
-        "-Xexpect-actual-classes",
-        "-Xexplicit-backing-fields",
-        "-Xcontext-parameters"
-    ))
-
-    android {
-        namespace = "com.motorro.statemachine.skills.auth.implementation"
-        compileSdk = androidCompileSdkVersion
-        minSdk = androidMinSdkVersion
-
-        withHostTest {
-            isIncludeAndroidResources = true
-        }
-
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
-        }
-
-        androidResources.enable = true
-    }
-
     sourceSets {
         commonMain.dependencies {
             implementation(project(":commonstatemachine"))
@@ -64,30 +28,15 @@ kotlin {
             implementation(project(":examples:skills:appcore"))
             implementation(project(":examples:skills:auth:api"))
             implementation(libs.kotlin.coroutines.core)
-            implementation(libs.composeMultiplatform.runtime)
-            implementation(libs.composeMultiplatform.foundation)
-            implementation(libs.composeMultiplatform.resources)
-            implementation(libs.composeMultiplatform.preview)
             implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.koin.core)
             implementation(libs.koin.annotations)
             implementation(libs.napier)
         }
         commonTest.dependencies {
-            implementation(libs.test.kotlin)
             implementation(libs.test.kotlin.coroutines)
         }
     }
-}
-
-dependencies {
-    androidRuntimeClasspath(libs.composeMultiplatform.tooling)
-}
-
-compose.resources {
-    publicResClass = false
-    packageOfResClass = "com.motorro.statemachine.skills.auth.implementation"
-    generateResClass = always
 }
 
 

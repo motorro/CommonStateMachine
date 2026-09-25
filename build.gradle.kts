@@ -13,9 +13,9 @@
 
 @file:Suppress("unused")
 
-import groovy.lang.Closure
+import com.motorro.gradle.convention.buildVersionCode
+import com.motorro.gradle.convention.buildVersionName
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
-import org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompile
 
 plugins {
     alias(libs.plugins.android.app) apply false
@@ -26,20 +26,13 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.google.ksp) apply false
     alias(libs.plugins.compose) apply false
+    alias(libs.plugins.compose.multiplatform) apply false
     alias(libs.plugins.kotlin.dokka) apply false
     alias(libs.plugins.hilt) apply false
     alias(libs.plugins.koin) apply false
     alias(libs.plugins.nexus.publish)
     alias(libs.plugins.git)
 }
-
-apply {
-    from("$rootDir/gradle/versioning.gradle")
-    from("$rootDir/gradle/maven-publish-config.gradle")
-}
-
-private val buildVersionName: Closure<Any> by ext
-private val buildVersionCode: Closure<Any> by ext
 
 version = buildVersionName()
 group = "com.motorro.commonstatemachine"
@@ -61,13 +54,6 @@ allprojects {
 
     val projectScm by extra("https://github.com/motorro/CommonStateMachine.git")
     val projectUrl by extra("https://github.com/motorro/CommonStateMachine")
-
-    tasks.withType<AbstractKotlinCompile<*>>().configureEach {
-        compilerOptions.freeCompilerArgs.addAll(listOf(
-            "-opt-in=kotlin.RequiresOptIn",
-            "-Xexplicit-backing-fields"
-        ))
-    }
 
     tasks.withType<Test>().configureEach {
         forkEvery = 100
@@ -115,9 +101,9 @@ tasks.register("runLceExampleUnitTests") {
 }
 
 tasks.register("runWelcomeExampleUnitTests") {
-    dependsOn(":examples:welcome:commonregister:allTests")
+    dependsOn(":examples:welcome:register:allTests")
     dependsOn(":examples:welcome:login:testDebugUnitTest")
-    dependsOn(":examples:welcome:welcome:testDebugUnitTest")
+    dependsOn(":examples:welcome:app:testDebugUnitTest")
     description = "Run unit tests for welcome app."
 }
 
@@ -128,7 +114,7 @@ tasks.register("runTimerExampleUnitTests") {
 
 tasks.register("runDiExampleUnitTests") {
     dependsOn(":examples:di:login:testDebugUnitTest")
-    dependsOn(":examples:di:social:testDebugUnitTest")
+    dependsOn(":examples:di:app:testLoginDebugUnitTest")
     description = "Run unit tests for di app."
 }
 
@@ -139,6 +125,7 @@ tasks.register("runBooksExampleUnitTests") {
 }
 
 tasks.register("runSkillsExampleUnitTests") {
+    dependsOn(":examples:skills:app:testDebugUnitTest")
     dependsOn(":examples:skills:auth:implementation:allTests")
     description = "Run unit tests for skills."
 }

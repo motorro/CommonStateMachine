@@ -21,10 +21,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:name="com.motorro.statemachine.mixed.App"
+        android:name="com.motorro.commonstatemachine.examples.mixed.App"
         android:theme="@style/Theme.CommonStateMachine">
         <activity
-            android:name="com.motorro.statemachine.mixed.MainActivity"
+            android:name="com.motorro.commonstatemachine.examples.mixed.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.CommonStateMachine"

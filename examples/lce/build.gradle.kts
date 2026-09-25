@@ -1,7 +1,3 @@
-@file:Suppress("unused")
-
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 /*
  * Copyright 2022 Nikolai Kotchetkov.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,94 +12,12 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
  */
 
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.plugin.compose")
-}
-
-val versionCode: String by project.extra
-val versionName: String by project.extra
-val androidMinSdkVersion: Int by project.extra
-val androidCompileSdkVersion: Int by project.extra
-val androidTargetSdkVersion: Int by project.extra
-
-android {
-    compileSdk = androidCompileSdkVersion // Assuming androidCompileSdkVersion is defined elsewhere (e.g., gradle.properties or root build.gradle)
-
-    defaultConfig {
-        applicationId = "com.motorro.statemachine.lce"
-        minSdk = androidMinSdkVersion // Assuming androidMinSdkVersion is defined elsewhere
-        targetSdk = androidTargetSdkVersion // Assuming androidTargetSdkVersion is defined elsewhere
-        versionCode = versionCode // Assuming versionCode is defined elsewhere
-        versionName = versionName // Assuming versionName is defined elsewhere
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-        }
-    }
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
-    }
-    kotlin {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
-        }
-    }
-    buildFeatures {
-        compose = true
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-    namespace = "com.motorro.statemachine.lce"
+    alias(libs.plugins.motorro.android.app)
 }
 
 dependencies {
     implementation(project(":commonstatemachine"))
     implementation(project(":coroutines"))
     implementation(project(":examples:commoncore"))
-    implementation(project(":examples:androidcore"))
-
-    api(project(":commonstatemachine"))
-    api(project(":commonflow:commonflow-data"))
-    api(project(":commonflow:commonflow-compose"))
-
-    coreLibraryDesugaring(libs.desugaring)
-
-    implementation(libs.timber)
-
-    implementation(libs.androidx.core)
-    implementation(libs.androidx.lifecycle.runtime)
-    implementation(libs.androidx.lifecycle.livedata)
-    implementation(libs.androidx.lifecycle.viewmodel)
-
-    implementation(libs.kotlin.coroutines.core)
-    implementation(libs.kotlin.coroutines.android)
-
-    implementation(platform(libs.compose.bom))
-
-    implementation(libs.bundles.compose.core)
-    implementation(libs.compose.activity)
-    implementation(libs.compose.viewmodel)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.foundation.layouts)
-    debugImplementation(libs.compose.material)
-    debugImplementation(libs.compose.material.icons)
-
-    debugImplementation(libs.compose.tooling)
-
-    testImplementation(libs.bundles.test.core)
-    testImplementation(libs.test.androidx.arch)
-    testImplementation(libs.test.kotlin.coroutines)
+    implementation(libs.compose.material.icons)
 }

@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 /*
  * Copyright 2026 Nikolai Kotchetkov.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,58 +12,11 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
  */
 
 plugins {
-    alias(libs.plugins.android.lib)
-    alias(libs.plugins.compose)
-}
-
-val androidMinSdkVersion: Int by project.extra
-val androidCompileSdkVersion: Int by project.extra
-
-android {
-    compileSdk = androidCompileSdkVersion
-
-    defaultConfig {
-        minSdk = androidMinSdkVersion
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                    getDefaultProguardFile("proguard-android-optimize.txt"),
-                    "proguard-rules.pro"
-            )
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
-        isCoreLibraryDesugaringEnabled = true
-    }
-    kotlin {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
-        }
-    }
-    buildFeatures {
-        compose = true
-    }
-    namespace = "com.motorro.statemachine.di.api"
+    alias(libs.plugins.motorro.android.lib.compose)
 }
 
 dependencies {
     api(project(":commonstatemachine"))
     api(project(":commonflow:commonflow-data"))
     api(project(":commonflow:commonflow-compose"))
-
-    coreLibraryDesugaring(libs.desugaring)
-
-    implementation(libs.kotlin.coroutines.core)
-
-    implementation(platform(libs.compose.bom))
-
-    implementation(libs.bundles.compose.core)
 }

@@ -1,7 +1,3 @@
-@file:Suppress("unused")
-
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 /*
  * Copyright 2022 Nikolai Kotchetkov.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,50 +12,8 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
  */
 
 plugins {
-    alias(libs.plugins.android.lib)
-    alias(libs.plugins.google.ksp)
-    alias(libs.plugins.hilt)
-    alias(libs.plugins.compose)
-}
-
-val versionCode: String by project.extra
-val versionName: String by project.extra
-val androidMinSdkVersion: Int by project.extra
-val androidTargetSdkVersion: Int by project.extra
-val androidCompileSdkVersion: Int by project.extra
-
-android {
-    // Assuming androidCompileSdkVersion, androidMinSdkVersion, and androidTargetSdkVersion
-    // are defined in your project's gradle.properties or root build.gradle.kts
-    compileSdk = androidCompileSdkVersion
-
-    defaultConfig {
-        minSdk = androidMinSdkVersion
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-        }
-    }
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
-    }
-    kotlin {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
-        }
-    }
-    buildFeatures {
-        compose = true
-    }
-    namespace = "com.motorro.statemachine.login"
+    alias(libs.plugins.motorro.android.lib.compose)
+    alias(libs.plugins.koin)
 }
 
 dependencies {
@@ -67,28 +21,9 @@ dependencies {
     implementation(project(":coroutines"))
     implementation(project(":examples:welcome:commonapi"))
     implementation(project(":examples:commoncore"))
-    implementation(project(":examples:androidcore"))
+    implementation(libs.napier)
 
-    coreLibraryDesugaring(libs.desugaring)
-
-    implementation(libs.kotlin.coroutines.core)
-    implementation(libs.kotlin.coroutines.android)
-
-    implementation(platform(libs.compose.bom))
-
-    implementation(libs.bundles.compose.core)
-    implementation(libs.compose.activity)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.foundation.layouts) // Corrected from "foundation.layout" to "foundation.layouts" as per your original file
-
-    implementation(libs.hilt.android)
-    implementation(libs.hilt.compose) // Assuming this is 'libs.hilt.navigation.compose' or similar based on common usage with Hilt and Compose
-    ksp(libs.hilt.compiler)
-    ksp(libs.hilt.compiler.androidx) // Assuming this is 'libs.hilt.android.compiler' or similar
-
-    debugImplementation(libs.compose.tooling)
-
-    testImplementation(libs.bundles.test.core)
-    testImplementation(libs.test.androidx.arch)
-    testImplementation(libs.test.kotlin.coroutines)
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.android)
+    implementation(libs.koin.annotations)
 }

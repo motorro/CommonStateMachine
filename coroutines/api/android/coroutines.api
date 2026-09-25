@@ -1,0 +1,24 @@
+public abstract class com/motorro/commonstatemachine/coroutines/CoroutineState : com/motorro/commonstatemachine/CommonMachineState {
+	public fun <init> ()V
+	protected fun doClear ()V
+	protected final fun getStateScope ()Lkotlinx/coroutines/CoroutineScope;
+}
+
+public class com/motorro/commonstatemachine/coroutines/FlowStateMachine : com/motorro/commonstatemachine/CommonStateMachine$Base {
+	public fun <init> (Ljava/lang/Object;Lkotlin/jvm/functions/Function0;)V
+	public fun getUiState ()Ljava/lang/Object;
+	public final fun getUiState ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getUiStateSubscriptionCount ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun setUiState (Ljava/lang/Object;)V
+}
+
+public final class com/motorro/commonstatemachine/coroutines/FlowStateMachineKt {
+	public static final fun mapUiSubscriptions (Lcom/motorro/commonstatemachine/coroutines/FlowStateMachine;Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;)V
+	public static synthetic fun mapUiSubscriptions$default (Lcom/motorro/commonstatemachine/coroutines/FlowStateMachine;Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
+}
+
+public final class com/motorro/commonstatemachine/coroutines/lifecycle/LifecycleStateFlowKt {
+	public static final fun asCallback (Lkotlinx/coroutines/flow/StateFlow;Lkotlinx/coroutines/CoroutineScope;)Lcom/motorro/commonstatemachine/lifecycle/MachineLifecycle;
+	public static final fun asFlow (Lcom/motorro/commonstatemachine/lifecycle/MachineLifecycle;Lkotlinx/coroutines/CoroutineScope;)Lkotlinx/coroutines/flow/StateFlow;
+}
+

@@ -48,11 +48,11 @@ Follow the following common rules when writing code:
 ## Step 1. Module directory structure creation
 Create the following module structure if not instructed otherwise:
 ```
-my-project            # Project folder. Common package: com.motorro.statemachine
-├── app               # Example: an application module, package: com.motorro.statemachine.app
+my-project            # Project folder. Common package: com.motorro.commonstatemachine.examples
+├── app               # Example: an application module, package: com.motorro.commonstatemachine.examples.app
 ├── auth              # Required: a base directory for a new feature (authentication)
-│  ├── api            # Required: an API gradle module that describes the feature, package: com.motorro.statemachine.auth.api
-│  └── implementation # Required: an implementation gradle module that implements the API, package: com.motorro.statemachine.auth.implementation
+│  ├── api            # Required: an API gradle module that describes the feature, package: com.motorro.commonstatemachine.examples.auth.api
+│  └── implementation # Required: an implementation gradle module that implements the API, package: com.motorro.commonstatemachine.examples.auth.implementation
 └── ...               
 ```
 

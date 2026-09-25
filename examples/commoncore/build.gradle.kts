@@ -10,62 +10,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    alias(libs.plugins.kotlin.multiplatform)
-    alias(libs.plugins.android.kotlin.multiplatform.library)
+    alias(libs.plugins.motorro.cmp)
 }
 
-val versionName: String by project.extra
-val androidMinSdkVersion: Int by project.extra
-val androidTargetSdkVersion: Int by project.extra
-val androidCompileSdkVersion: Int by project.extra
-
-group = "com.motorro"
-version = versionName
-
 kotlin {
-    jvmToolchain(21)
-
-    compilerOptions {
-        freeCompilerArgs.addAll(listOf(
-            "-Xexpect-actual-classes"
-        ))
-    }
-
-    android {
-        namespace = "com.motorro.statemachine.commoncore"
-        compileSdk = androidCompileSdkVersion
-        minSdk = androidMinSdkVersion
-
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
-        }
-    }
-
-    js {
-        binaries.library()
-        useCommonJs()
-        browser {
-            testTask(Action {
-                useMocha {
-                    timeout = "10s"
-                }
-            })
-        }
-    }
-
     sourceSets {
         commonMain.dependencies {
-            implementation(libs.kotlin.coroutines.core)
-        }
-        commonTest.dependencies {
-            implementation(libs.test.kotlin)
-            implementation(libs.test.kotlin.coroutines)
-        }
-        androidMain.dependencies {
-            implementation(libs.timber)
+            api(libs.kotlin.coroutines.core)
+            api(libs.compose.multiplatform.icons)
+            implementation(libs.napier)
         }
     }
 }
