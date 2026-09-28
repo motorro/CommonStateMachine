@@ -43,18 +43,6 @@ allprojects {
     val versionName by extra(buildVersionName())
     val versionCode by extra(buildVersionCode())
 
-    val androidBuildToolsVersion by extra("35.0.0")
-    val androidMinSdkVersion by extra(24)
-    val androidTargetSdkVersion by extra(37)
-    val androidCompileSdkVersion by extra(37)
-
-    val developerId by extra("motorro")
-    val developerName by extra("Nikolai Kotchetkov")
-    val developerEmail by extra("motorro@gmail.com")
-
-    val projectScm by extra("https://github.com/motorro/CommonStateMachine.git")
-    val projectUrl by extra("https://github.com/motorro/CommonStateMachine")
-
     tasks.withType<Test>().configureEach {
         forkEvery = 100
         testLogging {
