@@ -5,6 +5,23 @@ Please check out the Medium article on pattern/library usage.
 - [Part II - tools](https://proandroiddev.com/mvi-architecture-with-a-state-machine-tools-721c5ebed893-47f46413415d)
 - [Part III - multi-module and multi-platform](https://proandroiddev.com/mvi-architecture-with-a-state-machine-modules-3e242666c7c)
 
+## AI Skills
+
+The project ships a set of AI skills that teach coding agents (such as Claude) how to work with
+`CommonStateMachine` - for example, scaffolding a new feature-flow module that follows the
+[Common Child Flow](#common-child-flow-api) architecture described below. See
+[skills/README.md](skills/README.md) for the full list of available skills.
+
+Skills can be installed straight from this repository with the [`skills` CLI](https://github.com/vercel-labs/skills):
+
+```bash
+# List the skills available in this repository
+npx skills add motorro/commonstatemachine --list
+
+# Install specific skills
+npx skills add motorro/commonstatemachine --skill commonstatemachine-commonchildflow-boilerplate
+```
+
 ## Contents
 
 <!-- toc -->

@@ -1,0 +1,18 @@
+#!/bin/bash
+# Rebuilds the packaged skills (skills/) from their sources (skills-src/) and stages
+# the result, so any changes are included in the commit being made.
+set -e
+
+repo_root="$(git rev-parse --show-toplevel)"
+cd "$repo_root"
+
+if [ ! -f "skills-src/build_skills.sh" ]; then
+    exit 0
+fi
+
+echo "Rebuilding skills/ from skills-src/..."
+bash skills-src/build_skills.sh
+
+git add skills
+
+exit 0
