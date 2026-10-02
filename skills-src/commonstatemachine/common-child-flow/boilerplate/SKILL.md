@@ -60,6 +60,10 @@ Before creating any modules, work out what the feature needs from what the user 
   dummy states and views.
 - Integration: should this feature be hosted inside one or more existing parent flows (Step 7), or
   does it stand alone for now?
+- Dependency injection: does the project already use a DI framework (Koin, Hilt, Dagger, or similar),
+  or is everything wired by hand? Check an existing module in the project rather than assuming - the
+  worked example in this skill happens to use Koin, but that's the example's own choice, not a
+  requirement. Follow whatever the project actually uses in Step 6.
 
 If the user gave you only part of this, use what you have and ask clarifying questions about
 anything still ambiguous rather than guessing silently.

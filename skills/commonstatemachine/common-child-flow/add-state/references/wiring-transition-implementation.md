@@ -47,7 +47,7 @@ clicks a friend in the list, navigate to the friend's details".
    [state-factory method](renderer-factory-context-interface-implementation.md#step-2-state-factory-interface), and switch to it with `setMachineState`.
 
 Take a look at the [example](../assets/example/implementation/state/FormState.kt): it already demonstrates this exact pattern - it changes the machine 
-state when its action gesture is receive (see [state-implementation.md, Example 3](state-implementation.md#example-3-form-state)).
+state when its action gesture is received (see [state-implementation.md, Example 3](state-implementation.md#example-3-form-state)).
 
 ## Update the existing state's test
 Whichever pattern applies, add a test case to the existing state's unit test that:

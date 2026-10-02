@@ -30,7 +30,10 @@ Create the UI API implementation:
 See the [example](../assets/example/implementation/AuthUiApiImpl.kt) for our sample authentication UI API.
 
 ## Step 3. Define DI module(s) (optional).
-Check the project setup or the user input. If the project uses DI to provide dependencies, implement the required modules.
+First check which DI approach the project actually uses, if any - don't assume Koin just because the
+worked example in this skill does; that's the example's own choice, not a requirement. Look at an
+existing module in the project (or ask the user) to find out, and implement the required modules in
+that same style.
 Hints:
 
 - Make sure all individual state factories are DI-enabled. See the example [StateFactory](../assets/example/implementation/state/PreloadingState.kt).

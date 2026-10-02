@@ -39,6 +39,7 @@ To instantiate the proxy state cleanly within the parent flow:
 - Parent State Factory Implementation: Inject the proxy state factory into the parent `StateFactory` implementation, and delegate
   the state creation call to it.
 - DI Registration: Ensure the proxy state factory and parent state factory implementation are annotated
-  for DI (e.g., `@Factory` for Koin, `@Inject` / `@ViewModelScoped` for Hilt).
+  for whichever DI framework the project already uses - check an existing module rather than assuming
+  (e.g., `@Factory` for Koin, `@Inject` / `@ViewModelScoped` for Hilt).
 
 See the [example main state factory](../assets/example/app/state/MainStateFactory.kt) and [proxy state factory](../assets/example/app/state/AuthProxyState.kt).

@@ -1,0 +1,1 @@
+../../../../../../../examples/skills/auth/demo/build.gradle.kts

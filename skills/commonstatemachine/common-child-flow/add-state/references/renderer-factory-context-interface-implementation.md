@@ -76,7 +76,9 @@ The implementation will:
 Follow these common rules:
 
 - Create the class in the implementation module.
-- If required by the DI framework used in project, add required inject annotations.
+- If the project uses a DI framework, match whichever one is already in use - check an existing module
+  rather than assuming Koin, which is just what the worked example uses - and add the required inject
+  annotations.
 - Inject external factories and dependencies required by the state to the factory constructor. 
   Try to use lazy provider injection to delay the initialization.
 - Pass the flow host to the factory constructor.
