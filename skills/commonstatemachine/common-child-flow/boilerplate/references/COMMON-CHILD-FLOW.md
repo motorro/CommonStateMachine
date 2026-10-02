@@ -4,7 +4,9 @@
 
 ## Philosophy and Principles
 - **Modularity via Proxying:** Features are independent modules. A parent flow hosts a child flow using `ProxyMachineState`, which bridges incompatible Gesture/UI systems.
-- **Direct Data Flow:** Transitions occur in memory. Complex data or even running coroutines can be passed between states without serialization or "parceling".
+- **Direct Data Flow:** Transitions occur in memory. Complex data or even running coroutines can be passed between states without serialization or "parceling" -
+  unlike a screen-based navigation library (e.g. Jetpack Navigation), where arguments passed between destinations typically need to be serializable. This
+  follows from the same [Navigation Inversion](ARCHITECTURE.md) principle the base state machine already relies on.
 - **KMP Ready:** Logic and Data are isolated from the View, making the core feature logic easily shareable across platforms.
 - **Standardized Child Flows:** 
     - `commonflow-data`: Standardizes flow initialization and result handling.

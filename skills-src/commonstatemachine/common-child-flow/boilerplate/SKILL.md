@@ -1,24 +1,30 @@
 ---
 name: commonstatemachine-commonchildflow-boilerplate
-description: Use this skill to make a boilerplate for the new feature-flow using 
-  the [CommonStateMachine](https://github.com/motorro/CommonStateMachine) architecture.
-  If the user asks you something like "Create a new authentication flow feature" - use this skill.
+description: Use this skill to scaffold a brand-new feature-flow module with the CommonStateMachine
+  Common Child Flow architecture - the API and implementation Gradle modules, gestures, UI-states,
+  machine states, the state factory, DI wiring and tests. Use it whenever the user asks to create a
+  new feature flow, module, or screen flow from scratch for CommonStateMachine - for example
+  "Create a new authentication flow feature", "Scaffold a payment feature module", or "Set up a
+  CommonStateMachine flow for onboarding". If the module already exists and the user only wants to
+  add one more screen or state to it, use the add-state skill instead.
 metadata:
   author: Motorro
-  last-updated: '2026-08-12'
+  last-updated: '2026-10-02'
   keywords:
-  - android
-  - architecture
-  - cross-platform
-  - kotlin-multiplatform
-  - mvi
-  - state-machine
-  - feature-flow
+    - android
+    - architecture
+    - cross-platform
+    - kotlin-multiplatform
+    - mvi
+    - state-machine
+    - feature-flow
 ---
 
 ## Description
-Use this skill to add a new feature boilerplate to the app based on the `CommonStateMachine` architecture.
-following the `Common Child Flow` design. This design sets a common approach to use proxy state machines for a feature-flow.
+Use this skill to add a new feature boilerplate to the app based on the `CommonStateMachine`
+architecture, following the [Common Child Flow](references/COMMON-CHILD-FLOW.md) design. This design sets a common approach to use
+proxy state machines for a feature-flow. If the module already exists, use the add-state skill
+instead to add another logical state to it.
 
 For a deeper dive into the state machine mechanics and common components, refer to the [Core Architecture](references/ARCHITECTURE.md).
 For a deeper dive into the common child flow philosophy and design, refer to the [Common Child Flow Architecture](references/COMMON-CHILD-FLOW.md).
@@ -30,13 +36,33 @@ to such an example. Adjust the names and packages to your actual need.
 ## Strategy
 You will create a set of Gradle modules that together form a feature:
 
-- The API module: contains the definition of input and output data types for the feature. 
+- The API module: contains the definition of input and output data types for the feature.
   Example: authentication API that provides the basic interface to the authentication feature.
 - One or more implementation modules: contains the implementation of the API.
   Example: login implementation module - implements API with login/password functionality.
 
 Take a look at the [class diagram](references/common-child-flow.puml). It contains an overview
 between all the interfaces, classes and objects in a setup using the Authentication module example.
+
+## Gathering the requirements for the new feature
+Before creating any modules, work out what the feature needs from what the user gave you:
+
+- The feature itself: a name, and whether it needs one implementation or several of the same API
+  (for example a `password` and a `social` authentication implementation side by side) - see Step 1.
+- Its data source: does the user name an existing use-case, repository, or API to call (like a
+  `GetFriendList` use-case), or should you create a dummy/placeholder one? If they name one, use it
+  directly instead of inventing a new one.
+- The state-flow: did the user describe what logical states the feature needs and how it moves
+  between them, or give you a screen design (a Figma link/export, or a picture) to work from? If so,
+  create those states and views in Steps 4-5 - and remember a logical state doesn't have to be a new
+  screen, it can just as easily be an invisible step that hands off to the next one automatically. If
+  the user gave you nothing specific, default to the classic Loading-Content-Error (LCE) shape with
+  dummy states and views.
+- Integration: should this feature be hosted inside one or more existing parent flows (Step 7), or
+  does it stand alone for now?
+
+If the user gave you only part of this, use what you have and ask clarifying questions about
+anything still ambiguous rather than guessing silently.
 
 Follow the following common rules when writing code:
 
@@ -60,7 +86,7 @@ my-project            # Project folder. Common package: com.motorro.commonstatem
 - Include the following dependencies if not provided already:
   - Base state-machine components: "com.motorro.commonstatemachine:commonstatemachine:x.x.x"
   - Coroutine extensions (if using coroutines): "com.motorro.commonstatemachine:coroutines:x.x.x"
-  - Common data API (state machine child flow): "com.motorro.commonstatemachine:commonflow-data:x.x.x" 
+  - Common data API (state machine child flow): "com.motorro.commonstatemachine:commonflow-data:x.x.x"
   - Common UI API (Compose API if used): "com.motorro.commonstatemachine:commonflow-compose:x.x.x"
 - Include test dependencies that are used across the project and coroutines test dependencies if used.
 - Include DI dependencies that are used across the project.
@@ -85,7 +111,7 @@ Then follow these guides for the API module implementation:
 3. [Feature-flow data and UI API](references/data-and-ui-api.md)
 
 ## Step 3. Create implementation module
-Here you will create an API implementation. 
+Here you will create an API implementation.
 If several implementations are requested by user (step 1) - repeat for each implementation.
 Create a package for the feature implementation. By default, use the common application package adding the feature name and `implementation`.
 If several implementations are requested by user (step 1) - name according to the implementation name.
@@ -100,7 +126,7 @@ Then follow these guides for the module implementation:
 ## Step 4. Create the machine states
 For the user to kick-off faster, we will create some machine-states:
 
-- If the user gave you the instructions about what would be the state-flow, or what states they need - create the states for them. 
+- If the user gave you the instructions about what would be the state-flow, or what states they need - create the states for them.
   Implement the required functionality or place TODOs in place of the code if it is not clear what to do exactly.
   Don't hesitate to ask the user to clarify what they need.
 - If the user didn't give you any specifics, create a classic LCE example:

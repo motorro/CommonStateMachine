@@ -14,7 +14,13 @@
     - It maintains the state transition logic.
     - `FlowStateMachine` (standard implementation) exports the current **UI State** as a `StateFlow`.
     - It provides the `process(gesture)` entry point for user interaction.
-- **Navigation Inversion:** Navigation is a logical state transition within the state machine (Logic/ViewModel layer). The View is passive and follows the logic.
+- **Navigation Inversion:** Navigation is a logical state transition within the state machine (Logic/ViewModel layer), not something the View drives. The user
+  doesn't navigate between screens - gestures (or a state's own work finishing) move the machine from one logical state to another, and whichever state is
+  active decides what to show by calling `setUiState`. Several logical states can therefore render the exact same UI State one after another - for example, a
+  preload step and an auth-check step can both just show a loading spinner - with nothing visibly changing until some state actually calls `setUiState` with
+  something new. The same decoupling is why a transition can carry live, non-serializable data (an open coroutine, a scope, an object reference) forward as a
+  plain constructor argument, unlike a screen-based navigation graph where arguments between destinations typically need to be serializable. See
+  [MVI Architecture with a State Machine: Basics](https://proandroiddev.com/mvi-architecture-with-a-state-machine-basics-721c5ebed893) for the full rationale.
 - **ViewModel Integration:** The `ViewModel` (or equivalent lifecycle host) typically:
     - Holds the `StateMachine` instance.
     - Delegates user gestures to `stateMachine.process(gesture)`.

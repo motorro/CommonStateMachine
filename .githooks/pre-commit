@@ -7,12 +7,14 @@ repo_root="$(git rev-parse --show-toplevel)"
 cd "$repo_root"
 
 if [ ! -f "skills-src/build_skills.sh" ]; then
+    echo "Warning: skills-src/build_skills.sh not found, skipping skills rebuild."
     exit 0
 fi
 
 echo "Rebuilding skills/ from skills-src/..."
 bash skills-src/build_skills.sh
 
+echo "Adding changes..."
 git add skills
 
 exit 0

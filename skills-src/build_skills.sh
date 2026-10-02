@@ -13,15 +13,16 @@ if [[ ! "$DEST_DIR" = /* ]]; then
 fi
 
 echo "Copying skills from $SRC_DIR to $DEST_DIR, resolving symlinks..."
+
+echo "Cleaning up..."
 rm -rf "$DEST_DIR"
 mkdir -p "$DEST_DIR"
 
-if command -v rsync >/dev/null 2>&1; then
-    rsync -aL --exclude=".*" --exclude="build_skills.sh" "$SRC_DIR/" "$DEST_DIR/"
-else
-    cp -RL "$SRC_DIR/." "$DEST_DIR/"
-    find "$DEST_DIR" -mindepth 1 -name ".*" -exec rm -rf {} +
-    rm -f "$DEST_DIR/build_skills.sh"
-fi
+cp -RL "$SRC_DIR/." "$DEST_DIR/"
+# Remove every dot-folder (e.g. the .shared source-of-truth folders) and the script itself - their
+# real content only ever belongs in skills/ by being resolved through a symlink elsewhere.
+find "$DEST_DIR" -mindepth 1 -name ".*" -exec rm -rf {} +
+rm -f "$DEST_DIR/build_skills.sh"
 
 echo "Skills copied to $DEST_DIR."
+exit 0

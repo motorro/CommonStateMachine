@@ -4,6 +4,7 @@
 /.idea
 .DS_Store
 /build
+/Claude outputs
 /artifacts
 /.kotlin
 build

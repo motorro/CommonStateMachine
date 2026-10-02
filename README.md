@@ -107,6 +107,11 @@ Key features:
 - Should work well in kotlin-multiplatform projects
 - Easy to integrate with multi-module architecture
 - Designed for [Jetpack Compose](https://developer.android.com/jetpack/compose) but it is not a restriction
+- **Navigation inversion** - the user doesn't navigate between screens, the logic decides what to show next; several
+  logical states can map to the very same screen while the machine moves silently between them, and a transition can
+  carry live data (even a running coroutine) forward without packing it into serializable arguments the way a
+  screen-based navigation graph would
+  ([read more](https://proandroiddev.com/mvi-architecture-with-a-state-machine-basics-721c5ebed893))
 - May (if you like to) work as a navigation library
 - Explicit `Back` gesture management with the total control of yours
 - Get rid of `SingleLiveEvent` for navigation, dialogs and even side effects like toasts if you 
