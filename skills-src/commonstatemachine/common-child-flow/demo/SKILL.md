@@ -13,16 +13,16 @@ metadata:
   author: Motorro
   last-updated: '2026-10-02'
   keywords:
-  - android
-  - architecture
-  - cross-platform
-  - kotlin-multiplatform
-  - mvi
-  - state-machine
-  - feature-flow
-  - demo-app
-  - debug
-  - fixtures
+    - android
+    - architecture
+    - cross-platform
+    - kotlin-multiplatform
+    - mvi
+    - state-machine
+    - feature-flow
+    - demo-app
+    - debug
+    - fixtures
 ---
 
 ## Description
@@ -69,6 +69,9 @@ Before creating the module, work out what you need from what the user gave you a
 - The domain use-cases and models the feature actually depends on: trace the feature implementation's
   constructor-injected dependencies back to the `domain` module interfaces they call (its state-factory and
   states are the place to look - see Step 3). These are exactly what you need to fake in Step 4.
+- Nested feature dependencies: does the feature host another Common Child Flow module of its own via a proxy -
+  the same way the example app module hosts `auth`? If so, find out whether the user wants the real
+  implementation wired in, or a lightweight Data/UI API mock instead - see Step 3.
 - Fixture behavior: did the user ask for a specific scenario (for example "let the usecase fail the first
   time with an IO error, so I can check the retry logic")? If so, implement exactly that behavior using the
   real domain exception/model types. If the user gave no specifics, default to a fixture that just succeeds
@@ -124,6 +127,28 @@ states/state-factories it wires together. Any constructor parameter whose type l
 demo app must fake, because in a real app it would come from a `usecase` module implementation that the demo
 doesn't depend on.
 
+While you're looking at those same states, also check for a different kind of dependency: a constructor
+parameter whose type is a `DataApi`/`UiApi` pair from a *different* feature's `api` module, together with a
+`ProxyMachineState` inside this feature's own states. That means this feature hosts another Common Child Flow
+module of its own - exactly how the example app module hosts `auth`. If you find one, it needs its own
+decision, separate from the domain-use-case fixtures above:
+
+- **Use the real implementation** - the simplest option when that other feature module already exists in the
+  project and doesn't itself need faking. Add it as a dependency and wire its real `DataApi`/`UiApi`
+  implementation the normal way, the same as any other implementation module. Ask the user which
+  implementation to use if there's more than one, or it's not obvious from the project.
+- **Create a minimal Data/UI API mock** - when the real implementation pulls in things you don't want in a
+  demo (its own backend calls, its own heavy DI graph), or the user explicitly wants that nested feature faked
+  too. Implement just enough of its `DataApi`/`UiApi` interfaces to satisfy the hosting proxy: a `DataApi.init()`
+  that returns an ad-hoc `CommonMachineState` which completes immediately with a fixed result (similar to the
+  `terminated` ad-hoc state in [the example `AuthStateFactoryImpl`](assets/example/implementation/state/AuthStateFactoryImpl.kt)),
+  and a `UiApi.Screen` that renders a simple placeholder - a label is enough. This mock is deliberately much
+  thinner than a real implementation module: it doesn't need its own states, gestures, or UI-states, just
+  enough to hand the hosting proxy state a result so the flow can continue.
+
+If the user didn't say which approach they want for a nested dependency like this, ask - it's exactly the kind
+of decision that shouldn't be guessed silently.
+
 ## Step 4. Create fixtures for the domain use-cases
 Follow [this guide](references/fixture-patterns.md) to fake every domain use-case identified in Step 3,
 including any specific failure scenario the user described in the requirements-gathering step.
@@ -178,8 +203,8 @@ passes the right `init` value for the feature's `Input` type:
 ```kotlin
 @KoinViewModel
 class MainViewModel(api: AuthDataApi) : CommonFlowViewModel<AuthGesture, AuthUiState, AuthInput, AuthResult>(
-    api = api,
-    init = AuthInput(skippable = true)
+  api = api,
+  init = AuthInput(skippable = true)
 )
 ```
 
