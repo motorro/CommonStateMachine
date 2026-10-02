@@ -72,6 +72,10 @@ Before creating the module, work out what you need from what the user gave you a
 - Nested feature dependencies: does the feature host another Common Child Flow module of its own via a proxy -
   the same way the example app module hosts `auth`? If so, find out whether the user wants the real
   implementation wired in, or a lightweight Data/UI API mock instead - see Step 3.
+- Multiple variants: did the user ask for more than one demo so they can compare different combinations side
+  by side - say, two implementations of the feature itself, or two implementations of a nested feature
+  dependency, for an A/B comparison? If so, each combination gets its own demo module (see Step 1) rather than
+  a single module with a runtime switch.
 - Fixture behavior: did the user ask for a specific scenario (for example "let the usecase fail the first
   time with an IO error, so I can check the retry logic")? If so, implement exactly that behavior using the
   real domain exception/model types. If the user gave no specifics, default to a fixture that just succeeds
@@ -98,9 +102,16 @@ Identify the feature's `api` module (its `Gesture`, `UiState`, `Input`, `Result`
 the specific `implementation` module to demo, if there are several. If the feature module doesn't exist yet,
 stop here and use the boilerplate skill instead.
 
+If the user asked to compare multiple variants side by side (see "Multiple variants" above), treat each
+combination as its own demo module rather than switching between them inside one module with a flag or a build
+variant - keeping each demo small and disposable is the whole point of this skill. Create one module per
+combination, named to say what it demos - `demo-a`/`demo-b` if the user didn't suggest better names, or
+something more descriptive like `demo-frienddetails-v2` when it's really one specific implementation being
+compared.
+
 Create the new module directory next to the feature's existing `api`/`implementation` modules, following the
-project's module-naming convention (`demo` in the example). Use the Gradle setup common to other application
-modules in the project if one exists to copy from.
+project's module-naming convention (`demo` in the example, or the variant names above when there's more than
+one). Use the Gradle setup common to other application modules in the project if one exists to copy from.
 
 ## Step 2. Create the demo module's Gradle file
 This is an internal tool, not something that ships to end users - keep it minimal rather than matching the
@@ -136,7 +147,10 @@ decision, separate from the domain-use-case fixtures above:
 - **Use the real implementation** - the simplest option when that other feature module already exists in the
   project and doesn't itself need faking. Add it as a dependency and wire its real `DataApi`/`UiApi`
   implementation the normal way, the same as any other implementation module. Ask the user which
-  implementation to use if there's more than one, or it's not obvious from the project.
+  implementation to use if there's more than one, or it's not obvious from the project. If the user wants to
+  compare two or more of that nested feature's implementations side by side, that's the "multiple variants"
+  case from the requirements-gathering step above: build one demo module per implementation, not a switch
+  inside one module.
 - **Create a minimal Data/UI API mock** - when the real implementation pulls in things you don't want in a
   demo (its own backend calls, its own heavy DI graph), or the user explicitly wants that nested feature faked
   too. Implement just enough of its `DataApi`/`UiApi` interfaces to satisfy the hosting proxy: a `DataApi.init()`
