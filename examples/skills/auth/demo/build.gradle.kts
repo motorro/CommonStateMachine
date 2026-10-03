@@ -20,6 +20,29 @@ android {
     defaultConfig {
         minSdk = 34
     }
+
+    flavorDimensions += "demo"
+    productFlavors {
+        create("happyPath") {
+            dimension = "demo"
+            applicationIdSuffix = ".happypath"
+        }
+        create("connectionErrors") {
+            dimension = "demo"
+            applicationIdSuffix = ".connectionerrors"
+        }
+    }
+
+    sourceSets {
+        getByName("happyPath") {
+            java.directories.add("src/happyPath/kotlin")
+            res.directories.add("src/happyPath/res")
+        }
+        getByName("connectionErrors") {
+            java.directories.add("src/connectionErrors/kotlin")
+            res.directories.add("src/connectionErrors/res")
+        }
+    }
 }
 
 dependencies {

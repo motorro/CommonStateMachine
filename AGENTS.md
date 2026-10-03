@@ -42,7 +42,11 @@ Example projects demonstrating various architectures, state machine features, an
 ---
 
 ## Skills
-The `skills` folder in the project contains skills that provide instructions and guidance on how to use the library.
+There are two folders managing skills:
+- **`skills-src`**: Source files used to develop and maintain skills. **Always edit skill files in `skills-src`**, never directly in `skills/`.
+  - **Shared resources**: Reusable files and templates are stored in `.shared/` subfolders.
+  - **Asset symlinks**: Code examples in `assets/` subfolders are symlinked from `examples/skills/` so they remain compilable and testable.
+- **`skills`**: Contains complete, self-contained generated skills for distribution (e.g. `npx skills`). Do not edit files here directly—they are automatically generated from `skills-src/` via [the build script](skills-src/build_skills.sh) (executed automatically by [.githooks/pre-commit](.githooks/pre-commit) upon commit).
 
 ---
 

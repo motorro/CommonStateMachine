@@ -72,10 +72,11 @@ Before creating the module, work out what you need from what the user gave you a
 - Nested feature dependencies: does the feature host another Common Child Flow module of its own via a proxy -
   the same way the example app module hosts `auth`? If so, find out whether the user wants the real
   implementation wired in, or a lightweight Data/UI API mock instead - see Step 3.
-- Multiple variants: did the user ask for more than one demo so they can compare different combinations side
-  by side - say, two implementations of the feature itself, or two implementations of a nested feature
-  dependency, for an A/B comparison? If so, each combination gets its own demo module (see Step 1) rather than
-  a single module with a runtime switch.
+- Multiple variants: did the user ask for more than one combination to compare side by side - say, two
+  implementations of the feature itself, or two implementations of a nested feature dependency, for an A/B
+  comparison? If so, build them as Gradle product flavors of this same demo module rather than separate
+  modules, so you're not duplicating the manifest, Activity, and ViewModel for every combination - see Step 2
+  for the flavor setup and Step 5 for what moves into each flavor's own source set.
 - Fixture behavior: did the user ask for a specific scenario (for example "let the usecase fail the first
   time with an IO error, so I can check the retry logic")? If so, implement exactly that behavior using the
   real domain exception/model types. If the user gave no specifics, default to a fixture that just succeeds
@@ -102,16 +103,14 @@ Identify the feature's `api` module (its `Gesture`, `UiState`, `Input`, `Result`
 the specific `implementation` module to demo, if there are several. If the feature module doesn't exist yet,
 stop here and use the boilerplate skill instead.
 
-If the user asked to compare multiple variants side by side (see "Multiple variants" above), treat each
-combination as its own demo module rather than switching between them inside one module with a flag or a build
-variant - keeping each demo small and disposable is the whole point of this skill. Create one module per
-combination, named to say what it demos - `demo-a`/`demo-b` if the user didn't suggest better names, or
-something more descriptive like `demo-frienddetails-v2` when it's really one specific implementation being
-compared.
+This is a single module even when the user wants several combinations compared side by side (see "Multiple
+variants" above) - don't create a separate Gradle module per combination. Steps 2 and 5 cover how each
+combination becomes its own Gradle product flavor of this one module instead, so the manifest, Activity, and
+ViewModel are written once and shared.
 
 Create the new module directory next to the feature's existing `api`/`implementation` modules, following the
-project's module-naming convention (`demo` in the example, or the variant names above when there's more than
-one). Use the Gradle setup common to other application modules in the project if one exists to copy from.
+project's module-naming convention (`demo` in the example). Use the Gradle setup common to other application
+modules in the project if one exists to copy from.
 
 ## Step 2. Create the demo module's Gradle file
 This is an internal tool, not something that ships to end users - keep it minimal rather than matching the
@@ -131,6 +130,37 @@ Set up the module as an Android application (not a library), including the depen
 
 See [the example demo module's build file](assets/example/demo/build.gradle.kts) for a concrete dependency list.
 
+If the user asked to compare multiple combinations side by side (the "Multiple variants" case), add a product
+flavor per combination instead of a second module:
+
+```kotlin
+android {
+  flavorDimensions += "variant"
+  productFlavors {
+    create("variantA") { dimension = "variant" }
+    create("variantB") { dimension = "variant" }
+  }
+}
+```
+
+Name the flavors after what they actually demo (`variantA`/`variantB` only if the user didn't suggest better
+names - something like `friendDetailsV1`/`friendDetailsV2` is usually clearer). Dependencies that differ
+between combinations - typically a different implementation module for the nested feature dependency from
+Step 3 - become flavor-specific dependency configurations instead of plain `implementation(...)`:
+
+```kotlin
+dependencies {
+  // Shared by every flavor
+  implementation(project(":examples:skills:friendlist:implementation"))
+  // One nested implementation per flavor
+  "variantAImplementation"(project(":examples:skills:frienddetails:implementation-a"))
+  "variantBImplementation"(project(":examples:skills:frienddetails:implementation-b"))
+}
+```
+
+Everything else in this guide still applies to the module as a whole; Step 5 covers the one other place that
+needs a flavor-specific split.
+
 ## Step 3. Trace the domain use-cases the feature depends on
 Look at the feature implementation's state-factory implementation (for example `AuthStateFactoryImpl`) and the
 states/state-factories it wires together. Any constructor parameter whose type lives in the `domain` package
@@ -149,8 +179,8 @@ decision, separate from the domain-use-case fixtures above:
   implementation the normal way, the same as any other implementation module. Ask the user which
   implementation to use if there's more than one, or it's not obvious from the project. If the user wants to
   compare two or more of that nested feature's implementations side by side, that's the "multiple variants"
-  case from the requirements-gathering step above: build one demo module per implementation, not a switch
-  inside one module.
+  case from the requirements-gathering step above: give each implementation its own Gradle product flavor
+  (Step 2) rather than picking just one.
 - **Create a minimal Data/UI API mock** - when the real implementation pulls in things you don't want in a
   demo (its own backend calls, its own heavy DI graph), or the user explicitly wants that nested feature faked
   too. Implement just enough of its `DataApi`/`UiApi` interfaces to satisfy the hosting proxy: a `DataApi.init()`
@@ -180,21 +210,21 @@ See [the example `App.kt`](assets/example/demo/src/main/kotlin/com/motorro/commo
 ```kotlin
 @KoinApplication(modules = [AppModule::class])
 class App : Application() {
-    override fun onCreate() {
-        super.onCreate()
-        Napier.base(DebugAntilog())
-        startKoin<App> {
-            allowOverride(false)
-            androidLogger()
-            androidContext(this@App)
-        }
+  override fun onCreate() {
+    super.onCreate()
+    Napier.base(DebugAntilog())
+    startKoin<App> {
+      allowOverride(false)
+      androidLogger()
+      androidContext(this@App)
     }
+  }
 }
 
 @Module(includes = [AuthModule::class])
 @ComponentScan
 class AppModule {
-    // @Single fixture bindings from Step 4 go here
+  // @Single fixture bindings from Step 4 go here
 }
 ```
 
@@ -203,6 +233,25 @@ fixtures alongside the feature's own modules, following that project's existing 
 project wires dependencies by hand with no DI framework, skip a separate module entirely: construct the
 fixtures directly where you construct the feature's `DataApi`/`UiApi` implementations (typically in the
 `Application` class or a small factory object), and pass them straight into the feature's constructors.
+
+If you added product flavors in Step 2, this is the piece that actually has to differ between them, since each
+flavor's `AppModule`/container needs to `includes` (or construct) a different nested implementation and may
+want different fixtures. Move `App.kt` - the `Application` class, its DI module, and the fixtures from Step 4 -
+out of `src/main` and into each flavor's own source set instead, leaving `src/main` with only what's identical
+across every combination (the manifest and the files from Steps 6-7):
+
+```
+demo/src/
+├── main/                          # Shared: manifest, MainActivity.kt, MainViewModel.kt
+├── variantA/kotlin/.../App.kt     # Its own Application + AppModule, wiring implementation-a + its fixtures
+└── variantB/kotlin/.../App.kt     # Its own Application + AppModule, wiring implementation-b + its fixtures
+```
+
+Each flavor's `App.kt` starts as a copy of the single-flavor version above, with its `@Module(includes = [...])`
+pointed at that flavor's own nested implementation module. Start the fixtures identically in both copies unless
+the user specifically wants them to behave differently per variant; keeping them in separate files is what
+makes it easy to diverge later without touching the other flavor. Don't do this source-set split for a
+single-combination demo - it's only worth the extra files once there's more than one flavor to tell apart.
 
 ## Step 6. Create the main Activity
 Create a single `ComponentActivity` that sets Compose content wrapped in the common UI module's theme, injects
