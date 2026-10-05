@@ -1,7 +1,7 @@
 <resources>
     <string name="title">Authentication</string>
     <string name="input_username">Username</string>
-    <string name="input_password">Username</string>
+    <string name="input_password">Password</string>
     <string name="btn_login">Login</string>
     <string name="btn_skip">Skip</string>
     <string name="btn_retry">Retry</string>

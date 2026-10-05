@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -15,6 +17,9 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -36,6 +41,8 @@ internal fun AuthFormScreen(
     modifier: Modifier = Modifier,
     onGesture: (AuthGestureImpl) -> Unit,
 ) {
+    val focusManager = LocalFocusManager.current
+
     Column(
         modifier = modifier.fillMaxSize().padding(Dimensions.medium),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -46,7 +53,11 @@ internal fun AuthFormScreen(
             onValueChange = { onGesture(AuthGestureImpl.Form.UsernameChanged(it)) },
             label = { Text(stringResource(Res.string.input_username)) },
             modifier = Modifier.fillMaxWidth(),
-            singleLine = true
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+            keyboardActions = KeyboardActions(
+                onNext = { focusManager.moveFocus(FocusDirection.Down) }
+            )
         )
         Spacer(Modifier.height(Dimensions.medium))
         TextField(
@@ -55,7 +66,16 @@ internal fun AuthFormScreen(
             label = { Text(stringResource(Res.string.input_password)) },
             modifier = Modifier.fillMaxWidth(),
             visualTransformation = PasswordVisualTransformation(),
-            singleLine = true
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    focusManager.clearFocus()
+                    if (state.loginEnabled) {
+                        onGesture(AuthGestureImpl.Action)
+                    }
+                }
+            )
         )
         Text(
             text = state.passwordRequirements,

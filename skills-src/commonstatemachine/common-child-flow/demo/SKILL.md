@@ -72,11 +72,12 @@ Before creating the module, work out what you need from what the user gave you a
 - Nested feature dependencies: does the feature host another Common Child Flow module of its own via a proxy -
   the same way the example app module hosts `auth`? If so, find out whether the user wants the real
   implementation wired in, or a lightweight Data/UI API mock instead - see Step 3.
-- Multiple variants: did the user ask for more than one combination to compare side by side - say, two
-  implementations of the feature itself, or two implementations of a nested feature dependency, for an A/B
-  comparison? If so, build them as Gradle product flavors of this same demo module rather than separate
-  modules, so you're not duplicating the manifest, Activity, and ViewModel for every combination - see Step 2
-  for the flavor setup and Step 5 for what moves into each flavor's own source set.
+- Multiple variants: did the user ask for more than one combination to compare or keep side by side - say, a
+  "happy path" demo next to a "connection errors" demo of the very same implementation, or two different
+  implementations of the feature itself or of a nested feature dependency? If so, build them as Gradle product
+  flavors of this same demo module rather than separate modules, so you're not duplicating the manifest,
+  Activity, and ViewModel for every combination - see Step 2 for the flavor setup and Step 5 for what moves
+  into each flavor's own source set.
 - Fixture behavior: did the user ask for a specific scenario (for example "let the usecase fail the first
   time with an IO error, so I can check the retry logic")? If so, implement exactly that behavior using the
   real domain exception/model types. If the user gave no specifics, default to a fixture that just succeeds
@@ -87,6 +88,9 @@ Before creating the module, work out what you need from what the user gave you a
   framework just for the demo. See Step 5.
 - Did the user ask for anything beyond the happy-path screen (for example starting the flow already
   authenticated, or a specific `init` input)? Use it when constructing `MainViewModel` in Step 7.
+- What should happen when the flow completes? Default to showing a short result screen with what the flow
+  actually produced and a button to exit from there, rather than closing the app immediately - that's what lets
+  someone running the demo by hand, or a UI-testing tool watching the screen, see the outcome. See Step 6.
 
 If the user gave you only part of this, use what you have and ask clarifying questions about anything still
 ambiguous rather than guessing silently.
@@ -131,35 +135,66 @@ Set up the module as an Android application (not a library), including the depen
 See [the example demo module's build file](assets/example/demo/build.gradle.kts) for a concrete dependency list.
 
 If the user asked to compare multiple combinations side by side (the "Multiple variants" case), add a product
-flavor per combination instead of a second module:
+flavor per combination instead of a second module. Name each flavor after what it actually demos -
+`happyPath`/`connectionErrors` for different fixture scenarios of the same implementation,
+`friendDetailsV1`/`friendDetailsV2` for different nested implementations - and give each one its own
+`applicationIdSuffix` so every variant installs as its own app and several can sit on the same device (or
+emulator) at once instead of overwriting each other:
 
 ```kotlin
 android {
-  flavorDimensions += "variant"
-  productFlavors {
-    create("variantA") { dimension = "variant" }
-    create("variantB") { dimension = "variant" }
-  }
+    flavorDimensions += "demo"
+    productFlavors {
+        create("happyPath") {
+            dimension = "demo"
+            applicationIdSuffix = ".happypath"
+        }
+        create("connectionErrors") {
+            dimension = "demo"
+            applicationIdSuffix = ".connectionerrors"
+        }
+    }
 }
 ```
 
-Name the flavors after what they actually demo (`variantA`/`variantB` only if the user didn't suggest better
-names - something like `friendDetailsV1`/`friendDetailsV2` is usually clearer). Dependencies that differ
-between combinations - typically a different implementation module for the nested feature dependency from
-Step 3 - become flavor-specific dependency configurations instead of plain `implementation(...)`:
+If the project keeps Kotlin sources under a `kotlin/` directory rather than Android Gradle's default `java/`
+(as the example project does), point each flavor's source set at it explicitly, or Gradle won't find the
+flavor-specific code from Step 5:
+
+```kotlin
+android {
+    sourceSets {
+        getByName("happyPath") {
+            java.directories.add("src/happyPath/kotlin")
+            res.directories.add("src/happyPath/res")
+        }
+        getByName("connectionErrors") {
+            java.directories.add("src/connectionErrors/kotlin")
+            res.directories.add("src/connectionErrors/res")
+        }
+    }
+}
+```
+
+When the variants also wire different implementations of a nested feature dependency (Step 3), that dependency
+becomes flavor-scoped instead of plain `implementation(...)`:
 
 ```kotlin
 dependencies {
-  // Shared by every flavor
-  implementation(project(":examples:skills:friendlist:implementation"))
-  // One nested implementation per flavor
-  "variantAImplementation"(project(":examples:skills:frienddetails:implementation-a"))
-  "variantBImplementation"(project(":examples:skills:frienddetails:implementation-b"))
+    // Shared by every flavor
+    implementation(project(":examples:skills:friendlist:implementation"))
+    // One nested implementation per flavor
+    "happyPathImplementation"(project(":examples:skills:frienddetails:implementation-a"))
+    "connectionErrorsImplementation"(project(":examples:skills:frienddetails:implementation-b"))
 }
 ```
 
-Everything else in this guide still applies to the module as a whole; Step 5 covers the one other place that
-needs a flavor-specific split.
+When the variants only differ in fixture behavior for the same implementation (as in the example), every
+flavor shares the same dependencies and only Step 5's DI module differs.
+
+Everything else in this guide still applies to the module as a whole; Step 5 covers the other code that needs a
+flavor-specific split, and Step 8 covers giving each flavor its own app name so they're told apart once
+installed side by side.
 
 ## Step 3. Trace the domain use-cases the feature depends on
 Look at the feature implementation's state-factory implementation (for example `AuthStateFactoryImpl`) and the
@@ -210,21 +245,21 @@ See [the example `App.kt`](assets/example/demo/src/main/kotlin/com/motorro/commo
 ```kotlin
 @KoinApplication(modules = [AppModule::class])
 class App : Application() {
-  override fun onCreate() {
-    super.onCreate()
-    Napier.base(DebugAntilog())
-    startKoin<App> {
-      allowOverride(false)
-      androidLogger()
-      androidContext(this@App)
+    override fun onCreate() {
+        super.onCreate()
+        Napier.base(DebugAntilog())
+        startKoin<App> {
+            allowOverride(false)
+            androidLogger()
+            androidContext(this@App)
+        }
     }
-  }
 }
 
 @Module(includes = [AuthModule::class])
 @ComponentScan
 class AppModule {
-  // @Single fixture bindings from Step 4 go here
+    // @Single fixture bindings from Step 4 go here
 }
 ```
 
@@ -234,30 +269,103 @@ project wires dependencies by hand with no DI framework, skip a separate module 
 fixtures directly where you construct the feature's `DataApi`/`UiApi` implementations (typically in the
 `Application` class or a small factory object), and pass them straight into the feature's constructors.
 
-If you added product flavors in Step 2, this is the piece that actually has to differ between them, since each
-flavor's `AppModule`/container needs to `includes` (or construct) a different nested implementation and may
-want different fixtures. Move `App.kt` - the `Application` class, its DI module, and the fixtures from Step 4 -
-out of `src/main` and into each flavor's own source set instead, leaving `src/main` with only what's identical
-across every combination (the manifest and the files from Steps 6-7):
+If you added product flavors in Step 2, don't duplicate the whole `Application` class per flavor - only the DI
+module actually needs to differ, since that's what holds the fixture bindings and the `includes` that may point
+at a different nested implementation. Keep `App.kt` (the `Application` subclass, `startKoin`, logging setup) in
+`src/main` exactly as above, referencing `AppModule::class` generically. Pull just the `@Module`/`@ComponentScan`
+class itself out of `App.kt` into its own `AppModule.kt`, and give each flavor its own copy in its own source set:
 
 ```
 demo/src/
-├── main/                          # Shared: manifest, MainActivity.kt, MainViewModel.kt
-├── variantA/kotlin/.../App.kt     # Its own Application + AppModule, wiring implementation-a + its fixtures
-└── variantB/kotlin/.../App.kt     # Its own Application + AppModule, wiring implementation-b + its fixtures
+├── main/kotlin/.../App.kt                  # Shared: Application + startKoin, references AppModule::class
+├── happyPath/kotlin/.../AppModule.kt       # This flavor's fixtures (all succeed)
+└── connectionErrors/kotlin/.../AppModule.kt  # This flavor's fixtures (fail once, then succeed)
 ```
 
-Each flavor's `App.kt` starts as a copy of the single-flavor version above, with its `@Module(includes = [...])`
-pointed at that flavor's own nested implementation module. Start the fixtures identically in both copies unless
-the user specifically wants them to behave differently per variant; keeping them in separate files is what
-makes it easy to diverge later without touching the other flavor. Don't do this source-set split for a
-single-combination demo - it's only worth the extra files once there's more than one flavor to tell apart.
+See [the example `happyPath` AppModule.kt](assets/example/demo/src/happyPath/kotlin/com/motorro/commonstatemachine/examples/skills/auth/demo/AppModule.kt)
+and [`connectionErrors` AppModule.kt](assets/example/demo/src/connectionErrors/kotlin/com/motorro/commonstatemachine/examples/skills/auth/demo/AppModule.kt):
+same shape and the same `@Module(includes = [AuthModule::class])`, different fixture bodies. If the variants
+also wire different nested implementations (Step 3), point each copy's `includes` at that flavor's own
+implementation module instead of keeping it identical across copies.
+
+Don't do this source-set split for a single-combination demo - it's only worth the extra files once there's
+more than one flavor to tell apart.
 
 ## Step 6. Create the main Activity
 Create a single `ComponentActivity` that sets Compose content wrapped in the common UI module's theme, injects
 the feature's `UiApi` and a `CommonFlowViewModel`, and renders the flow with `CommonFlowComposition` inside a
-`Scaffold` using the common UI module's app bar. See [the example `MainActivity.kt`](assets/example/demo/src/main/kotlin/com/motorro/commonstatemachine/examples/skills/auth/demo/MainActivity.kt) for the full pattern,
-including wiring the Android back gesture through `navigationBackHandler` and finishing the activity when the flow's `finish` callback fires.
+`Scaffold` using the common UI module's app bar, wiring the Android back gesture through `navigationBackHandler`.
+
+Rather than closing the activity the moment the flow's `finish` callback fires, capture the `Result` value it
+hands you in a bit of remembered state and swap to a small result screen that shows it, with a button that exits
+from there. This way, running the demo - by hand, or with a UI-testing tool watching the screen - shows what the
+flow actually produced, not just that it finished:
+
+```kotlin
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+            val (result, setResult) = remember { mutableStateOf<AuthResult?>(null) }
+
+            SkillsTheme {
+                Scaffold(
+                    topBar = { SkillsAppBar(title = stringResource(R.string.app_name), topLevel = true) }
+                ) { paddingValues ->
+                    if (null == result) {
+                        MainScreen(modifier = Modifier.padding(paddingValues), onComplete = setResult)
+                    } else {
+                        ResultScreen(result) { finish() }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun MainScreen(modifier: Modifier = Modifier, onComplete: (AuthResult) -> Unit) {
+    val viewModel: MainViewModel = koinViewModel()
+    val uiApi: AuthUiApi = koinInject()
+
+    CommonFlowComposition(
+        viewModel = viewModel,
+        navigationBackHandler = { enabled, onBack -> BackHandler(enabled, onBack) },
+        content = { state, onGesture -> uiApi.Screen(state = state, onGesture = onGesture, modifier = modifier) },
+        finish = { onComplete(it) }
+    )
+}
+
+@Composable
+private fun ResultScreen(result: AuthResult, onComplete: () -> Unit) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(Dimensions.medium, Alignment.CenterVertically),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            style = MaterialTheme.typography.bodyLarge,
+            text = stringResource(R.string.result_authenticated, result.authenticated)
+        )
+        Button(onClick = onComplete) {
+            Text(text = stringResource(R.string.btn_exit))
+        }
+    }
+}
+```
+
+See [the example `MainActivity.kt`](assets/example/demo/src/main/kotlin/com/motorro/commonstatemachine/examples/skills/auth/demo/MainActivity.kt) for the full file.
+
+Write the result screen's text from the feature's actual `Result` type - a boolean like the example's
+`authenticated`, an id, a count, whatever fields it actually carries. If the `Result` type carries nothing
+worth showing (a bare `Unit` or marker type), a static confirmation message is enough - ask the user if it's not
+obvious what to show. The result text and the exit button's label need their own entries in `strings.xml`
+alongside `app_name` (see Step 8).
+
+If the user explicitly asks for the simpler behavior instead - close the app the moment the flow completes, no
+result screen - skip the remembered `result` state and call `finish()` directly from the `finish` callback:
+`finish = { finish() }`.
 
 ## Step 7. Create the main ViewModel
 Create a trivial `CommonFlowViewModel` subclass that takes the feature's `DataApi` via constructor injection and
@@ -278,12 +386,21 @@ comes from a parent flow), ask the user what to pass, or use a clearly-marked pl
 Add a minimal `AndroidManifest.xml` declaring the single launcher activity, and the small resource set an
 Android application module needs (`app_name` in `strings.xml`, a launcher icon, and the standard backup/data-
 extraction/network-security XML files). Keep this minimal: it's an internal tool, not a production app icon.
+If Step 6's result screen is in use, add its two strings to the same `strings.xml` - one for the result text
+(with a format placeholder for whatever field of the `Result` type it displays, like `result_authenticated` in
+the example) and one for the exit button's label (`btn_exit` in the example).
 With `minSdk` set to a recent version (Step 2), adaptive icons are guaranteed to be available, so a single
 `mipmap-anydpi-v26/ic_launcher.xml` (plus its round variant) referencing a vector drawable is enough - don't
 generate the legacy per-density PNG sets (`mipmap-hdpi`, `-mdpi`, `-xhdpi`, `-xxhdpi`, `-xxxhdpi`) that exist
 only for backwards compatibility with older Android versions this demo doesn't need to support. Copy the
 manifest/resource shape from another demo/app module in the project if one exists, adjusting the app name and
 dropping anything that's there only for legacy-device support; otherwise create a minimal set from scratch.
+
+If you added product flavors in Step 2, give each one its own `app_name` by overriding the string in that
+flavor's own `res/values/strings.xml` (`src/<flavor>/res/values/strings.xml`) - for example "Auth Demo (Happy
+Path)" and "Auth Demo (Connection Errors)". Combined with each flavor's `applicationIdSuffix` from Step 2, this
+is what lets every variant sit on the device as its own separately-launchable app instead of one overwriting
+another, and lets you tell them apart in the launcher.
 
 ## Step 9. Register the module (if the project needs it)
 If the project registers Gradle modules explicitly (check `settings.gradle.kts`), add the new demo module there

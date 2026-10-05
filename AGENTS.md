@@ -56,3 +56,8 @@ There are two folders managing skills:
 - Add copyright headers at the top of Kotlin source files.
 - When checking for boolean `false`, use the `.not()` extension function instead of `!` for clarity (e.g., `if (condition.not()) { ... }`).
 - Use Yoda style for equality comparisons (e.g., `if ("a" == b) { ... }`).
+
+## Disk operations
+- When moving or renaming files, use `git mv` instead of deleting the old file and creating a new file at the new path, so file history and changes remain tracked.
+- When deleting files, use `git rm` so the removal is properly tracked by Git.
+
