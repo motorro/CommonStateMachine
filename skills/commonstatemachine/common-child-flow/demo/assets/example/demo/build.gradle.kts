@@ -26,6 +26,7 @@ android {
         create("happyPath") {
             dimension = "demo"
             applicationIdSuffix = ".happypath"
+            isDefault = true
         }
         create("connectionErrors") {
             dimension = "demo"

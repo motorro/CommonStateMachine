@@ -44,6 +44,9 @@ testMockk = "1.14.11"
 testMockkCommon = "1.13.5"
 robolectric = "4.17"
 mokkery = "3.5.0"
+junitPlatformLauncherVersion = "1.13.4"
+junitPlatformEngineVersion = "1.13.4"
+journeysJunitEngineVersion = "0.3.0"
 
 [plugins]
 compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
@@ -160,6 +163,9 @@ test_mockk = { module = "io.mockk:mockk", version.ref = "testMockk" }
 test_mockk_common = { module = "io.mockk:mockk-common", version.ref = "testMockkCommon" }
 test_kotlin_coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 test_robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
+junit-platform-launcher = { group = "org.junit.platform", name = "junit-platform-launcher", version.ref = "junitPlatformLauncherVersion" }
+junit-platform-engine = { group = "org.junit.platform", name = "junit-platform-engine", version.ref = "junitPlatformEngineVersion" }
+journeys-junit-engine = { group = "com.android.tools.journeys", name = "journeys-junit-engine", version.ref = "journeysJunitEngineVersion" }
 
 [bundles]
 compose_core = ["compose_ui", "compose_tooling_preview", "compose_material"]

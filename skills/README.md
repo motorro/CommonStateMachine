@@ -1,14 +1,16 @@
 # AI skills
-This folder contains some handy skills you may want to use to generate the code when
-using `CommonStateMachine` architecture.
+A set of AI skills for working with [CommonStateMachine](..)'s Common Child Flow architecture: scaffolding a new
+feature module, extending one that already exists, building a standalone demo app to show a feature off or test
+it on its own, and setting up AI-driven UI tests for one. Point your AI assistant at the one you need and
+describe what you want in plain language - each skill asks for anything it's missing.
 
 ## Assumed project architecture
-These skills assume some common shape for the surrounding project. None of them requires exactly this layout -
+These skills assume a particular shape for the surrounding project. None of them requires exactly this layout -
 each skill checks the actual project before guessing anything project-specific - but this is the architecture the
 examples below, and the skills' own vocabulary ("domain", "use-case", "DI framework"), refer to:
 
 - A **domain module** (`domain` in the example) that declares the use-case interfaces, their input/output models,
-  and the domain exception types - pure contracts or maybe implementation. Feature modules call these interfaces
+  and the domain exception types - pure contracts, no implementation. Feature modules call these interfaces
   without depending on wherever their real implementations happen to live, which is what lets a demo app (see
   the demo skill below) fake them with fixtures instead. The interfaces don't have to live in one shared
   `domain` module specifically - a feature can just as well use interfaces declared in another feature's own
@@ -30,9 +32,9 @@ A typical layout looks like this:
 
 ```
 my-project
-├── domain                # Use-case interfaces, domain models, domain exceptions - no implementation
-├── appcore               # Shared UI: theme, design system, common composables
-├── auth                  # One Common Child Flow feature module...
+├── domain               # Use-case interfaces, domain models, domain exceptions - no implementation
+├── appcore              # Shared UI: theme, design system, common composables
+├── auth                 # One Common Child Flow feature module...
 │  ├── api
 │  └── implementation
 ├── friendlist            # ...and another
@@ -124,3 +126,23 @@ The same approach works for comparing fixture behavior instead of implementation
 variant where every use-case succeeds, next to a `connectionErrors` variant where the same use-cases fail once
 with an I/O error before succeeding on retry, so you can demo both the normal flow and its error handling
 without switching builds.
+
+## Set up AI-driven UI tests for a Common Child Flow module
+[Journeys skill](commonstatemachine/common-child-flow/journeys/SKILL.md): sets up an
+[Android Journeys](https://developer.android.com/studio/preview/journeys) test suite for an existing feature
+module - a small host app, fed by fixtures, plus natural-language `.journey.xml` files that Gemini executes and
+verifies against it. Independent of the demo-app skill, though it follows the same overall shape.
+  - Guesses the feature's real screens and possible actions from its gestures, UI states and composables, rather
+    than inventing them
+  - Proposes journey scenarios (happy path, validation cases, failure cases) for you to confirm before writing
+    any files
+  - Fakes the feature's domain use-cases with fixtures that match what a scenario actually needs - including
+    fixtures that branch on a specific typed value, not just a call counter
+  - Wires up the AGP test-suite Gradle block and a minimal host app, reusing the project's shared UI module and
+    DI framework
+
+For example, continuing the `friendlist` module from the examples above:
+
+> Set up journey tests for the `friendlist` module.
+> - Cover the happy path (friends load and display) and the retry path after an I/O error on the first load.
+> - Suggest any other scenarios worth covering once you've looked at the module's states and gestures.

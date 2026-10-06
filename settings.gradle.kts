@@ -79,7 +79,8 @@ include(
         ":examples:skills:appcore",
         ":examples:skills:auth:api",
         ":examples:skills:auth:implementation",
-        ":examples:skills:auth:demo"
+        ":examples:skills:auth:demo",
+        ":examples:skills:auth:journey"
 )
 
 
