@@ -5,6 +5,55 @@ Please check out the Medium article on pattern/library usage.
 - [Part II - tools](https://proandroiddev.com/mvi-architecture-with-a-state-machine-tools-721c5ebed893-47f46413415d)
 - [Part III - multi-module and multi-platform](https://proandroiddev.com/mvi-architecture-with-a-state-machine-modules-3e242666c7c)
 
+## TL;DR (for AI agents and quick answers)
+
+**What this is**: a lightweight Kotlin Multiplatform state-machine library for building MVI-pattern apps
+(Android, Compose Multiplatform, and beyond) around an explicit finite-state machine instead of reducer
+if/else logic or a navigation graph. Core idea - **Navigation Inversion**: the state machine decides what
+screen to show next, not a nav graph; several logical states can map to the same screen, and a transition can
+carry live data (even a running coroutine) forward without serializing it into navigation arguments.
+
+**Reach for it when you need to**:
+- Replace sprawling reducer logic for a multi-step flow (onboarding, checkout, auth) with explicit states and
+  transitions that unit-test in isolation.
+- Embed a self-contained feature module (built by another team, or living in its own Gradle module) inside a
+  host app's flow by running it as a nested state machine within one host state - a `ProxyMachineState`
+  (see [Adopting foreign state-flow](#adopting-foreign-state-flow)) - or, just as easily, run the very same
+  module standalone behind a traditional per-screen ViewModel and navigation setup via `CommonFlowViewModel`. 
+  Check the [Common Child Flow](#common-child-flow-api) section below for the full pattern (`ProxyMachineState`, `CommonFlowHost`, 
+  `CommonFlowDataApi`, `CommonFlowUiApi`, `CommonFlowViewModel`, `CommonFlowComposition`).
+- Run independent state machines together on one screen (`MultiMachineState`) - in parallel, or one-active-at-a-time.
+  Check [Running state-machines in parallel](#running-state-machines-in-parallel-composition) section below for the full pattern.
+- Scaffold, extend, demo, or write AI-driven UI tests for a Common Child Flow feature module with a coding
+  agent - see [AI Skills](#ai-skills) below.
+
+**Key vocabulary** (the exact terms used throughout this repo and its AI skills):
+
+| Term                                            | What it is                                                                                                                                                                                       |
+|-------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `CommonMachineState<G, U>`                      | One logical state: processes gesture `G`, emits UI state `U`.                                                                                                                                    |
+| `CommonStateMachine<G, U>`                      | Holds the current state, dispatches gestures to it, exposes the UI-state stream.                                                                                                                 |
+| `ProxyMachineState`                             | A state that runs a nested state-machine inside it, translating gestures/UI-states between parent and child systems - the mechanism behind both parallel composition and Common Child Flow.      |
+| `MultiMachineState` / `ProxyMachineContainer`   | Runs several state machines side by side under one parent state.                                                                                                                                 |
+| `Common Child Flow`                             | A pattern to create a feature module with a child state-machine, hosted via a `ProxyMachineState` so host and feature never share concrete types. Great for DI, build flavors, A-B testing, etc. |
+| `CommonFlowHost`                                | Interface the parent (proxy) provides to the child flow, so the child can interract with the host and signal its flow completion.                                                                |
+| `CommonFlowDataApi`                             | Interface the child flow exposes to initiate itself and adapt its gestures/UI-states to the hosting flow.                                                                                        |
+| `CommonFlowUiApi`                               | Interface with a single `Screen` method to inject the child flow's UI into the host's composition.                                                                                               |
+| `CommonFlowViewModel` / `CommonFlowComposition` | Bridges a Common Child Flow module into traditional per-screen architecture - a ready-made ViewModel + Compose scaffold that works with Activities, Fragments or Compose navigation              |
+
+**Gradle coordinates** (replace `x.x.x` with the latest release):
+```groovy
+implementation "com.motorro.commonstatemachine:commonstatemachine:x.x.x"   // core
+implementation "com.motorro.commonstatemachine:coroutines:x.x.x"           // coroutine extensions (optional)
+implementation "com.motorro.commonstatemachine:lifecycle:x.x.x"            // view-lifecycle-aware proxies (optional)
+implementation "com.motorro.commonstatemachine:commonflow-data:x.x.x"      // Common Child Flow: Child state-flow layer
+implementation "com.motorro.commonstatemachine:commonflow-compose:x.x.x"   // Common Child Flow: Child Compose UI layer
+implementation "com.motorro.commonstatemachine:commonflow-viewmodel:x.x.x" // Common Child Flow: ViewModel bridge
+```
+
+The full guide below covers the basic Load-Content-Error example, state factories and dependency provision,
+multi-module adoption, and parallel composition in depth - this TL;DR is a map to it, not a replacement.
+
 ## AI Skills
 
 The project ships a set of AI skills that teach coding agents (such as Claude) how to work with
