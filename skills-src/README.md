@@ -4,6 +4,16 @@ feature module, extending one that already exists, building a standalone demo ap
 it on its own, and setting up AI-driven UI tests for one. Point your AI assistant at the one you need and
 describe what you want in plain language - each skill asks for anything it's missing.
 
+Skills can be installed straight from this repository with the [`skills` CLI](https://github.com/vercel-labs/skills), without cloning the repo:
+
+```bash
+# List the skills available in this repository
+npx skills add motorro/commonstatemachine --list
+
+# Install a specific skill
+npx skills add motorro/commonstatemachine --skill commonstatemachine-commonchildflow-boilerplate
+```
+
 ## Assumed project architecture
 These skills assume a particular shape for the surrounding project. None of them requires exactly this layout -
 each skill checks the actual project before guessing anything project-specific - but this is the architecture the
