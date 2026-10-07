@@ -56,7 +56,7 @@ multi-module adoption, and parallel composition in depth - this TL;DR is a map t
 
 ## AI Skills
 
-The project ships a set of AI skills that teach coding agents (such as Claude) how to work with
+The project ships a set of AI skills that teach coding agents how to work with
 `CommonStateMachine` - for example, scaffolding a new feature-flow module that follows the
 [Common Child Flow](#common-child-flow-api) architecture described below. See
 [skills/README.md](skills/README.md) for the full list of available skills.
