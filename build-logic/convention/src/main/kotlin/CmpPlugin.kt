@@ -34,11 +34,6 @@ class CmpPlugin : Plugin<Project> {
                     // Enable KMP @Preview for @Compose functions.
                     implementation(libs.findLibrary("compose_multiplatform_preview").get())
                 }
-
-                // Preview / tooling for only Android.
-                androidMain.dependencies {
-                    implementation(libs.findLibrary("compose_tooling").get())
-                }
             }
         }
 

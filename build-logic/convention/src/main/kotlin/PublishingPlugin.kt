@@ -55,6 +55,11 @@ class PublishingPlugin : Plugin<Project> {
         extensions.configure<PublishingExtension> {
             publications.withType<MavenPublication> {
                 artifact(javadocJar)
+                versionMapping {
+                    allVariants {
+                        fromResolutionResult()
+                    }
+                }
                 pom {
                     name.set(provider {
                         libName
