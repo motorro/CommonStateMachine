@@ -1,6 +1,5 @@
 import com.motorro.gradle.convention.getProjectProperty
 import com.motorro.gradle.convention.libDesc
-import com.motorro.gradle.convention.libId
 import com.motorro.gradle.convention.libName
 import com.motorro.gradle.convention.libs
 import org.gradle.api.Plugin
@@ -58,10 +57,10 @@ class PublishingPlugin : Plugin<Project> {
                 artifact(javadocJar)
                 pom {
                     name.set(provider {
-                        libName ?: libId ?: name.toString()
+                        libName
                     })
                     description.set(provider {
-                        libDesc ?: libName ?: ""
+                        libDesc ?: libName
                     })
                     url.set(projectUrl)
                     licenses {

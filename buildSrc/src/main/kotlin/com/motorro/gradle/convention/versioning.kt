@@ -3,16 +3,6 @@ package com.motorro.gradle.convention
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 
-val platformVersionCodeAdditives: Map<String, Int> = mapOf(
-    "armeabi" to 1,
-    "armeabi-v7a" to 2,
-    "arm64-v8a" to 3,
-    "x86" to 4,
-    "x86_64" to 5,
-    "mips" to 6,
-    "mips64" to 7
-)
-
 private fun getGitDescribe(project: Project): String? {
     val grgit = project.findProperty("grgit") ?: project.rootProject.findProperty("grgit")
     if (grgit != null) {

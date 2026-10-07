@@ -15,6 +15,7 @@
 
 import com.motorro.gradle.convention.buildVersionCode
 import com.motorro.gradle.convention.buildVersionName
+import com.motorro.gradle.convention.setSigningConfig
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 
 plugins {
@@ -142,11 +143,17 @@ tasks.register("runUnitTests") {
     description = "Run unit tests for all modules."
 }
 
+// Signing and publishing
+setSigningConfig()
+
 val ossrhUsername: String? by extra
 val ossrhPassword: String? by extra
 
 nexusPublishing {
     repositories {
+        println("===> ossrhUsername: $ossrhUsername")
+        println("===> ossrhPassword: $ossrhPassword")
+
         sonatype {
             nexusUrl.set(uri("https://ossrh-staging-api.central.sonatype.com/service/local/"))
             snapshotRepositoryUrl.set(uri("https://central.sonatype.com/repository/maven-snapshots/"))
