@@ -151,9 +151,6 @@ val ossrhPassword: String? by extra
 
 nexusPublishing {
     repositories {
-        println("===> ossrhUsername: $ossrhUsername")
-        println("===> ossrhPassword: $ossrhPassword")
-
         sonatype {
             nexusUrl.set(uri("https://ossrh-staging-api.central.sonatype.com/service/local/"))
             snapshotRepositoryUrl.set(uri("https://central.sonatype.com/repository/maven-snapshots/"))
