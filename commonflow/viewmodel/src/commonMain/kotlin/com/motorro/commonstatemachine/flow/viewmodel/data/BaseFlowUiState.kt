@@ -14,7 +14,7 @@ sealed class BaseFlowUiState<out U: Any, out R> {
     /**
      * Flow terminated
      */
-    data class Terminated<out R>(val result: R?) : BaseFlowUiState<Nothing, R>() {
+    data class Terminated<out R>(val result: R) : BaseFlowUiState<Nothing, R>() {
         override val backHandlerEnabled: Boolean = false
     }
 }

@@ -1,0 +1,1 @@
+../../.shared/input-and-result-api.md

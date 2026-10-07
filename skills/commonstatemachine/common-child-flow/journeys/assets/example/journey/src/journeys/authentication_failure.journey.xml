@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<journey name="Auth: Authentication failure">
+    <description xml:space="preserve">Test that submitting a wrong password for a known username shows an authentication error, and that closing it returns to the form</description>
+    <actions xml:space="preserve">
+        <action>Wait for the authentication form to open.</action>
+        <action>Type "user" into the username field and "wrongpass" into the password field. Submit the form with the Login button.</action>
+        <action>Verify that an error screen appears showing the message "Invalid username or password".</action>
+        <action>Verify that the screen shows a Close button, not a Retry button.</action>
+        <action>Tap the Close button.</action>
+        <action>Verify that the authentication form opens.</action>
+        </actions>
+</journey>

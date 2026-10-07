@@ -1,0 +1,1 @@
+../../../../../../../examples/skills/auth/journey/build.gradle.kts

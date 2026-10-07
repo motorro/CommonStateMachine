@@ -1,0 +1,1 @@
+../../.shared/renderer-factory-context-interface-implementation.md

@@ -1,15 +1,17 @@
+@file:Suppress("UnstableApiUsage")
+
 /*
- * Copyright 2022 Nikolai Kotchetkov.
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *    http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+* Copyright 2022 Nikolai Kotchetkov.
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*    http://www.apache.org/licenses/LICENSE-2.0
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
 
 pluginManagement {
     repositories {
@@ -37,6 +39,8 @@ dependencyResolutionManagement {
 }
 rootProject.name = "CommonStateMachine"
 
+includeBuild("build-logic")
+
 // Libraries
 include(":tmap")
 include(":commonstatemachine")
@@ -53,10 +57,8 @@ project(":commonflow:viewmodel").name = "commonflow-viewmodel"
 // Examples
 include(
         ":examples:commoncore",
-        ":examples:androidcore",
-        ":examples:welcome:welcome",
+    ":examples:welcome:app",
         ":examples:welcome:login",
-        ":examples:welcome:commonregister",
         ":examples:welcome:commonapi",
         ":examples:welcome:register",
         ":examples:lce",
@@ -72,8 +74,18 @@ include(
         ":examples:books:domain",
         ":examples:books:book",
         ":examples:books:book:demo",
-        ":examples:books:app"
+        ":examples:books:app",
+        ":examples:skills:app",
+        ":examples:skills:domain",
+        ":examples:skills:usecase",
+        ":examples:skills:appcore",
+        ":examples:skills:auth:api",
+        ":examples:skills:auth:implementation",
+        ":examples:skills:auth:demo",
+        ":examples:skills:auth:journey"
 )
+
+
 
 
 

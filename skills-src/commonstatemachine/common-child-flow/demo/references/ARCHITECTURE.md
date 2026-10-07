@@ -1,0 +1,1 @@
+../../../.shared/ARCHITECTURE.md

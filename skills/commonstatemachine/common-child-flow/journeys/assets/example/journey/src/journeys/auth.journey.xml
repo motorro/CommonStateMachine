@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<journey name="Auth: Happy authentication">
+    <description xml:space="preserve">Test authentication happy path with valid credentials</description>
+    <actions xml:space="preserve">
+        <action>Wait for the authentication form to open.</action>
+        <action>Type "user" into the username field and "password" into the password field.</action>
+        <action>Tap the Login button to submit the form.</action>
+        <action>Verify that authentication succeeds and the screen displays "authenticated: true".</action>
+    </actions>
+</journey>

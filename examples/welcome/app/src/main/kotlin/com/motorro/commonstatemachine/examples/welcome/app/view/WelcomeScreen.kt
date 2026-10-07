@@ -1,0 +1,63 @@
+/*
+ * Copyright 2022 Nikolai Kotchetkov.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.motorro.commonstatemachine.examples.welcome.app.view
+
+import androidx.activity.compose.BackHandler
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import com.motorro.commonstatemachine.examples.commoncore.ui.Loading
+import com.motorro.commonstatemachine.examples.welcome.app.data.WelcomeGesture
+import com.motorro.commonstatemachine.examples.welcome.app.data.WelcomeGesture.Action
+import com.motorro.commonstatemachine.examples.welcome.app.data.WelcomeGesture.EmailChanged
+import com.motorro.commonstatemachine.examples.welcome.app.data.WelcomeGesture.TermsAndConditionsToggled
+import com.motorro.commonstatemachine.examples.welcome.app.data.WelcomeUiState
+import com.motorro.commonstatemachine.examples.welcome.app.model.WelcomeViewModel
+import com.motorro.commonstatemachine.examples.welcome.login.view.LoginScreen
+import com.motorro.commonstatemachine.examples.welcome.register.view.RegistrationScreen
+import org.koin.compose.viewmodel.koinViewModel
+
+@Composable
+fun WelcomeScreen(onTerminate: @Composable () -> Unit) {
+    val model = koinViewModel<WelcomeViewModel>()
+    val state = model.state.collectAsState(WelcomeUiState.Loading)
+
+    BackHandler(onBack = { model.process(WelcomeGesture.Back) })
+
+    when (val uiState = state.value) {
+        WelcomeUiState.Loading -> Loading()
+        is WelcomeUiState.Welcome -> Welcome(
+            state = uiState,
+            onTermsToggled = { model.process(TermsAndConditionsToggled) },
+            onNext = { model.process(Action) }
+        )
+        is WelcomeUiState.EmailEntry -> EmailEntry(
+            state = uiState,
+            onEmailChanged = { model.process(EmailChanged(it)) },
+            onNext = { model.process(Action) }
+        )
+        is WelcomeUiState.Login -> LoginScreen(
+            state = uiState.value,
+            onGesture = { model.process(WelcomeGesture.Login(it)) }
+        )
+        is WelcomeUiState.Register -> RegistrationScreen(
+            state = uiState.value,
+            onGesture = { model.process(WelcomeGesture.Register(it))}
+        )
+        is WelcomeUiState.Complete -> Complete(
+            state = uiState,
+            onAction = { model.process(Action) }
+        )
+        WelcomeUiState.Terminated -> { onTerminate() }
+    }
+}

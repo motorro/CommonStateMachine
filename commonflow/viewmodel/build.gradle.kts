@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
+
 /*
  * Copyright 2026 Nikolai Kotchetkov.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,87 +13,15 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
-@file:OptIn(ExperimentalWasmDsl::class, ExperimentalAbiValidation::class)
-
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
-
 plugins {
-    alias(libs.plugins.kotlin.multiplatform)
-    alias(libs.plugins.android.kotlin.multiplatform.library)
-    alias(libs.plugins.compose)
-    alias(libs.plugins.composeMultiplatform)
-    alias(libs.plugins.kotlin.dokka)
-    id("maven-publish")
-    id("signing")
+    alias(libs.plugins.motorro.cmp)
+    alias(libs.plugins.motorro.publishing)
 }
 
-val versionName: String by project.extra
-val androidMinSdkVersion: Int by project.extra
-val androidTargetSdkVersion: Int by project.extra
-val androidCompileSdkVersion: Int by project.extra
-
-group = rootProject.group
-version = rootProject.version
-
-println("== Project version: $versionName ==")
-
 kotlin {
+    @OptIn(ExperimentalAbiValidation::class)
     abiValidation {
 
-    }
-
-    jvmToolchain(21)
-
-    jvm()
-    android {
-        namespace = "com.motorro.commonstatemachine.commonflow.viewmodel"
-        compileSdk = androidCompileSdkVersion
-        minSdk = androidMinSdkVersion
-
-        withHostTest {
-            isIncludeAndroidResources = true
-        }
-
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
-        }
-    }
-
-    js {
-        binaries.library()
-        useCommonJs()
-        browser {
-            testTask(Action {
-                useMocha {
-                    timeout = "10s"
-                }
-            })
-        }
-    }
-
-    wasmJs {
-        binaries.library()
-        useCommonJs()
-        browser {
-            testTask(Action {
-                useMocha {
-                    timeout = "10s"
-                }
-            })
-        }
-    }
-
-    listOf(
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach {
-        it.binaries.framework {
-            baseName = "commonflow-viewmodel"
-            isStatic = true
-        }
     }
 
     sourceSets {
@@ -99,8 +29,8 @@ kotlin {
             api(project(":commonstatemachine"))
             api(project(":coroutines"))
             api(project(":commonflow:commonflow-compose"))
-            api(libs.composeMultiplatform.viewmodel)
-            implementation(libs.composeMultiplatform.lifecycle)
+            api(libs.compose.multiplatform.viewmodel)
+            implementation(libs.compose.multiplatform.lifecycle)
         }
         commonTest.dependencies {
             implementation(libs.test.kotlin)
@@ -113,62 +43,4 @@ kotlin {
             implementation(libs.compose.activity)
         }
     }
-}
-val javadocJar by tasks.registering(Jar::class) {
-    dependsOn(tasks.dokkaGenerate)
-    group = "documentation"
-    archiveClassifier.set("javadoc")
-    from(tasks.dokkaGenerate)
-}
-
-val libId = "commonflow-viewmodel"
-val libName = "commonflow-viewmodel"
-val libDesc = "Common view components to wrap standard flow"
-val projectUrl: String by project.extra
-val projectScm: String by project.extra
-val ossrhUsername: String? by rootProject.extra
-val ossrhPassword: String? by rootProject.extra
-val developerId: String by project.extra
-val developerName: String by project.extra
-val developerEmail: String by project.extra
-val signingKey: String? by rootProject.extra
-val signingPassword: String? by rootProject.extra
-
-publishing {
-    publications.withType<MavenPublication> {
-        artifact(javadocJar)
-        pom {
-            name.set(libName)
-            description.set(libDesc)
-            url.set(projectUrl)
-            licenses {
-                license {
-                    name.set("Apache-2.0")
-                    url.set("https://apache.org/licenses/LICENSE-2.0")
-                }
-            }
-            developers {
-                developer {
-                    id.set(developerId)
-                    name.set(developerName)
-                    email.set(developerEmail)
-                }
-            }
-            scm {
-                connection.set(projectScm)
-                developerConnection.set(projectScm)
-                url.set(projectUrl)
-            }
-        }
-    }
-}
-
-signing {
-    useInMemoryPgpKeys(signingKey, signingPassword)
-    sign(publishing.publications)
-}
-
-val signingTasks = tasks.withType<Sign>()
-tasks.withType<AbstractPublishToMaven>().configureEach {
-    dependsOn(signingTasks)
 }

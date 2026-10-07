@@ -11,85 +11,11 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
-@file:OptIn(ExperimentalWasmDsl::class)
-
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
-    alias(libs.plugins.kotlin.multiplatform)
-    alias(libs.plugins.android.kotlin.multiplatform.library)
+    alias(libs.plugins.motorro.kmp)
 }
 
-val versionName: String by project.extra
-val androidMinSdkVersion: Int by project.extra
-val androidTargetSdkVersion: Int by project.extra
-val androidCompileSdkVersion: Int by project.extra
-
-group = rootProject.group
-version = rootProject.version
-
 kotlin {
-
-    compilerOptions {
-        freeCompilerArgs.addAll(listOf(
-            "-Xexpect-actual-classes"
-        ))
-    }
-
-    jvmToolchain(21)
-
-    jvm()
-    android {
-        namespace = "com.motorro.commonstatemachine.platformtest"
-        compileSdk = androidCompileSdkVersion
-        minSdk = androidMinSdkVersion
-
-        withHostTest {
-            isIncludeAndroidResources = true
-        }
-
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
-        }
-    }
-
-    js {
-        binaries.library()
-        useCommonJs()
-        browser {
-            testTask(Action {
-                useMocha {
-                    timeout = "10s"
-                }
-            })
-        }
-    }
-
-    wasmJs {
-        binaries.library()
-        useCommonJs()
-        browser {
-            testTask(Action {
-                useMocha {
-                    timeout = "10s"
-                }
-            })
-        }
-    }
-
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach {
-        it.binaries.framework {
-            baseName = "platformtest"
-            isStatic = true
-        }
-    }
-
     sourceSets {
         androidMain.dependencies {
             implementation(libs.test.junit)

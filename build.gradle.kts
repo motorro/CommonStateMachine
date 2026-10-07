@@ -13,9 +13,9 @@
 
 @file:Suppress("unused")
 
-import groovy.lang.Closure
+import com.motorro.gradle.convention.buildVersionCode
+import com.motorro.gradle.convention.buildVersionName
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     alias(libs.plugins.android.app) apply false
@@ -26,19 +26,13 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.google.ksp) apply false
     alias(libs.plugins.compose) apply false
+    alias(libs.plugins.compose.multiplatform) apply false
     alias(libs.plugins.kotlin.dokka) apply false
     alias(libs.plugins.hilt) apply false
+    alias(libs.plugins.koin) apply false
     alias(libs.plugins.nexus.publish)
     alias(libs.plugins.git)
 }
-
-apply {
-    from("$rootDir/gradle/versioning.gradle")
-    from("$rootDir/gradle/maven-publish-config.gradle")
-}
-
-private val buildVersionName: Closure<Any> by ext
-private val buildVersionCode: Closure<Any> by ext
 
 version = buildVersionName()
 group = "com.motorro.commonstatemachine"
@@ -48,27 +42,6 @@ description = "Multiplatform state machine for mobile applications"
 allprojects {
     val versionName by extra(buildVersionName())
     val versionCode by extra(buildVersionCode())
-
-    val androidBuildToolsVersion by extra("35.0.0")
-    val androidMinSdkVersion by extra(24)
-    val androidTargetSdkVersion by extra(37)
-    val androidCompileSdkVersion by extra(37)
-
-    val developerId by extra("motorro")
-    val developerName by extra("Nikolai Kotchetkov")
-    val developerEmail by extra("motorro@gmail.com")
-
-    val projectScm by extra("https://github.com/motorro/CommonStateMachine.git")
-    val projectUrl by extra("https://github.com/motorro/CommonStateMachine")
-
-    tasks.withType<KotlinCompile>().configureEach {
-        compilerOptions {
-            freeCompilerArgs.addAll(listOf(
-                "-opt-in=kotlin.RequiresOptIn",
-                "-Xexpect-actual-classes"
-            ))
-        }
-    }
 
     tasks.withType<Test>().configureEach {
         forkEvery = 100
@@ -116,9 +89,9 @@ tasks.register("runLceExampleUnitTests") {
 }
 
 tasks.register("runWelcomeExampleUnitTests") {
-    dependsOn(":examples:welcome:commonregister:allTests")
+    dependsOn(":examples:welcome:register:allTests")
     dependsOn(":examples:welcome:login:testDebugUnitTest")
-    dependsOn(":examples:welcome:welcome:testDebugUnitTest")
+    dependsOn(":examples:welcome:app:testDebugUnitTest")
     description = "Run unit tests for welcome app."
 }
 
@@ -129,7 +102,7 @@ tasks.register("runTimerExampleUnitTests") {
 
 tasks.register("runDiExampleUnitTests") {
     dependsOn(":examples:di:login:testDebugUnitTest")
-    dependsOn(":examples:di:social:testDebugUnitTest")
+    dependsOn(":examples:di:app:testLoginDebugUnitTest")
     description = "Run unit tests for di app."
 }
 
@@ -137,6 +110,12 @@ tasks.register("runBooksExampleUnitTests") {
     dependsOn(":examples:books:book:testDebugUnitTest")
     dependsOn(":examples:books:app:testDebugUnitTest")
     description = "Run unit tests for books app."
+}
+
+tasks.register("runSkillsExampleUnitTests") {
+    dependsOn(":examples:skills:app:testDebugUnitTest")
+    dependsOn(":examples:skills:auth:implementation:allTests")
+    description = "Run unit tests for skills."
 }
 
 tasks.register("displayVersion") {
@@ -156,7 +135,8 @@ tasks.register("runUnitTests") {
             "runWelcomeExampleUnitTests",
             "runTimerExampleUnitTests",
             "runDiExampleUnitTests",
-            "runBooksExampleUnitTests"
+            "runBooksExampleUnitTests",
+            "runSkillsExampleUnitTests"
     )
     group = "verification"
     description = "Run unit tests for all modules."

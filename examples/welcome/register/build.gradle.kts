@@ -1,7 +1,3 @@
-@file:Suppress("unused")
-
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 /*
  * Copyright 2022 Nikolai Kotchetkov.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,80 +12,25 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
  */
 
 plugins {
-    alias(libs.plugins.android.lib)
-    alias(libs.plugins.google.ksp)
-    alias(libs.plugins.hilt)
-    alias(libs.plugins.compose)
+    alias(libs.plugins.motorro.cmp)
+    alias(libs.plugins.koin)
 }
 
-
-val versionCode: String by project.extra
-val versionName: String by project.extra
-val androidMinSdkVersion: Int by project.extra
-val androidCompileSdkVersion: Int by project.extra
-
-
-android {
-    // Ensure androidCompileSdkVersion, androidMinSdkVersion, and androidTargetSdkVersion
-    // are defined in your project's gradle.properties or root build.gradle.kts
-    compileSdk = androidCompileSdkVersion
-
-    defaultConfig {
-        minSdk = androidMinSdkVersion
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(project(":commonstatemachine"))
+            implementation(project(":coroutines"))
+            implementation(project(":examples:commoncore"))
+            implementation(project(":examples:welcome:commonapi"))
+            implementation(libs.kotlin.coroutines.core)
+            implementation(libs.napier)
+            implementation(project.dependencies.platform(libs.koin.bom))
+            implementation(libs.koin.core)
+            implementation(libs.koin.annotations)
+        }
+        commonTest.dependencies {
+            implementation(libs.test.kotlin.coroutines)
         }
     }
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
-    }
-    kotlin {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
-        }
-    }
-    buildFeatures {
-        compose = true
-    }
-    namespace = "com.motorro.statemachine.register"
-}
-
-dependencies {
-    implementation(project(":commonstatemachine"))
-    implementation(project(":examples:welcome:commonapi"))
-    implementation(project(":examples:commoncore"))
-    implementation(project(":examples:androidcore"))
-    api(project(":examples:welcome:commonregister"))
-
-    coreLibraryDesugaring(libs.desugaring)
-
-    implementation(libs.kotlin.coroutines.core)
-    implementation(libs.kotlin.coroutines.android)
-
-    implementation(platform(libs.compose.bom))
-
-    implementation(libs.bundles.compose.core)
-    implementation(libs.compose.activity)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.foundation.layouts) // In Groovy, this was 'foundation.layouts'. Ensure this maps correctly in your TOML.
-
-    implementation(libs.hilt.android)
-    implementation(libs.hilt.compose) // This was 'libs.hilt.compose'. Verify it maps to 'androidx.hilt:hilt-navigation-compose' or your intended Hilt Compose library.
-    ksp(libs.hilt.compiler)
-    ksp(libs.hilt.compiler.androidx) // This was 'libs.hilt.compiler.androidx'. Verify it maps to 'com.google.dagger:hilt-android-compiler' or the intended artifact.
-
-    debugImplementation(libs.compose.tooling)
-
-    testImplementation(libs.bundles.test.core)
-    testImplementation(libs.test.androidx.arch)
-    testImplementation(libs.test.kotlin.coroutines)
 }

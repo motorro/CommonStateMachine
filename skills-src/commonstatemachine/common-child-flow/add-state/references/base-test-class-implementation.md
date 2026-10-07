@@ -1,0 +1,1 @@
+../../.shared/base-test-class-implementation.md

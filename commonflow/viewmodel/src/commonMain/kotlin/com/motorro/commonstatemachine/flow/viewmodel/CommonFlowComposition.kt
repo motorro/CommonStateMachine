@@ -26,7 +26,7 @@ fun < G: Any,  U: Any, R> CommonFlowComposition(
     viewModel: CommonFlowViewModel<G, U, *, R>,
     navigationBackHandler: @Composable (enabled: Boolean, onBack: () -> Unit) -> Unit = { _, _ -> },
     content: @Composable (U, (G) -> Unit) -> Unit,
-    finish: (R?) -> Unit
+    finish: (R) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val process = remember<(G) -> Unit> {

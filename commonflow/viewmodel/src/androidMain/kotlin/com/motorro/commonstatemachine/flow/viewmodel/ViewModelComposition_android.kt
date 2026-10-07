@@ -28,6 +28,14 @@ import androidx.lifecycle.ViewModelProvider.Factory
 import androidx.lifecycle.viewmodel.CreationExtras
 
 /**
+ * Default navigation back handler using [BackHandler].
+ */
+@Composable
+fun DefaultNavigationBackHandler(enabled: Boolean, onBack: () -> Unit) {
+    BackHandler(enabled = enabled) { onBack() }
+}
+
+/**
  * Builds state machine composition
  * Ensure that [AppCompatActivity] has correct view model factory
  * @param extrasProducer optional extras producer
@@ -40,9 +48,7 @@ inline fun <G: Any,  U: Any, R, reified VM: CommonFlowViewModel<G, U, *, R>> Com
     noinline extrasProducer: (() -> CreationExtras)? = null,
     noinline factoryProducer: (() -> Factory)? = null,
     noinline setResult: (R?) -> Unit = { },
-    noinline navigationBackHandler: @Composable (Boolean, () -> Unit) -> Unit = { enabled, onBack ->
-        BackHandler(enabled = enabled) { onBack() }
-    },
+    noinline navigationBackHandler: @Composable (Boolean, () -> Unit) -> Unit = ::DefaultNavigationBackHandler,
     noinline content: @Composable (U, (G) -> Unit) -> Unit
 ) {
     setContent {
@@ -77,9 +83,7 @@ inline fun <G: Any,  U: Any, R, reified VM: CommonFlowViewModel<G, U, *, R>> Fra
     noinline onFinish: (R?) -> Unit,
     noinline extrasProducer: (() -> CreationExtras)? = null,
     noinline factoryProducer: (() -> Factory)? = null,
-    noinline navigationBackHandler: @Composable (Boolean, () -> Unit) -> Unit = { enabled, onBack ->
-        BackHandler(enabled = enabled) { onBack() }
-    },
+    noinline navigationBackHandler: @Composable (Boolean, () -> Unit) -> Unit = ::DefaultNavigationBackHandler,
     noinline content: @Composable (U, (G) -> Unit) -> Unit
 ): View = ComposeView(requireContext()).apply {
     setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)

@@ -1,0 +1,1 @@
+../../.shared/ui-view-implementation.md

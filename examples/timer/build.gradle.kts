@@ -12,39 +12,12 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    alias(libs.plugins.kotlin.multiplatform)
-    alias(libs.plugins.android.kotlin.multiplatform.library)
-    alias(libs.plugins.compose)
+    alias(libs.plugins.motorro.cmp)
 }
 
-val versionName: String by project.extra
-val androidMinSdkVersion: Int by project.extra
-val androidTargetSdkVersion: Int by project.extra
-val androidCompileSdkVersion: Int by project.extra
-
-group = "com.motorro"
-version = versionName
-
 kotlin {
-    jvmToolchain(21)
-
-    android {
-        namespace = "com.motorro.statemachine.timer"
-        compileSdk = androidCompileSdkVersion
-        minSdk = androidMinSdkVersion
-
-        withHostTest {
-            isIncludeAndroidResources = true
-        }
-
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
-        }
-    }
-
     sourceSets {
         commonMain.dependencies {
             implementation(project(":commonstatemachine"))
@@ -54,20 +27,7 @@ kotlin {
             implementation(libs.kotlin.datetime)
         }
         commonTest.dependencies {
-            implementation(libs.test.kotlin)
             implementation(libs.test.kotlin.coroutines)
-        }
-        androidMain.dependencies {
-            implementation(libs.timber)
-            implementation(libs.kotlin.coroutines.android)
-
-            implementation(project.dependencies.platform(libs.compose.bom))
-
-            implementation(libs.bundles.compose.core)
-            implementation(libs.compose.activity)
-            implementation(libs.compose.viewmodel)
-            implementation(libs.compose.foundation)
-            implementation(libs.compose.foundation.layouts)
         }
     }
 }

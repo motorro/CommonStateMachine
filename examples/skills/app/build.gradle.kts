@@ -1,0 +1,40 @@
+/*
+ * Copyright 2026 Nikolai Kotchetkov.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+plugins {
+    alias(libs.plugins.motorro.android.app)
+    alias(libs.plugins.koin)
+}
+
+dependencies {
+    implementation(project(":examples:skills:appcore"))
+    implementation(project(":examples:skills:domain"))
+    implementation(project(":examples:skills:usecase"))
+    implementation(project(":examples:skills:auth:api"))
+    implementation(project(":examples:skills:auth:implementation"))
+    implementation(project(":commonstatemachine"))
+    implementation(project(":coroutines"))
+    implementation(project(":commonflow:commonflow-data"))
+    implementation(project(":commonflow:commonflow-compose"))
+    implementation(project(":commonflow:commonflow-viewmodel"))
+
+    implementation(libs.napier)
+
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.core)
+    implementation(libs.koin.annotations)
+    implementation(libs.koin.core.viewmodel)
+    implementation(libs.koin.android)
+    implementation(libs.koin.compose)
+    implementation(libs.koin.compose.viewmodel)
+}

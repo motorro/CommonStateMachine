@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Auth Demo</string>
+    <string name="result_authenticated">Authenticated: %b</string>
+    <string name="btn_exit">Exit</string>
+</resources>
